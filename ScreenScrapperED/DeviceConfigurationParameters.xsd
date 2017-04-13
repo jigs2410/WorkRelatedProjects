@@ -1,0 +1,2407 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--Created with Liquid XML 2016 Designer Edition 14.1.5.6733 (https://www.liquid-technologies.com)-->
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation=".\Options.xsd" />
+    <xs:include schemaLocation=".\units.xsd" />
+    <xs:simpleType name="Drug">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Drug" />
+            <xs:enumeration value="Drug+Parameters" />
+            <xs:enumeration value="None" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="AgiliaSPMemoryOptionsParameters">
+        <xs:sequence>
+            <xs:element name="SameinfusionScreen">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_590" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SameInfusionScreenRetainDuration">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:duration">
+                            <xs:attribute name="EditDataId" fixed="ED_591" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SameTreatmentScreen">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_592" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Drug">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="Drug">
+                            <xs:attribute name="EditDataId" fixed="ED_594" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SameInfusionMode">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_595" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaVPMemoryOptionsParameters">
+        <xs:sequence>
+            <xs:element name="SameinfusionScreen">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_590" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SameInfusionScreenRetainDuration">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:duration">
+                            <xs:attribute name="EditDataId" fixed="ED_591" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SameTreatmentScreen">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_592" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Drug">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="Drug">
+                            <xs:attribute name="EditDataId" fixed="ED_594" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SameInfusionMode">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_595" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="InfusionVolume">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_593" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGSPMemoryOptionsParameters">
+        <xs:sequence>
+            <xs:element name="SameinfusionScreen">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_590" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SameInfusionScreenRetainDuration">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:duration">
+                            <xs:attribute name="EditDataId" fixed="ED_591" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SameTreatmentScreen">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_592" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Drug">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="Drug">
+                            <xs:attribute name="EditDataId" fixed="ED_594" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SameInfusionMode">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_595" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGVPMemoryOptionsParameters">
+        <xs:sequence>
+            <xs:element name="SameinfusionScreen">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_590" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SameInfusionScreenRetainDuration">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:duration">
+                            <xs:attribute name="EditDataId" fixed="ED_591" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SameTreatmentScreen">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_592" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Drug">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="Drug">
+                            <xs:attribute name="EditDataId" fixed="ED_594" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SameInfusionMode">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_595" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="InfusionVolume">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_593" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="NightModeParameters">
+        <xs:sequence>
+            <xs:element name="ScreenBrightNess">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="ScreenBrightness">
+                            <xs:attribute name="EditDataID" fixed="ED_600" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="LEDBrightness">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="LEDBrightness">
+                            <xs:attribute name="EditDataID" fixed="ED_601" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="KeyPressSoundinhibited">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataID" fixed="ED_602" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="AutoModeStart">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:date">
+                            <xs:attribute name="EditDataID" fixed="ED_604" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="AutoModeStop">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:date">
+                            <xs:attribute name="EditDataID" fixed="ED_605" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="AutoMode">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataID" fixed="ED_606" type="xs:string" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="ManualMode">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataID" fixed="ED_603" type="xs:string" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaSPMenuDisplayParameters">
+        <xs:sequence>
+            <xs:element name="WifiMenu">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_570" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="InfusionMode">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_571" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SoundLevel">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_572" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="EventLog">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_573" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DrugLibrary">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_574" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FlowRateHistory">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_575" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="PressureHistory">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_576" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DatasetInfo">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_577" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="CurrentProfile">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_578" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="PauseMenu">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_579" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SyringeName">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_580" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="InfusedVolumeHistory">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_581" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaVPMenuDisplayParameters">
+        <xs:sequence>
+            <xs:element name="WifiMenu">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_570" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="InfusionMode">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_571" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SoundLevel">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_572" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="EventLog">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_573" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DrugLibrary">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_574" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FlowRateHistory">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_575" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="PressureHistory">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_576" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DatasetInfo">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_577" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="CurrentProfile">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_578" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="PauseMenu">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_579" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="CallBackAlert">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_582" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DrugChange">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_583" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGSPMenuDisplayParameters">
+        <xs:sequence>
+            <xs:element name="WifiMenu">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_570" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="InfusionMode">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_571" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SoundLevel">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_572" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="EventLog">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_573" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DrugLibrary">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_574" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FlowRateHistory">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_575" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="PressureHistory">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_576" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DatasetInfo">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_577" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="CurrentProfile">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_578" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="PauseMenu">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_579" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SyringeName">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_580" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="InfusedVolumeHistory">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_581" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGVPMenuDisplayParameters">
+        <xs:sequence>
+            <xs:element name="WifiMenu">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_570" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="InfusionMode">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_571" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SoundLevel">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_572" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="EventLog">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_573" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DrugLibrary">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_574" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FlowRateHistory">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_575" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="PressureHistory">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_576" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DatasetInfo">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_577" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="CurrentProfile">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_578" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="PauseMenu">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_579" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="CallBackAlert">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_582" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DrugChange">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_583" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaSPScreenDisplayParameters">
+        <xs:sequence>
+            <xs:element name="PressureIcon">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_560" type="xs:string" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="BatteryIndicator">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_561" type="xs:string" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaVPScreenDisplayParameters">
+        <xs:sequence>
+            <xs:element name="PressureIcon">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_560" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="BatteryIndicator">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_561" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGVPScreenDisplayParameters">
+        <xs:sequence>
+            <xs:element name="PressureIcon">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_560" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="BatteryIndicator">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_561" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGSPScreenDisplayParameters">
+        <xs:sequence>
+            <xs:element name="PressureIcon">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_560" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="BatteryIndicator">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_561" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaSPPressureConfigParameters">
+        <xs:sequence>
+            <xs:element name="DPSauto">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_501" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DPSstatussave">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_502" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DPSriseThreshold">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:int">
+                            <xs:attribute name="EditDataId" fixed="ED_503" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DPSdropthresholdactivation">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_504" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DPSdropThreshold">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:int">
+                            <xs:attribute name="EditDataId" fixed="ED_505" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="PressureLimitSave">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_506" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="PressureUnits">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="PressureUnits">
+                            <xs:attribute name="EditDataId" fixed="ED_513" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaVPPressureConfigParameters">
+        <xs:sequence>
+            <xs:element name="DPSauto">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_501" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DPSstatussave">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_502" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DPSriseThreshold">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:int">
+                            <xs:attribute name="EditDataId" fixed="ED_503" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DPSdropthresholdactivation">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_504" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DPSdropThreshold">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:int">
+                            <xs:attribute name="EditDataId" fixed="ED_505" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="PressureLimitSave">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_506" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="AutoRestartafterocclusion">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_514" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SlidingPeriodforMaxnumberofrestarts">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:duration">
+                            <xs:attribute name="EditDataId" fixed="ED_515" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="MaxNumberofAutoRestarts">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:int">
+                            <xs:attribute name="EditDataId" fixed="ED_516" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="MaximumPeriodbeforeauto-restart">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:duration">
+                            <xs:attribute name="EditDataId" fixed="ED_517" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="InfusionRestartThreshold">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:int">
+                            <xs:attribute name="EditDataId" fixed="ED_518" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="EnableControlofAuto-RestartFeature">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_519" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Pressurelevelfordisablingauto-restartfeature">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:int">
+                            <xs:attribute name="EditDataId" fixed="ED_520" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FlowRatelevelfordisablingauto-restartfeature">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_521" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="PressureUnits">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="PressureUnits">
+                            <xs:attribute name="EditDataId" fixed="ED_513" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGVPPressureConfigParameters">
+        <xs:sequence>
+            <xs:element name="DPSauto">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_501" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DPSstatussave">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_502" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DPSriseThreshold">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:int">
+                            <xs:attribute name="EditDataId" fixed="ED_503" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DPSdropthresholdactivation">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_504" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DPSdropThreshold">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:int">
+                            <xs:attribute name="EditDataId" fixed="ED_505" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="PressureLimitSave">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_506" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="AutoRestartafterocclusion">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_514" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SlidingPeriodforMaxnumberofrestarts">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:duration">
+                            <xs:attribute name="EditDataId" fixed="ED_515" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="MaxNumberofAutoRestarts">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:int">
+                            <xs:attribute name="EditDataId" fixed="ED_516" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="MaximumPeriodbeforeauto-restart">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:duration">
+                            <xs:attribute name="EditDataId" fixed="ED_517" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="InfusionRestartThreshold">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:int">
+                            <xs:attribute name="EditDataId" fixed="ED_518" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="EnableControlofAuto-RestartFeature">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_519" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Pressurelevelfordisablingauto-restartfeature">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:int">
+                            <xs:attribute name="EditDataId" fixed="ED_520" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FlowRatelevelfordisablingauto-restartfeature">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_521" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="PressureUnits">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="PressureUnits">
+                            <xs:attribute name="EditDataId" fixed="ED_513" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaSPInfusionOptionsConfigParameters">
+        <xs:sequence>
+            <xs:element name="FiftyccSyringeMaxFlowRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_542" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="ThirtyccSyringeMaxFlowRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_543" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="TwentyccSyringeMaxFlowRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_544" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="TenccSyringeMaxFlowRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_545" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FiveccSyringeMaxFlowRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_546" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaVPInfusionOptionsConfigParameters">
+        <xs:sequence>
+            <xs:element name="MaxFlowRateinPrimaryMode">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_540" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="MaxFlowRateinSecondaryMode">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_541" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGSPInfusionOptionsConfigParameters">
+        <xs:sequence>
+            <xs:element name="FiftyccSyringeMaxFlowRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_542" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="ThirtyccSyringeMaxFlowRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_543" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="TwentyccSyringeMaxFlowRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_544" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="TenccSyringeMaxFlowRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_545" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FiveccSyringeMaxFlowRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_546" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGVPInfusionOptionsConfigParameters">
+        <xs:sequence>
+            <xs:element name="MaxFlowRateinPrimaryMode">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_540" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="MaxFlowRateinSecondaryMode">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_541" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SimpleBolusFlowRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_641" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="MaxFlowRateforProgramedBolusandLoadingDose">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_642" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaSPEndOfInfusionParameters">
+        <xs:sequence>
+            <xs:element name="SPKVOFlowRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_610" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="KVOActivation">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_611" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="NearEndofInfusionAlertTime">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:duration">
+                            <xs:attribute name="EditDataId" fixed="ED_612" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="AlarmMuteDurationinKVO">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:duration">
+                            <xs:attribute name="EditDataId" fixed="ED_613" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="EmptySyringeMode">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_617" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="ContinuousInfusionInsteadofKVO">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_618" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgilaVPEndOfInfusionParameters">
+        <xs:sequence>
+            <xs:element name="VPKVOFlowRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_619" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="KVOActivation">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_611" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="NearEndofInfusionAlertTime">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:duration">
+                            <xs:attribute name="EditDataId" fixed="ED_612" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="AlarmMuteDurationinKVO">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:duration">
+                            <xs:attribute name="EditDataId" fixed="ED_613" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="NearEndofInfusionAlertVolume">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:int">
+                            <xs:attribute name="EditDataId" fixed="ED_614" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="InhibitionofNearEndofInfusionAlarmifDropSensor">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_616" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGSPEndOfInfusionParameters">
+        <xs:sequence>
+            <xs:element name="SPKVOFlowRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_610" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="KVOActivation">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_611" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="NearEndofInfusionAlertTime">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:duration">
+                            <xs:attribute name="EditDataId" fixed="ED_612" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="AlarmMuteDurationinKVO">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:duration">
+                            <xs:attribute name="EditDataId" fixed="ED_613" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="EmptySyringeMode">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_617" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="ContinuousInfusionInsteadofKVO">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_618" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGVPEndOfInfusionParameters">
+        <xs:sequence>
+            <xs:element name="VPKVOFlowRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_619" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="KVOActivation">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_611" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="NearEndofInfusionAlertTime">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:duration">
+                            <xs:attribute name="EditDataId" fixed="ED_612" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="AlarmMuteDurationinKVO">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:duration">
+                            <xs:attribute name="EditDataId" fixed="ED_613" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="NearEndofInfusionAlertVolume">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:int">
+                            <xs:attribute name="EditDataId" fixed="ED_614" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="InhibitionofNearEndofInfusionAlarmifDropSensor">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_616" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaSPInfusionModeParameters">
+        <xs:sequence>
+            <xs:element name="DoseorVolumeTime">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_637" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="VolumeLimit">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_638" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaVPInfusionModeParameters">
+        <xs:sequence>
+            <xs:element name="VolumeTime">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_630" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="VolumeRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_631" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="TimeRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_632" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="VolumeTimeRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_633" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Ramp">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_634" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Sequence">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_635" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DropMin">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_636" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGSPInfusionModeParameters">
+        <xs:sequence>
+            <xs:element name="DoseorVolumeTime">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_637" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="VolumeLimit">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_638" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGVPInfusionModeParameters">
+        <xs:sequence>
+            <xs:element name="VolumeTime">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_630" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="VolumeRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_631" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="TimeRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_632" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="VolumeTimeRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_633" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Ramp">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_634" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Sequence">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_635" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DropMin">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_636" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaSPGeneralDeviceConfigParameters">
+        <xs:sequence>
+            <xs:element name="Accuracy">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="AccuracyConfigTypes">
+                            <xs:attribute name="EditDataID" fixed="ED_530" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="InfusionTitrationWhileBreakOnly">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="InfusionTitration">
+                            <xs:attribute name="EditDataID" fixed="ED_531" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DisplayInfusionRemainingDuration">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataID" fixed="ED_532" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SPPriming">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="PrimingSP">
+                            <xs:attribute name="EditDataID" fixed="ED_537" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="KeyPressSound">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataID" fixed="ED_534" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="AlarmVolume">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:int">
+                            <xs:attribute name="EditDataID" fixed="ED_535" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SyringeAutoDetection">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataID" fixed="ED_536" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaVPGeneralDeviceConfigParameters">
+        <xs:sequence>
+            <xs:element name="Accuracy">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="AccuracyConfigTypes">
+                            <xs:attribute name="EditDataID" fixed="ED_530" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="InfusionTitrationWhileBreakOnly">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="InfusionTitration">
+                            <xs:attribute name="EditDataID" fixed="ED_531" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DisplayInfusionRemainingDuration">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataID" fixed="ED_532" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="VPPriming">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="PrimingVP">
+                            <xs:attribute name="EditDataID" fixed="ED_533" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="KeyPressSound">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataID" fixed="ED_534" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="AlarmVolume">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:int">
+                            <xs:attribute name="EditDataID" fixed="ED_535" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGSPGeneralDeviceConfigParameters">
+        <xs:sequence>
+            <xs:element name="Accuracy">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="AccuracyConfigTypes">
+                            <xs:attribute name="EditDataID" fixed="ED_530" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="InfusionTitrationWhileBreakOnly">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="InfusionTitration">
+                            <xs:attribute name="EditDataID" fixed="ED_531" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DisplayInfusionRemainingDuration">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataID" fixed="ED_532" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SPPriming">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="PrimingSP">
+                            <xs:attribute name="EditDataID" fixed="ED_537" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="KeyPressSound">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataID" fixed="ED_534" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="AlarmVolume">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:int">
+                            <xs:attribute name="EditDataID" fixed="ED_535" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SyringeAutoDetection">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataID" fixed="ED_536" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGVPGeneralDeviceConfigParameters">
+        <xs:sequence>
+            <xs:element name="Accuracy">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="AccuracyConfigTypes">
+                            <xs:attribute name="EditDataID" fixed="ED_530" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="InfusionTitrationWhileBreakOnly">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="InfusionTitration">
+                            <xs:attribute name="EditDataID" fixed="ED_531" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DisplayInfusionRemainingDuration">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataID" fixed="ED_532" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="VPPriming">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="PrimingVP">
+                            <xs:attribute name="EditDataID" fixed="ED_533" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="KeyPressSound">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataID" fixed="ED_534" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="AlarmVolume">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:int">
+                            <xs:attribute name="EditDataID" fixed="ED_535" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="SecondarayManagementParameters">
+        <xs:sequence>
+            <xs:element name="AlarmEndofSecondary">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_626" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="ManagementMode">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="MemoryMgmtTypes">
+                            <xs:attribute name="EditDataId" fixed="ED_625" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaSPBolusAndLoadingDoseParameters">
+        <xs:sequence>
+            <xs:element name="mLauthorized">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_640" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FiftyccSyringeMaxFlowRateforProgramedBolusandLoadingDose">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_643" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="ThirtyccSyringeMaxFlowRateforProgramedBolusandLoadingDose">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_644" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="TwentyccSyringeMaxFlowRateforProgramedBolusandLoadingDose">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_645" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="TenccSyringeMaxFlowRateforProgramedBolusandLoadingDose">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_646" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FiveccSyringeMaxFlowRateforProgramedBolusandLoadingDose">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_647" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FiftyccSyringeSimpleBolusFlowRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_648" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="ThirtyccSyringeSimpleBolusFlowRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_649" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="TwentyccSyringeSimpleBolusFlowRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_650" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="TenccSyringeSyringeSimpleBolusFlowRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_651" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FiveccSyringeSimpleBolusFlowRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_652" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaVPBolusAndLoadingDoseParameters">
+        <xs:sequence>
+            <xs:element name="mLauthorized">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_640" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SimpleBolusFlowRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_641" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="MaxFlowRateforProgramedBolusandLoadingDose">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_642" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGVPBolusAndLoadingDoseParameters">
+        <xs:sequence>
+            <xs:element name="mLauthorized">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_640" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SimpleBolusFlowRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_641" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="MaxFlowRateforProgramedBolusandLoadingDose">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_642" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGSPBolusAndLoadingDoseParameters">
+        <xs:sequence>
+            <xs:element name="mLauthorized">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_640" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FiftyccSyringeMaxFlowRateforProgramedBolusandLoadingDose">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_643" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="ThirtyccSyringeMaxFlowRateforProgramedBolusandLoadingDose">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_644" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="TwentyccSyringeMaxFlowRateforProgramedBolusandLoadingDose">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_645" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="TenccSyringeMaxFlowRateforProgramedBolusandLoadingDose">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_646" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FiveccSyringeMaxFlowRateforProgramedBolusandLoadingDose">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_647" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FiftyccSyringeSimpleBolusFlowRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_648" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="ThirtyccSyringeSimpleBolusFlowRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_649" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="TwentyccSyringeSimpleBolusFlowRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_650" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="TenccSyringeSyringeSimpleBolusFlowRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_651" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FiveccSyringeSimpleBolusFlowRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_652" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="DropSensorConfigParameters">
+        <xs:sequence>
+            <xs:element name="DropSensorMandatory">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_660" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DropSensorduringPrimarySecondary">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="DropSensorduringPrimarySecondaryTypes">
+                            <xs:attribute name="EditDataId" fixed="ED_661" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DropSensorforcesSimpleRateMode">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_662" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="DrugXPosition">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Top" />
+            <xs:enumeration value="Bottom" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="ScreenBrightness">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Low" />
+            <xs:enumeration value="High" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="LEDBrightness">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Low" />
+            <xs:enumeration value="High" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="ONGSPPressureConfigParameters">
+        <xs:sequence>
+            <xs:element name="DPSauto">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_501" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DPSstatussave">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_502" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DPSriseThreshold">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:int">
+                            <xs:attribute name="EditDataId" fixed="ED_503" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DPSdropthresholdactivation">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_504" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DPSdropThreshold">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:int">
+                            <xs:attribute name="EditDataId" fixed="ED_505" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="PressureLimitSave">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_506" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="PressureUnits">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="PressureUnits">
+                            <xs:attribute name="EditDataId" fixed="ED_513" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="InfusionTitration">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Stopped" />
+            <xs:enumeration value="StoppedAndInfusion" />
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

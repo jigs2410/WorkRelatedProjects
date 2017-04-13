@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--Created with Liquid XML 2016 Designer Edition 14.1.5.6733 (https://www.liquid-technologies.com)-->
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:simpleType name="Devices">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Agilia_SP_MC" />
+            <xs:enumeration value="Agilia_SP_TIVA" />
+            <xs:enumeration value="Agilia_SP_PCA" />
+            <xs:enumeration value="Agilia_VP_MC" />
+            <xs:enumeration value="ONG_SP" />
+            <xs:enumeration value="ONG_VP" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="DoseDevices">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Agilia_SP_MC" />
+            <xs:enumeration value="Agilia_SP_TIVA" />
+            <xs:enumeration value="Agilia_SP_PCA" />
+            <xs:enumeration value="ONG_SP" />
+            <xs:enumeration value="ONG_VP" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="VTRDevices">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Agilia_VP_MC" />
+            <xs:enumeration value="ONG_SP" />
+            <xs:enumeration value="ONG_VP" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="AgiliaSPDevices">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Agilia_SP_Std" />
+            <xs:enumeration value="Agilia SP_MC" />
+            <xs:enumeration value="Agilia_SP_TIVA" />
+            <xs:enumeration value="Agilia_SP_PCA" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="AgiliaVPDevices">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Agilia_VP_Std" />
+            <xs:enumeration value="Agilia_VP_MC" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="ONGSPDevices">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ONG_SP" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="ONGVPDevices">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ONG_VP" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="TherapyTargetDevices">
+        <xs:list itemType="Devices" />
+    </xs:simpleType>
+    <xs:simpleType name="AgiliaVPTargetDevices">
+        <xs:list itemType="AgiliaVPDevices" />
+    </xs:simpleType>
+    <xs:simpleType name="DrugLibTargetDevices">
+        <xs:list itemType="Devices" />
+    </xs:simpleType>
+    <xs:simpleType name="ONGVPTargetDevices">
+        <xs:list itemType="ONGVPDevices" />
+    </xs:simpleType>
+    <xs:simpleType name="ONGSPTargetDevices">
+        <xs:list itemType="ONGSPDevices" />
+    </xs:simpleType>
+    <xs:simpleType name="AgiliaSPTargetDevices">
+        <xs:list itemType="AgiliaSPDevices" />
+    </xs:simpleType>
+    <xs:simpleType name="VTRTargetDevices">
+        <xs:list itemType="VTRDevices" />
+    </xs:simpleType>
+    <xs:simpleType name="DoseTargetDevices">
+        <xs:list itemType="DoseDevices" />
+    </xs:simpleType>
+</xs:schema>

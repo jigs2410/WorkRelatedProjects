@@ -1,0 +1,6 @@
+C:\Users\jrathod\Desktop\WorkDocs\XMLProjectDocs\ExcelWork\XMLParser\XMLParser\bin\Debug\XMLParser.exe.config
+C:\Users\jrathod\Desktop\WorkDocs\XMLProjectDocs\ExcelWork\XMLParser\XMLParser\bin\Debug\XMLParser.exe
+C:\Users\jrathod\Desktop\WorkDocs\XMLProjectDocs\ExcelWork\XMLParser\XMLParser\bin\Debug\XMLParser.pdb
+C:\Users\jrathod\Desktop\WorkDocs\XMLProjectDocs\ExcelWork\XMLParser\XMLParser\obj\Debug\XMLParser.csprojResolveAssemblyReference.cache
+C:\Users\jrathod\Desktop\WorkDocs\XMLProjectDocs\ExcelWork\XMLParser\XMLParser\obj\Debug\XMLParser.exe
+C:\Users\jrathod\Desktop\WorkDocs\XMLProjectDocs\ExcelWork\XMLParser\XMLParser\obj\Debug\XMLParser.pdb

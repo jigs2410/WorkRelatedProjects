@@ -1,0 +1,297 @@
+Zone 8 -> GLOBAL
+	Par 1 -> INFOS
+		Params:
+			 structname -> InfosZone
+			 STRING(8) -> Version
+			 DATETIME -> Create
+			 DATETIME -> ManChg
+	Par 2 -> ACCURACY
+		Params:
+			 BOOL -> Fine
+Zone 9 -> FIXED
+Zone 10 -> TUBINGSET
+Zone 20 -> TECHNICAL
+Zone 21 -> CALIB
+Zone 22 -> USER
+	Par 9 -> MEM_PROGRAM_MODE
+		Params:
+			 BYTE -> ProgramMode
+	Par 10 -> MEM_SEL
+		Params:
+			 WORD -> Mem
+				Flags Bit 3 -> @MEM_PRESSLIM
+				Flags Bit 4 -> @MEM_VOLINFUS
+				Flags Bit 5 -> @MEM_SAMEINFUSION
+				Flags Bit 6 -> @MEM_DPSAUTO
+				Flags Bit 7 -> @MEM_AUTORESTARTOCCLUS
+			 WORD -> DurSameInfusion
+			 WORD -> PressLim
+			 BOOL -> DpsAuto
+	Par 12 -> MAX_FLOWRATE
+		Params:
+			 DWORD -> MaxFlowPrim
+	Par 14 -> DPS
+		Params:
+			 structname -> ParamDps
+			 WORD -> ThresholdIncr
+			 WORD -> ThresholdDrop
+	Par 16 -> END_INFUS
+		Params:
+			 WORD -> KvoFlowRate
+			 WORD -> DurPreAl
+			 DWORD -> VolPreAl
+			 BYTE -> PercentPreAl
+			 BOOL -> InhPreAlDrop
+			 WORD -> DurSilAlKvo
+	Par 18 -> OPT_SCREEN1
+		Params:
+			 WORD -> Flags
+				Flags Bit 10 -> @OPTF_VIGILANT
+			 DWORD -> MnuScreen1
+				Flags Bit 10 -> @OPTS_GRAPH_FLOW
+				Flags Bit 11 -> @OPTS_GRAPH_PRESS
+				Flags Bit 12 -> @OPTS_TIMEWARNING
+				Flags Bit 13 -> @OPTS_CHANGEDRUG
+				Flags Bit 14 -> @OPTS_INFOCASET
+				Flags Bit 15 -> @OPTS_INFOCAREAREA
+				Flags Bit 17 -> @OPTS_PAUSE
+				Flags Bit 18 -> @OPTS_CLINICALINFO
+	Par 19 -> PRESS_LIM
+		Params:
+			 WORD -> MaxLimVar
+			 WORD -> LowLim
+			 WORD -> MediumLim
+			 WORD -> HighLim
+			 BYTE -> Mode
+			 BYTE -> Unit
+	Par 20 -> PARAM_VOL_AIR
+		Params:
+			 WORD -> VolAlarm
+			 WORD -> VolMin
+	Par 21 -> BOLUS_FLOWRATE
+		Params:
+			 DWORD -> BolsFlowRate
+	Par 24 -> INFUS_ENABLE
+		Params:
+			 DWORD -> InfusEnable
+				Flags Bit 10 -> @INFUS_B_RAMP
+				Flags Bit 11 -> @INFUS_B_SEQ
+				Flags Bit 12 -> @INFUS_B_PURG_AIR
+				Flags Bit 13 -> @INFUS_B_PURG_TUB
+	Par 25 -> PROGRAM_MODE
+		Params:
+			 BYTE -> ModeEnable
+				Flags Bit 1 -> @PRGM_M_VIGILANT
+				Flags Bit 3 -> @PRGM_M_NONAME_MLH
+				Flags Bit 4 -> @PRGM_M_NONAME_MF
+				Flags Bit 5 -> @PRGM_M_DRUGLIST_MLH
+				Flags Bit 6 -> @PRGM_M_DRUGLIST_MF
+			 BYTE -> DrugEnable
+				Flags Bit 0 -> @PRGM_D_XMLH
+				Flags Bit 1 -> @PRGM_D_XMF
+				Flags Bit 2 -> @PRGM_D_TOP
+	Par 26 -> MEM_MASSFLOW
+		Params:
+			 DWORD -> Dilution
+			 UNIT -> DilutionUnit
+			 WORD -> DilutionVolume
+			 DWORD -> Weight
+			 WORD -> Bsa
+			 DWORD -> MassFlow
+			 UNIT -> MassFlowUnit
+	Par 27 -> NIGHT_MODE
+		Params:
+			 WORD -> Flags
+				Flags Bit 0 -> @NM_LOWBACKLIGHT
+				Flags Bit 1 -> @NM_LOWLEDS
+				Flags Bit 2 -> @NM_INHBEEPKEY
+				Flags Bit 3 -> @NM_MANUAL
+				Flags Bit 4 -> @NM_AUTO
+			 WORD -> FromTime
+			 WORD -> ToTime
+	Par 28 -> PARAM_PATIENT
+		Params:
+			 DWORD -> DefaultWeight
+			 DWORD -> MinWeight
+			 DWORD -> MaxWeight
+			 WORD -> DefaultBsa
+			 WORD -> MinBsa
+			 WORD -> MaxBsa
+	Par 29 -> INFUS_MODE
+		Params:
+			 WORD -> Mem
+				Flags Bit 0 -> @MEM_INFUSMODE
+			 BYTE -> InfusMode
+	Par 31 -> SECONDARY
+		Params:
+			 WORD -> Flags
+				Flags Bit 0 -> @SEC_STOPENDSEC
+				Flags Bit 1 -> @SEC_NOACKENDSEC
+	Par 32 -> ENABLE_UNIT
+		Params:
+			 BOOL[DILUTION_UNIT] -> Dilution
+			 BOOL[MASS_FLOW_UNIT] -> MassFlow
+			 BYTE -> EnablePer
+				Flags Bit 0 -> @PER_DIL_ML
+				Flags Bit 1 -> @PER_DIL_XML
+				Flags Bit 7 -> @PER_U_ML
+	Par 34 -> MEM_RAMP
+		Params:
+			 structname -> ParamRamp
+			 DWORD -> PlateFlowRate
+			 DWORD -> VolToInfus
+			 WORD -> RiseDuration
+			 WORD -> FallDuration
+	Par 35 -> MEM_SEQ
+		Params:
+			 structname -> PackParamSeq
+			 struct -> PackPhaseSeq
+			 DWORD -> TypeBeepFlowRate
+			 DWORD -> RepeatVolDuration
+	Par 37 -> ENABLE_MEM_DRUG
+		Params:
+			 WORD -> Mem
+				Flags Bit 0 -> @MEMD_DRUGONLY
+				Flags Bit 1 -> @MEMD_DRUGPARAM
+	Par 40 -> BUZZER2
+		Params:
+			 BYTE -> Mode
+				Flags Bit 0 -> @BUZ2_INHKEY
+			 BYTE -> Level
+	Par 41 -> MEM_INFUS_PARAM
+		Params:
+			 WORD -> NumDrug
+			 DWORD -> FlowRate
+			 DWORD -> VolToInfus
+			 DWORD -> VolInfus
+			 DWORD -> DurInfus
+	Par 42 -> DROP_CONFIG
+		Params:
+			 WORD -> Flags
+				Flags Bit 0 -> @DROP_MANDATORY
+	Par 44 -> MISCELLANEOUS2
+		Params:
+			 WORD -> Flags
+				Flags Bit 0 -> @MISC2_INHSELFLOWINFUS
+				Flags Bit 2 -> @MISC2_AUTOINFUSR
+				Flags Bit 3 -> @MISC2_HIDEDURATION
+	Par 46 -> MAX_FLOWRATE_SEC
+		Params:
+			 DWORD -> MaxFlowSec
+	Par 47 -> MAX_FLOWRATE_LOADBOLP
+		Params:
+			 DWORD -> MaxFlowLoadBolp
+	Par 50 -> DROP_CONFIG_SEC
+		Params:
+			 WORD -> Flags
+				Flags Bit 1 -> @DROPS_ONPRIM_INFUSSEC
+				Flags Bit 2 -> @DROPS_ONSEC_INFUSSEC
+	Par 53 -> AUTO_RESTART_OCCLUS
+		Params:
+			 BOOL -> Valid
+			 BYTE -> MaxWaitDur
+			 WORD -> DecPressRestart
+			 WORD -> InhibitPressLim
+			 DWORD -> InhibitFlow
+			 BYTE -> MaxNbRestart
+			 WORD -> CountRestartDur
+	Par 55 -> MEM_SEL2
+		Params:
+			 BOOL -> AutoRestartOcclus
+			 BOOL -> AutoKbdLock
+	Par 56 -> AUTO_KBD_LOCK
+		Params:
+			 BYTE -> Flags
+				Flags Bit 0 -> @LOCK_SELMENU
+			 BYTE -> DurBeforeLock
+Zone 23 -> INIT
+Zone 25 -> AFTER_SALE
+Zone 26 -> SAVE
+	Par 2 -> INFOS_MEM_VOL_INFUS
+		Params:
+			 WORD -> NumDrug
+	Par 3 -> CONTEXT
+		Params:
+			 structname -> ContextBase
+			 DATETIME -> DateSave
+			 struct -> ContextGeneral
+			 BYTE -> InfusMode
+			 BOOL -> StartInfus
+			 BOOL -> ProcessDrop
+			 struct -> ContextDrug
+			 WORD -> NumDrug
+			 struct -> ContextVolume
+			 DWORD -> VolInfus
+			 DATETIME -> StartInfus
+			 DWORD -> DurInfus
+			 struct -> ContextPressure
+			 WORD -> PressLim
+			 BOOL -> DpsAuto
+			 BOOL -> AutoRestartOcclus
+			 struct -> ContextPrimary
+			 DWORD -> FlowRate
+			 DWORD -> VolToInfus
+			 DWORD -> VolDefault
+			 DWORD -> VolInit
+	Par 9 -> INFOS_MEM_MASS_INFUS
+		Params:
+			 DWORD -> Dilution
+			 UNIT -> DilutionUnit
+			 WORD -> DilutionVolume
+			 DWORD -> Weight
+			 WORD -> Bsa
+			 UNIT -> MassFlowUnit
+Zone 27 -> CARE_AREA
+	Par 1 -> INFOS
+		Params:
+			 usestruct -> InfosZone
+	Par 2 -> NAME
+		Params:
+			 structname -> CareAreaName
+			 STRING(20) -> Name
+	Par 3 -> AUTHOR
+		Params:
+			 structname -> CareAreaAuthor
+			 STRING(20) -> AuthorName
+	Par 4 -> VERSION
+		Params:
+			 structname -> CareAreaVersion
+			 STRING(4) -> Version
+	Par 5 -> DATE
+		Params:
+			 structname -> CareAreaDate
+			 DATETIME -> Create
+			 DATETIME -> Modif
+	Par 6 -> COMMENT
+		Params:
+			 structname -> CareAreaComment
+			 STRING(150) -> Comment
+	Par 7 -> GUID
+		Params:
+			 DWORD -> Data1
+			 WORD -> Data2
+			 WORD -> Data3
+			 BYTE[8] -> Data4
+	Par 8 -> DATE_WRITE
+		Params:
+			 structname -> CareAreaDateWrite
+			 DATETIME -> Write
+	Par 9 -> LOGO
+		Params:
+			 BYTE -> LogoType
+Zone 30 -> LIB_DRUG_LIST
+	Par 1 -> INFOS
+		Params:
+			 usestruct -> InfosZone
+	Par 2 -> INFOS_LIB
+		Params:
+	Par 3 -> PARAM_DRUG
+		Params:
+Zone 31 -> LIB_VIGILANT
+	Par 1 -> INFOS
+		Params:
+			 usestruct -> InfosZone
+	Par 2 -> INFOS_LIB
+		Params:
+	Par 3 -> PARAM_DRUG
+		Params:

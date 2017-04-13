@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--Created with Liquid XML 2016 Designer Edition 14.1.5.6733 (https://www.liquid-technologies.com)-->
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation=".\units.xsd" />
+    <xs:include schemaLocation=".\Options.xsd" />
+    <xs:complexType name="AirOverridableParameters">
+        <xs:sequence>
+            <xs:element name="TotalAirVolumeOverFifteenMinutes">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataTherapyID" fixed="ED_375" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataAir" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="AlarmTriggerVolume" type="xs:string" use="required" />
+                            <xs:attribute name="EditDataDConfID" fixed="ED_620" type="xs:string" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="BubbleFilter">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataTherapyID" fixed="ED_376" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataAir" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="DropTriggerVolume" type="xs:string" use="required" />
+                            <xs:attribute name="EditDataDConfID" fixed="ED_621" type="xs:string" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="AirTypeUnits" type="DropSensorUnits" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PressureOverridableParameters">
+        <xs:sequence>
+            <xs:element name="PressureMonitorMethod">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="PressureMonitorMethods">
+                            <xs:attribute name="EditDataTherapyId" fixed="ED_350" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataPressure" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="PressureMonitorMethod" type="xs:string" use="required" />
+                            <xs:attribute name="EditDataDConfID" fixed="ED_507" type="xs:string" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="PressureLimit">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:int">
+                            <xs:attribute name="EditDataTherapyId" fixed="ED_351" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataPressure" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="Missing" type="xs:string" use="required" />
+                            <xs:attribute name="EditDataDConfID" fixed="ED_508" type="xs:string" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="HardMaxPressureinVariable">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:int">
+                            <xs:attribute name="EditDataTherapyId" fixed="ED_352" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataPressure" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="VariableModeHardMax" type="xs:string" use="required" />
+                            <xs:attribute name="EditDataDConfID" fixed="ED_509" type="xs:string" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="LowLimitin3levelsmode">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:int">
+                            <xs:attribute name="EditDataTherapyId" fixed="ED_353" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataPressure" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="ThreeLevelModeLowLimit" type="xs:string" use="required" />
+                            <xs:attribute name="EditDataDConfID" fixed="ED_510" type="xs:string" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="MediumLimitin3levelsmode">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:int">
+                            <xs:attribute name="EditDataTherapyId" fixed="ED_354" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataPressure" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="ThreeLevelModeMediumLimit" type="xs:string" use="required" />
+                            <xs:attribute name="EditDataDConfID" fixed="ED_511" type="xs:string" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="HighLimitin3levelsmode">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:int">
+                            <xs:attribute name="EditDataTherapyId" fixed="ED_355" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataPressure" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="ThreeLevelModeHighLimit" type="xs:string" use="required" />
+                            <xs:attribute name="EditDataDConfID" fixed="ED_512" type="xs:string" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="PressureUnits" type="PressureUnits" fixed="mmhg" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="DropSensorOverridableParams">
+        <xs:sequence>
+            <xs:element name="DropSensorMandatory">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataTherapyID" fixed="ED_370" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataDropSensor" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="DropSensorMandatory" type="xs:string" use="required" />
+                            <xs:attribute name="EditDataDConfID" fixed="ED_660" type="xs:string" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--Created with Liquid Studio 2017 - Data Designer Edition 15.0.3.7210 (https://www.liquid-technologies.com)-->
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:simpleType name="DilutionTypes">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="FixedConcentration" />
+            <xs:enumeration value="RangeConcentration" />
+            <xs:enumeration value="RangeDoseSingleVolume" />
+            <xs:enumeration value="FixedDoseSingleVolume" />
+            <xs:enumeration value="FixedCoupleDoseVolume" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="DrugInfusionTypes">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Primary" />
+            <xs:enumeration value="Secondary" />
+            <xs:enumeration value="Both" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="RateTypes">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="FlowRate" />
+            <xs:enumeration value="DoseRate" />
+            <xs:enumeration value="NormDoseRate" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="DoseTypes">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Volume" />
+            <xs:enumeration value="Dose" />
+            <xs:enumeration value="NormDose" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="PressureMonitorMethods">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Variable" />
+            <xs:enumeration value="3Levels" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="PhaseTypes">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="End" />
+            <xs:enumeration value="Repeat" />
+            <xs:enumeration value="VolumeRate" />
+            <xs:enumeration value="Break" />
+            <xs:enumeration value="KVO" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="DropSensorduringPrimarySecondaryTypes">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="None" />
+            <xs:enumeration value="Both" />
+            <xs:enumeration value="OnlyOnPrimary" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="PrimingSP">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Required" />
+            <xs:enumeration value="Advised" />
+            <xs:enumeration value="Disabled" />
+            </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="PrimingOrSecondaryMode">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Primary" />
+            <xs:enumeration value="Secondary" />
+            <xs:enumeration value="Both" />
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- Created with Liquid XML 2016 Designer Edition (Trial) 14.1.5.6733 (https://www.liquid-technologies.com) -->
+    <xs:simpleType name="MemoryMgmtTypes">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Auto" />
+            <xs:enumeration value="Manual" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="AccuracyConfigTypes">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="High" />
+            <xs:enumeration value="Low" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="PrimingVP">
+        <xs:restriction base="xs:string">
+            
+            <xs:enumeration value="Disabled" />
+            <xs:enumeration value="Enabled" />
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

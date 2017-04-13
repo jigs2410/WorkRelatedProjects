@@ -1,0 +1,588 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--Created with Liquid XML 2016 Designer Edition 14.1.5.6733 (https://www.liquid-technologies.com)-->
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation=".\Options.xsd" />
+    <xs:include schemaLocation=".\TargetDevices.xsd" />
+    <xs:include schemaLocation=".\DeviceConfigurationParameters.xsd" />
+    <xs:include schemaLocation=".\units.xsd" />
+    <xs:include schemaLocation=".\OverridableParameters.xsd" />
+    <xs:complexType name="DeviceConfiguration">
+        <xs:sequence>
+            <xs:element name="DevConfigPressure" type="PressureConfig" />
+            <xs:element name="DevConfigGeneral" type="GeneralDeviceConfig" />
+            <xs:element name="DevConfigInfusionOptions" type="InfusionOptionsConfig" />
+            <xs:element name="DevConfigDrugX" type="DrugXConfig" />
+            <xs:element name="DevConfigScreen" type="ScreenDisplayConfig" />
+            <xs:element name="DevConfigMenu" type="MenuDisplayOptionsConfig" />
+            <xs:element name="DevConfigMemory" type="MemoryOptionsConfig" />
+            <xs:element name="DevConfigNightMode" type="NightModeConfig" />
+            <xs:element name="DevConfigEndOfInfusion" type="EndOfInfusionConfig" />
+            <xs:element name="DevConfigAir" type="AirConfiguration" />
+            <xs:element name="DevConfigSecondaryMgmt" type="SecondaryManagementConfig" />
+            <xs:element name="DevConfigInfusionModes" type="InfusionModeConfig" />
+            <xs:element name="DevConfigBolus" type="BolusAndLoadingDoseConfig" />
+            <xs:element name="DevConfigDropSensor" type="DropSensorConfig" />
+            <xs:element name="LastModificationDate" type="xs:dateTime" />
+            <xs:element name="CreationDate" type="xs:dateTime" />
+            <xs:element name="DeviceConfigID" type="xs:string" />
+            <xs:element name="DeviceConfigName" type="xs:string" />
+            <xs:element name="DeviceConfigurationCreatedBy" type="xs:string" />
+            <xs:element name="DeviceConfigurationLastModifiedBy" type="xs:string" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ScreenDisplayConfig">
+        <xs:sequence>
+            <xs:element name="AgiliaSP" type="AgiliaSPScreenDisplayConfig" />
+            <xs:element name="AgiliaVP" type="AgiliaVPScreenDisplayConfig" />
+            <xs:element name="ONGSP" type="ONGSPScreenDisplayConfig" />
+            <xs:element name="ONGVP" type="ONGVPScreenDisplayConfig" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaSPScreenDisplayConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="AgiliaSPScreenDisplayParameters" />
+            <xs:element name="TargetDevices" type="AgiliaSPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaVPScreenDisplayConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="AgiliaVPScreenDisplayParameters" />
+            <xs:element name="TargetDevices" type="AgiliaVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGSPScreenDisplayConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="ONGSPScreenDisplayParameters" />
+            <xs:element name="TargetDevices" type="ONGSPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGVPScreenDisplayConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="ONGVPScreenDisplayParameters" />
+            <xs:element name="TargetDevices" type="ONGVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="MenuDisplayOptionsConfig">
+        <xs:sequence>
+            <xs:element name="AgiliaSP" type="AgiliaSPMenuDisplayOptionsConfig" />
+            <xs:element name="AgiliaVP" type="AgiliaVPMenuDisplayOptionsConfig" />
+            <xs:element name="ONGSP" type="ONGSPMenuDisplayOptionsConfig" />
+            <xs:element name="ONGVP" type="ONGVPMenuDisplayOptionsConfig" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaSPMenuDisplayOptionsConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="AgiliaSPMenuDisplayParameters" />
+            <xs:element name="TargetDevices" type="AgiliaSPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaVPMenuDisplayOptionsConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="AgiliaVPMenuDisplayParameters" />
+            <xs:element name="TargetDevices" type="AgiliaVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGSPMenuDisplayOptionsConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="ONGSPMenuDisplayParameters" />
+            <xs:element name="TargetDevices" type="ONGSPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGVPMenuDisplayOptionsConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="ONGVPMenuDisplayParameters" />
+            <xs:element name="TargetDevices" type="ONGVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="MemoryOptionsConfig">
+        <xs:sequence>
+            <xs:element name="AgiliaSP" type="AgiliaSPMemoryOptionsConfig" />
+            <xs:element name="AgiliaVP" type="AgiliaVPMemoryOptionsConfig" />
+            <xs:element name="ONGSP" type="ONGSPMemoryOptionsConfig" />
+            <xs:element name="ONGVP" type="ONGVPMemoryOptionsConfig" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaSPMemoryOptionsConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="AgiliaSPMemoryOptionsParameters" />
+            <xs:element name="TargetDevices" type="AgiliaSPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaVPMemoryOptionsConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="AgiliaVPMemoryOptionsParameters" />
+            <xs:element name="TargetDevices" type="AgiliaVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGSPMemoryOptionsConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="ONGSPMemoryOptionsParameters" />
+            <xs:element name="TargetDevices" type="ONGSPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGVPMemoryOptionsConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="ONGVPMemoryOptionsParameters" />
+            <xs:element name="TargetDevices" type="ONGVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="NightModeConfig">
+        <xs:sequence>
+            <xs:element name="AgiliaSP" type="AgiliaSPNightModeConfig" />
+            <xs:element name="AgiliaVP" type="AgiliaVPNightModeConfig" />
+            <xs:element name="ONGSP" type="ONGSPNightModeConfig" />
+            <xs:element name="ONGVP" type="ONGVPNightModeConfig" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaVPNightModeConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="NightModeParameters" />
+            <xs:element name="TargetDevices" type="AgiliaVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaSPNightModeConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="NightModeParameters" />
+            <xs:element name="TargetDevices" type="AgiliaSPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGVPNightModeConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="NightModeParameters" />
+            <xs:element name="TargetDevices" type="ONGVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGSPNightModeConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="NightModeParameters" />
+            <xs:element name="TargetDevices" type="ONGSPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PressureConfig">
+        <xs:sequence>
+            <xs:element name="AgiliaSP" type="AgiliaSPPressureConfig" />
+            <xs:element name="AgiliaVP" type="AgiliaVPPressureConfig" />
+            <xs:element name="ONGSP" type="ONGSPPressureConfig" />
+            <xs:element name="ONGVP" type="ONGVPPressureConfig" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaSPPressureConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="AgiliaSPPressureConfigParameters" />
+            <xs:element name="OverridableParams" type="PressureOverridableParameters" />
+            <xs:element name="TargetDevices" type="AgiliaSPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaVPPressureConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="AgiliaVPPressureConfigParameters" />
+            <xs:element name="OverridableParams" type="PressureOverridableParameters" />
+            <xs:element name="TargetDevices" type="AgiliaVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGSPPressureConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="ONGSPPressureConfigParameters" />
+            <xs:element name="OverridableParams" type="PressureOverridableParameters" />
+            <xs:element name="TargetDevices" type="ONGSPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGVPPressureConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="ONGVPPressureConfigParameters" />
+            <xs:element name="OverridableParams" type="PressureOverridableParameters" />
+            <xs:element name="TargetDevices" type="ONGVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="InfusionOptionsConfig">
+        <xs:sequence>
+            <xs:element name="AgiliaSP" type="AgiliaSPInfusionOptionconfig" />
+            <xs:element name="AgiliaVP" type="AgiliaVPInfusionOptionconfig" />
+            <xs:element name="ONGSP" type="ONGSPInfusionOptionconfig" />
+            <xs:element name="ONGVP" type="ONGVPInfusionOptionconfig" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaSPInfusionOptionconfig">
+        <xs:sequence>
+            <xs:element name="Params" type="AgiliaSPInfusionOptionsConfigParameters" />
+            <xs:element name="TargetDevices" type="AgiliaSPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaVPInfusionOptionconfig">
+        <xs:sequence>
+            <xs:element name="Params" type="AgiliaVPInfusionOptionsConfigParameters" />
+            <xs:element name="TargetDevices" type="AgiliaVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGSPInfusionOptionconfig">
+        <xs:sequence>
+            <xs:element name="Params" type="ONGSPInfusionOptionsConfigParameters" />
+            <xs:element name="TargetDevices" type="ONGSPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGVPInfusionOptionconfig">
+        <xs:sequence>
+            <xs:element name="Params" type="AgiliaVPInfusionOptionsConfigParameters" />
+            <xs:element name="TargetDevices" type="ONGVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="EndOfInfusionConfig">
+        <xs:sequence>
+            <xs:element name="AgiliaSP" type="AgiliaSPEndOfInfusionconfig" />
+            <xs:element name="AgiliaVP" type="AgiliaVPEndOfInfusionconfig" />
+            <xs:element name="ONGSP" type="ONGSPEndOfInfusionconfig" />
+            <xs:element name="ONGVP" type="ONGVPEndOfInfusionconfig" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaSPEndOfInfusionconfig">
+        <xs:sequence>
+            <xs:element name="Params" type="AgiliaSPEndOfInfusionParameters" />
+            <xs:element name="TargetDevices" type="AgiliaSPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaVPEndOfInfusionconfig">
+        <xs:sequence>
+            <xs:element name="Params" type="AgilaVPEndOfInfusionParameters" />
+            <xs:element name="TargetDevices" type="AgiliaVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGSPEndOfInfusionconfig">
+        <xs:sequence>
+            <xs:element name="Params" type="ONGSPEndOfInfusionParameters" />
+            <xs:element name="TargetDevices" type="ONGSPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGVPEndOfInfusionconfig">
+        <xs:sequence>
+            <xs:element name="Params" type="ONGVPEndOfInfusionParameters" />
+            <xs:element name="TargetDevices" type="ONGVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="InfusionModeConfig">
+        <xs:sequence>
+            <xs:element name="AgiliaSP" type="AgiliaSPInfusionModeConfig" />
+            <xs:element name="AgiliaVP" type="AgiliaVPInfusionModeConfig" />
+            <xs:element name="ONGSP" type="ONGSPInfusionModeConfig" />
+            <xs:element name="ONGVP" type="ONGVPInfusionModeConfig" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaSPInfusionModeConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="AgiliaSPInfusionModeParameters" />
+            <xs:element name="TargetDevices" type="AgiliaSPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaVPInfusionModeConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="AgiliaVPInfusionModeParameters" />
+            <xs:element name="TargetDevices" type="AgiliaVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGSPInfusionModeConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="ONGSPInfusionModeParameters" />
+            <xs:element name="TargetDevices" type="ONGSPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGVPInfusionModeConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="ONGVPInfusionModeParameters" />
+            <xs:element name="TargetDevices" type="ONGVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AirConfiguration">
+        <xs:sequence>
+            <xs:element name="AgiliaVP" type="AgiliaVPAirConfig" />
+            <xs:element name="ONGVP" type="ONGVPAirConfig" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AirNonOverridableParameters">
+        <xs:sequence>
+            <xs:element name="AdvanceAirBubble">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataID" fixed="ED_622" type="xs:string" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaVPAirConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="AirNonOverridableParameters" />
+            <xs:element name="OverridableConfigParams" type="AirOverridableParameters" />
+            <xs:element name="TargetDevices" type="AgiliaVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGVPAirConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="AirNonOverridableParameters" />
+            <xs:element name="OverridableConfigParams" type="AirOverridableParameters" />
+            <xs:element name="TargetDevices" type="ONGVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="SecondaryManagementConfig">
+        <xs:sequence>
+            <xs:element name="AgiliaVP" type="AgiliaVPSecondaryManagementConfig" />
+            <xs:element name="ONGVP" type="ONGVPSecondaryManagementConfig" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaVPSecondaryManagementConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="SecondarayManagementParameters" />
+            <xs:element name="TargetDevices" type="AgiliaVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGVPSecondaryManagementConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="SecondarayManagementParameters" />
+            <xs:element name="TargetDevices" type="ONGVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="BolusAndLoadingDoseConfig">
+        <xs:sequence>
+            <xs:element name="AgiliaSP" type="AgiliaSPBolusAndLoadingDoseConfig" />
+            <xs:element name="AgiliaVP" type="AgiliaVPBolusAndLoadingDoseConfig" />
+            <xs:element name="ONGSP" type="ONGSPBolusAndLoadingDoseConfig" />
+            <xs:element name="ONGVP" type="ONGVPBolusAndLoadingDoseConfig" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaSPBolusAndLoadingDoseConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="AgiliaSPBolusAndLoadingDoseParameters" />
+            <xs:element name="TargetDevices" type="AgiliaSPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaVPBolusAndLoadingDoseConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="AgiliaVPBolusAndLoadingDoseParameters" />
+            <xs:element name="TargetDevices" type="AgiliaVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGVPBolusAndLoadingDoseConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="ONGVPBolusAndLoadingDoseParameters" />
+            <xs:element name="TargetDevices" type="ONGVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGSPBolusAndLoadingDoseConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="ONGSPBolusAndLoadingDoseParameters" />
+            <xs:element name="TargetDevices" type="ONGSPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="GeneralDeviceConfig">
+        <xs:sequence>
+            <xs:element name="AgiliaSP" type="AgiliaSPGeneralDeviceConfig" />
+            <xs:element name="AgiliaVP" type="AgiliaVPGeneralDeviceConfig" />
+            <xs:element name="ONGSP" type="ONGSPGeneralDeviceConfig" />
+            <xs:element name="ONGVP" type="ONGVPGeneralDeviceConfig" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaSPGeneralDeviceConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="AgiliaSPGeneralDeviceConfigParameters" />
+            <xs:element name="TargetDevices" type="AgiliaSPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaVPGeneralDeviceConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="AgiliaVPGeneralDeviceConfigParameters" />
+            <xs:element name="TargetDevices" type="AgiliaVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGVPGeneralDeviceConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="ONGVPGeneralDeviceConfigParameters" />
+            <xs:element name="TargetDevices" type="ONGVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGSPGeneralDeviceConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="ONGSPGeneralDeviceConfigParameters" />
+            <xs:element name="TargetDevices" type="ONGSPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="DropSensorConfig">
+        <xs:sequence>
+            <xs:element name="AgiliaVP" type="AgiliaVPDropSensorConfig" />
+            <xs:element name="ONGVP" type="ONGVPDropSensorConfig" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaVPDropSensorConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="DropSensorConfigParameters" />
+            <xs:element name="OverridableParams" type="DropSensorOverridableParams" />
+            <xs:element name="TargetDevices" type="AgiliaVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGVPDropSensorConfig">
+        <xs:sequence>
+            <xs:element name="Params" type="DropSensorConfigParameters" />
+            <xs:element name="OverridableParams" type="DropSensorOverridableParams" />
+            <xs:element name="TargetDevices" type="ONGVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="DrugXConfig">
+        <xs:sequence>
+            <xs:element name="AgiliaSP" type="AgiliaSPDrugXConfig" />
+            <xs:element name="AgiliaVP" type="AgliaVPDrugXConfig" />
+            <xs:element name="ONGSP" type="ONGSPDrugXConfig" />
+            <xs:element name="ONGVP" type="ONGVPDrugXConfig" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgliaVPDrugXConfig">
+        <xs:sequence>
+            <xs:element name="Params">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="DrugXmLperhr">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:boolean">
+                                        <xs:attribute name="EditDataId" fixed="ED_550" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="DrugXDoseRate">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:boolean">
+                                        <xs:attribute name="EditDataId" fixed="ED_551" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="DrugXPosition">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="DrugXPosition">
+                                        <xs:attribute name="EditDataId" fixed="ED_552" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="TargetDevices" type="AgiliaVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGVPDrugXConfig">
+        <xs:sequence>
+            <xs:element name="Params">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="DrugXmLperhr">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:boolean">
+                                        <xs:attribute name="EditDataId" fixed="ED_550" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="DrugXDoseRate">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:boolean">
+                                        <xs:attribute name="EditDataId" fixed="ED_551" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="DrugXPosition">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="DrugXPosition">
+                                        <xs:attribute name="EditDataId" fixed="ED_552" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="TargetDevices" type="ONGVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaSPDrugXConfig">
+        <xs:sequence>
+            <xs:element name="Params">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="DrugXmLperhr">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:boolean">
+                                        <xs:attribute name="EditDataId" fixed="ED_550" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="DrugXDoseRate">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:boolean">
+                                        <xs:attribute name="EditDataId" fixed="ED_551" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="DrugXPosition">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="DrugXPosition">
+                                        <xs:attribute name="EditDataId" fixed="ED_552" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="TargetDevices" type="AgiliaSPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGSPDrugXConfig">
+        <xs:sequence>
+            <xs:element name="Params">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="DrugXmLperhr">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:boolean">
+                                        <xs:attribute name="EditDataId" fixed="ED_550" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="DrugXDoseRate">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:boolean">
+                                        <xs:attribute name="EditDataId" fixed="ED_551" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="DrugXPosition">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="DrugXPosition">
+                                        <xs:attribute name="EditDataId" fixed="ED_552" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="TargetDevices" type="ONGSPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

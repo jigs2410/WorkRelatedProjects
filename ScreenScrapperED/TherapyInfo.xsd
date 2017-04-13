@@ -1,0 +1,2363 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--Created with Liquid XML 2016 Designer Edition 14.1.5.6733 (https://www.liquid-technologies.com)-->
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation=".\TargetDevices.xsd" />
+    <xs:include schemaLocation=".\Options.xsd" />
+    <xs:include schemaLocation=".\units.xsd" />
+    <xs:include schemaLocation=".\OverridableParameters.xsd" />
+    <xs:complexType name="Therapy">
+        <xs:sequence>
+            <xs:element name="TherapyName">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:string">
+                            <xs:attribute name="EditDataID" fixed="ED_201" type="xs:string" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="ClinicalAdvisory">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:string">
+                            <xs:attribute name="EditDataID" fixed="ED_202" type="xs:string" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DilutionInfo" type="Dilution" />
+            <xs:element name="DisplayName">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:string">
+                            <xs:attribute name="EditDataID" fixed="ED_377" type="xs:string" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="InfusionModes">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="PrimaryOrSecondary" type="PrimaryOrSecondary" />
+                        <xs:element name="TherapyDataContinuous" type="Continuous" />
+                        <xs:element name="TherapyDataDoseTime" type="DoseTime" />
+                        <xs:element name="TherapyDataVTR" type="VTR" />
+                        <xs:element name="TherapyDataRamp" type="Ramp" />
+                        <xs:element name="TherapyDataSequence" type="Sequence" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Boluses">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="TherapyDataProgBolus" type="ProgrammedBolus" />
+                        <xs:element name="TherapyDataLoadingDose" type="LoadingDose" />
+                        <xs:element name="TherapyDataDirectBolus" type="DirectBolus" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DeviceConfiguration">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="TherapyDataPressure" type="Pressure" />
+                        <xs:element name="TherapyDataAir" type="Air" />
+                        <xs:element name="TherapyDataDropSensor" type="DropSensor" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Air">
+        <xs:sequence>
+            <xs:element name="AgiliaVP" type="AgiliaVPAir" />
+            <xs:element name="ONGVP" type="ONGVPAir" />
+            <xs:element name="EnableAir">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataID" fixed="ED_377" type="xs:string" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaVPAir">
+        <xs:sequence>
+            <xs:element name="OverridableParams" type="AirOverridableParameters" />
+            <xs:element name="TargetDevices" type="AgiliaVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGVPAir">
+        <xs:sequence>
+            <xs:element name="OverridableParams" type="AirOverridableParameters" />
+            <xs:element name="TargetDevices" type="ONGVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Sequence">
+        <xs:sequence>
+            <xs:element name="AgiliaVP" type="AgiliaVPSequence" />
+            <xs:element name="ONGVP" type="ONGVPSequence" />
+            <xs:element name="EnableSequence">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataID" fixed="ED_386" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataSequence" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="Enable" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaVPSequence">
+        <xs:sequence>
+            <xs:element name="Params" type="SequenceParams" />
+            <xs:element name="TargetDevice" type="ONGVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGVPSequence">
+        <xs:sequence>
+            <xs:element name="Params" type="SequenceParams" />
+            <xs:element name="TargetDevice" type="ONGVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="SequenceParams">
+        <xs:sequence>
+            <xs:element name="PhaseType">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="PhaseTypes">
+                            <xs:attribute name="EditDataId" fixed="ED_380" type="xs:string" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="NumberofRepetitions">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:int">
+                            <xs:attribute name="EditDataId" fixed="ED_381" type="xs:string" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="PhaseFlowRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_382" type="xs:string" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="PhaseVolume">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_383" type="xs:string" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="BreakDuration">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:duration">
+                            <xs:attribute name="EditDataId" fixed="ED_384" type="xs:string" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="KVODuration">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:duration">
+                            <xs:attribute name="EditDataId" fixed="ED_385" type="xs:string" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="BipEndofStep">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_387" type="xs:string" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="PhaseTypeUnits" type="SequenceUnits" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="DropSensor">
+        <xs:sequence>
+            <xs:element name="AgiliaVP" type="AgiliaVPDropSensor" />
+            <xs:element name="ONGVP" type="ONGVPDropSensor" />
+            <xs:element name="EnableDropSensor">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataID" fixed="ED_372" type="xs:string" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaVPDropSensor">
+        <xs:sequence>
+            <xs:element name="Params" type="DropSensorTherapyParams" />
+            <xs:element name="OverridableParams" type="DropSensorOverridableParams" />
+            <xs:element name="TargetDevices" type="AgiliaVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGVPDropSensor">
+        <xs:sequence>
+            <xs:element name="Params" type="DropSensorTherapyParams" />
+            <xs:element name="OverridableParams" type="DropSensorOverridableParams" />
+            <xs:element name="TargetDevices" type="ONGVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="DropSensorTherapyParams">
+        <xs:sequence>
+            <xs:element name="DropVolume">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_371" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataDropSensor" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="DropVolume" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DropSensorUnits" type="DropSensorUnits" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="VTR">
+        <xs:sequence>
+            <xs:element name="AgiliaVP" type="AgiliaVPVTR" />
+            <xs:element name="ONGVP" type="ONGVPVTR" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaVPVTR">
+        <xs:sequence>
+            <xs:element name="Params" type="VTRParams" />
+            <xs:element name="TargetDevices" type="AgiliaVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGVPVTR">
+        <xs:sequence>
+            <xs:element name="Params" type="VTRParams" />
+            <xs:element name="TargetDevices" type="ONGVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="VTRParams">
+        <xs:sequence>
+            <xs:element name="HardMinVTBIValue">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_340" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataVTR" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="Vtbi_HardMinimum" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DefaultVTBIValue">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_341" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataVTR" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="Vtbi_DefaultValue" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="HardMaxTBIValue">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_342" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataVTR" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="Vtbi_HardMaximum" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="KVOFlowRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_343" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataVTR" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="KVOFlowRate" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="EnableVolumeTime">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataID" fixed="ED_344" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataVTR" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="VolumeTimeEnable" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="EnableVolumeRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataID" fixed="ED_345" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataVTR" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="VolumeRateEnable" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="EnableTimeRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataID" fixed="ED_346" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataVTR" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="TimeRateEnable" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="EnableVolumeTimeRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataID" fixed="ED_347" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataVTR" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="VolumeTimeRateEnable" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="VTRUnits" type="FlowRateUnits" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Ramp">
+        <xs:sequence>
+            <xs:element name="AgiliaVP" type="AgiliaVPRamp" />
+            <xs:element name="ONGVP" type="ONGVPRamp" />
+            <xs:element name="EnableRamp">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataID" fixed="ED_364" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataRamp" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="Enable" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RampParams">
+        <xs:sequence>
+            <xs:element name="PlateFlowRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_360" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataRamp" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="PlateFlowRate" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="RampTotalVolume">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_361" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataRamp" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="TotalVolume" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="RiseDuration">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:duration">
+                            <xs:attribute name="EditDataID" fixed="ED_362" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataRamp" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="RiseDuration" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FallDuration">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:duration">
+                            <xs:attribute name="EditDataID" fixed="ED_363" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataRamp" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="FallDuration" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="RampUnits" type="DurationUnits" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaVPRamp">
+        <xs:sequence>
+            <xs:element name="Params" type="RampParams" />
+            <xs:element name="TargetDevices" type="AgiliaVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGVPRamp">
+        <xs:sequence>
+            <xs:element name="Params" type="RampParams" />
+            <xs:element name="TargetDevices" type="ONGVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ProgrammedBolus">
+        <xs:sequence>
+            <xs:element name="AgilaSP" type="AgiliantSPProgrammedBolus" />
+            <xs:element name="AgiliaVP" type="AgiliantVPProgrammedBolus" />
+            <xs:element name="ONGSP" type="ONGSProgrammedBolus" />
+            <xs:element name="ONGVP" type="ONGVPProgrammedBolus" />
+            <xs:element name="EnableProgrammedBolus">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataID" fixed="ED_329" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataProgBolus" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="Enable" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ProgrammedBolusParams">
+        <xs:sequence>
+            <xs:element name="ProgrammedBolusType">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="DoseType">
+                            <xs:attribute name="EditDataID" fixed="ED_310" type="xs:string" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="HardMinVolumeValue">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_311_A" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataProgBolus" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="AmountLimits_HardMinVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SoftMinVolumeValue">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_312_A" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataProgBolus" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="AmountLimits_SoftMinVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DefaultVolumeValue">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_313_A" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataProgBolus" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="AmountLimits_DefaultVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SoftMaxVolumeValue">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_314_A" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataProgBolus" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="AmountLimits_SoftMaxVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="HardMaxVolumeValue">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_315_A" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataProgBolus" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="AmountLimits_HardMaxVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="HardMinDoseValue">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_311_B" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataProgBolus" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="AmountLimits_HardMinVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SoftMinDoseValue">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_312_B" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataProgBolus" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="AmountLimits_SoftMinVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DefaultDoseValue">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_313_B" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataProgBolus" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="AmountLimits_DefaultVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SoftMaxDoseValue">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_314_B" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataProgBolus" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="AmountLimits_SoftMaxVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="HardMaxDoseValue">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_315_B" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataProgBolus" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="AmountLimits_HardMaxVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="HardMinNormalizedDoseValue">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_311_C" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataProgBolus" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="AmountLimits_HardMinVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SoftMinNormalizedDoseValue">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_312_C" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataProgBolus" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="AmountLimits_SoftMinVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DefaultNormalizedDoseValue">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_313_C" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataProgBolus" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="AmountLimits_DefaultVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SoftMaxNormalizedDoseValue">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_314_C" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataProgBolus" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="AmountLimits_SoftMaxVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="HardMaxNormalizedDoseValue">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_315_C" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataProgBolus" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="AmountLimits_HardMaxVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DoseValueTypeUnits" type="DoseRateUnits" />
+            <xs:element name="HardMaxDuration">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:duration">
+                            <xs:attribute name="EditDataID" fixed="ED_328" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataProgBolus" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="DurationHardMax" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DefaultDuration">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:duration">
+                            <xs:attribute name="EditDataID" fixed="ED_327" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataProgBolus" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="DurationDefault" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="HardMinDuration">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:duration">
+                            <xs:attribute name="EditDataID" fixed="ED_326" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataProgBolus" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="DurationHardMin" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliantSPProgrammedBolus">
+        <xs:sequence>
+            <xs:element name="Params" type="ProgrammedBolusParams" />
+            <xs:element name="TargetDevices" type="AgiliaSPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliantVPProgrammedBolus">
+        <xs:sequence>
+            <xs:element name="Params" type="ProgrammedBolusParams" />
+            <xs:element name="TargetDevices" type="AgiliaVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGSProgrammedBolus">
+        <xs:sequence>
+            <xs:element name="Params" type="ProgrammedBolusParams" />
+            <xs:element name="TargetDevices" type="ONGSPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGVPProgrammedBolus">
+        <xs:sequence>
+            <xs:element name="Params" type="ProgrammedBolusParams" />
+            <xs:element name="TargetDevices" type="ONGVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Pressure">
+        <xs:sequence>
+            <xs:element name="AgiliaSP" type="AgiliaSPPressure" />
+            <xs:element name="AgiliaVP" type="AgiliaVPPressure" />
+            <xs:element name="ONGSP" type="ONGSPPressure" />
+            <xs:element name="ONGVP" type="ONGVPPressure" />
+            <xs:element name="EnablePressure">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataID" fixed="ED_356" type="xs:string" />
+                            <xs:attribute name="TableName" fixed="TherapyDataPressure" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="Enable" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaSPPressure">
+        <xs:sequence>
+            <xs:element name="OverridableParams" type="PressureOverridableParameters" />
+            <xs:element name="TargetDevices" type="AgiliaSPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaVPPressure">
+        <xs:sequence>
+            <xs:element name="OverridableParams" type="PressureOverridableParameters" />
+            <xs:element name="TargetDevices" type="AgiliaVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGSPPressure">
+        <xs:sequence>
+            <xs:element name="OverridableParams" type="PressureOverridableParameters" />
+            <xs:element name="TargetDevices" type="ONGSPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGVPPressure">
+        <xs:sequence>
+            <xs:element name="OverridableParams" type="PressureOverridableParameters" />
+            <xs:element name="TargetDevices" type="ONGVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="DirectBolus">
+        <xs:sequence>
+            <xs:element name="AgiliaSP" type="AgiliaSPDirectBolus" />
+            <xs:element name="AgiliaVP" type="AgiliaVPDirectBolus" />
+            <xs:element name="ONGSP" type="ONGSPDirectBolus" />
+            <xs:element name="ONGVP" type="ONGVPDirectBolus" />
+            <xs:element name="EnableDirectBolus">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataID" fixed="ED_332" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataDirectBolus" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="Enable" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="DirectBolusParams">
+        <xs:sequence>
+            <xs:element name="DirectBolusFlowrate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_330" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataDirectBolus" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="FlowRateDefault" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FlowRateUnits" type="FlowRateUnits" />
+            <xs:element name="DirectBolusMaxVolume">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_331" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataDirectBolus" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="Enable" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="VolumeUnits" type="DoseRateUnits" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaSPDirectBolus">
+        <xs:sequence>
+            <xs:element name="Params" type="DirectBolusParams" />
+            <xs:element name="TargetDevices" type="AgiliaSPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaVPDirectBolus">
+        <xs:sequence>
+            <xs:element name="Params" type="DirectBolusParams" />
+            <xs:element name="TargetDevices" type="AgiliaVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGSPDirectBolus">
+        <xs:sequence>
+            <xs:element name="Params" type="DirectBolusParams" />
+            <xs:element name="TargetDevices" type="ONGSPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGVPDirectBolus">
+        <xs:sequence>
+            <xs:element name="Params" type="DirectBolusParams" />
+            <xs:element name="TargetDevices" type="ONGVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="LoadingDoseParams">
+        <xs:sequence>
+            <xs:element name="DoseTypes">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="LoadingDoseType">
+                            <xs:attribute name="EditDataID" fixed="ED_270" type="xs:string" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="HardMinVolumeValue">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_291_A" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataLoadingDose" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="AmountLimits_HardMinVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SoftMinVolumeValue">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_292_A" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataLoadingDose" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="AmountLimits_SoftMinVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DefaultVolumeValue">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_293_A" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataLoadingDose" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="AmountLimits_DefaultVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SoftMaxVolumeValue">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_294_A" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataLoadingDose" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="AmountLimits_SoftMaxVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="HardMaxVolumeValue">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_295_A" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataLoadingDose" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="AmountLimits_HardMaxVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="HardMinDoseValue">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_291_B" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataLoadingDose" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="AmountLimits_HardMinVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SoftMinDoseValue">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_292_B" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataLoadingDose" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="AmountLimits_HardMinVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DefaultDoseValue">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_293_B" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataLoadingDose" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="AmountLimits_SoftMinVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SoftMaxDoseValue">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_294_B" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataLoadingDose" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="AmountLimits_SoftMaxVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="HardMaxDoseValue">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_295_B" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataLoadingDose" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="AmountLimits_HardMaxVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="HardMinNormalizedDoseValue">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_291_C" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataLoadingDose" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="AmountLimits_HardMinVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SoftMinNormalizedDoseValue">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_292_C" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataLoadingDose" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="AmountLimits_SoftMinVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DefaultNormalizedDoseValue">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_293_C" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataLoadingDose" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="AmountLimits_DefaultVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SoftMaxNormalizedDoseValue">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_294_C" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataLoadingDose" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="AmountLimits_SoftMaxVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="HardMaxNormalizedDoseValue">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataID" fixed="ED_295_C" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataLoadingDose" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="AmountLimits_HardMaxVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="HardMinDuration">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:duration">
+                            <xs:attribute name="EditDataID" fixed="ED_306" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataLoadingDose" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="DurationHardMin" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DefaultDuration">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:duration">
+                            <xs:attribute name="EditDataID" fixed="ED_307" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataLoadingDose" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="DurationDefault" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="HardMaxDuration">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:duration">
+                            <xs:attribute name="EditDataID" fixed="ED_308" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataLoadingDose" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="DurationHardMax" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DoseValueTypeUnits" type="DoseRateUnits" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaSPLoadingDose">
+        <xs:sequence>
+            <xs:element name="Params" type="LoadingDoseParams" />
+            <xs:element name="TargetDevices" type="AgiliaSPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaVPLoadingDose">
+        <xs:sequence>
+            <xs:element name="Params" type="LoadingDoseParams" />
+            <xs:element name="TargetDevices" type="AgiliaVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGSPLoadingDose">
+        <xs:sequence>
+            <xs:element name="Params" type="LoadingDoseParams" />
+            <xs:element name="TargetDevices" type="ONGSPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGVPLoadingDose">
+        <xs:sequence>
+            <xs:element name="Params" type="LoadingDoseParams" />
+            <xs:element name="TargetDevices" type="ONGVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="LoadingDose">
+        <xs:sequence>
+            <xs:element name="AgiliaSP" type="AgiliaSPLoadingDose" />
+            <xs:element name="AgiliaVP" type="AgiliaVPLoadingDose" />
+            <xs:element name="ONGSP" type="ONGSPLoadingDose" />
+            <xs:element name="ONGVP" type="ONGVPLoadingDose" />
+            <xs:element name="EnableLoadingDose">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataID" fixed="ED_309" type="xs:string" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaSPDoseTime">
+        <xs:sequence>
+            <xs:element name="Params">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="DoseType">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="DoseType">
+                                        <xs:attribute name="EditDataID" fixed="ED_270" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="HardMinVolumeValue">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:decimal">
+                                        <xs:attribute name="EditDataID" fixed="ED_271_A" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="DefaultVolumeValue">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:decimal">
+                                        <xs:attribute name="EditDataID" fixed="ED_272_A" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="HardMaxVolumeValue">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:decimal">
+                                        <xs:attribute name="EditDataID" fixed="ED_273_A" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="HardMinDoseValue">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:decimal">
+                                        <xs:attribute name="EditDataID" fixed="ED_271_B" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="DefaultDoseValue">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:decimal">
+                                        <xs:attribute name="EditDataID" fixed="ED_272_B" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="HardMaxDoseValue">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:decimal">
+                                        <xs:attribute name="EditDataID" fixed="ED_273_B" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="HardMinNormalizedDoseValue">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:decimal">
+                                        <xs:attribute name="EditDataID" fixed="ED_271_C" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="DefaultNormalizedDoseValue">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:decimal">
+                                        <xs:attribute name="EditDataID" fixed="ED_272_C" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="HardMaxNormalizedDoseValue">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:decimal">
+                                        <xs:attribute name="EditDataID" fixed="ED_273_C" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="HardMinDuration">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:duration">
+                                        <xs:attribute name="EditDataID" fixed="ED_280" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="DefaultDuration">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:duration">
+                                        <xs:attribute name="EditDataID" fixed="ED_281" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="HardMaxDuration">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:duration">
+                                        <xs:attribute name="EditDataID" fixed="ED_282" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="KVOFlowRate">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:decimal">
+                                        <xs:attribute name="EditDataID" fixed="ED_283" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="TargetDevices" type="AgiliaSPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGSPDoseTime">
+        <xs:sequence>
+            <xs:element name="Params">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="DoseType">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="DoseType">
+                                        <xs:attribute name="EditDataID" fixed="ED_270" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="HardMinVolumeValue">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:decimal">
+                                        <xs:attribute name="EditDataID" fixed="ED_271_A" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="DefaultVolumeValue">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:decimal">
+                                        <xs:attribute name="EditDataID" fixed="ED_272_A" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="HardMaxVolumeValue">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:decimal">
+                                        <xs:attribute name="EditDataID" fixed="ED_273_A" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="HardMinDoseValue">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:decimal">
+                                        <xs:attribute name="EditDataID" fixed="ED_271_B" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="DefaultDoseValue">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:decimal">
+                                        <xs:attribute name="EditDataID" fixed="ED_272_B" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="HardMaxDoseValue">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:decimal">
+                                        <xs:attribute name="EditDataID" fixed="ED_273_B" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="HardMinNormalizedDoseValue">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:decimal">
+                                        <xs:attribute name="EditDataID" fixed="ED_271_C" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="DefaultNormalizedDoseValue">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:decimal">
+                                        <xs:attribute name="EditDataID" fixed="ED_272_C" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="HardMaxNormalizedDoseValue">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:decimal">
+                                        <xs:attribute name="EditDataID" fixed="ED_273_C" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="HardMinDuration">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:duration">
+                                        <xs:attribute name="EditDataID" fixed="ED_280" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="DefaultDuration">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:duration">
+                                        <xs:attribute name="EditDataID" fixed="ED_281" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="HardMaxDuration">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:duration">
+                                        <xs:attribute name="EditDataID" fixed="ED_282" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="KVOFlowRate">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:decimal">
+                                        <xs:attribute name="EditDataID" fixed="ED_283" type="xs:string" use="required" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="TargetDevices" type="ONGSPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="DoseTime">
+        <xs:sequence>
+            <xs:element name="AgiliaSP" type="AgiliaSPDoseTime" />
+            <xs:element name="ONGSP" type="ONGSPDoseTime" />
+            <xs:element name="EnableDoseTime">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataID" fixed="ED_284" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Dilution">
+        <xs:sequence>
+            <xs:element name="AgiliaSP" type="AgiliaSPDilution" />
+            <xs:element name="AgiliaVP" type="AgiliaVPDilution" />
+            <xs:element name="ONGSP" type="ONGSPDilution" />
+            <xs:element name="ONGVP" type="ONGVPDilution" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaSPDilution">
+        <xs:sequence>
+            <xs:element name="Params">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="DilutionType">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="DilutionTypes">
+                                        <xs:attribute name="EditDataID" fixed="ED_221" type="xs:string" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="DilutionValues">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="Fixed" minOccurs="0" maxOccurs="5">
+                                        <xs:complexType>
+                                            <xs:sequence>
+                                                <xs:element name="Concentration">
+                                                    <xs:complexType>
+                                                        <xs:sequence>
+                                                            <xs:element name="FixedConcentrationValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_222" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                        </xs:sequence>
+                                                    </xs:complexType>
+                                                </xs:element>
+                                                <xs:element name="DoseSingleVolume">
+                                                    <xs:complexType>
+                                                        <xs:sequence>
+                                                            <xs:element name="FixedDoseValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_226" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                            <xs:element name="SingleVolumeValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_227" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                        </xs:sequence>
+                                                    </xs:complexType>
+                                                </xs:element>
+                                                <xs:element name="CoupleDoseVolume">
+                                                    <xs:complexType>
+                                                        <xs:sequence>
+                                                            <xs:element name="FixedDoseValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_226" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                            <xs:element name="FixedVolumeValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_228" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                        </xs:sequence>
+                                                    </xs:complexType>
+                                                </xs:element>
+                                            </xs:sequence>
+                                        </xs:complexType>
+                                    </xs:element>
+                                    <xs:element name="Range">
+                                        <xs:complexType>
+                                            <xs:sequence>
+                                                <xs:element name="Concentration">
+                                                    <xs:complexType>
+                                                        <xs:sequence>
+                                                            <xs:element name="HardMinConcentrationValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_223" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                            <xs:element name="DefaultConcentrationValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_224" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                            <xs:element name="HardMaxConcentrationValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_225" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                        </xs:sequence>
+                                                    </xs:complexType>
+                                                </xs:element>
+                                                <xs:element name="Dilution">
+                                                    <xs:complexType>
+                                                        <xs:sequence>
+                                                            <xs:element name="HardMaxDoseValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_231" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                            <xs:element name="DefaultDoseValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_230" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                            <xs:element name="HardMinDoseValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_229" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                            <xs:element name="SingleVolumeValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_227" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                        </xs:sequence>
+                                                    </xs:complexType>
+                                                </xs:element>
+                                            </xs:sequence>
+                                        </xs:complexType>
+                                    </xs:element>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="DilutionUnits" type="ConcentrationUnits" />
+                        <xs:element name="Dilution">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:boolean">
+                                        <xs:attribute name="EditDataID" fixed="ED_220" type="xs:string" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="TargetDevices" type="AgiliaSPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaVPDilution">
+        <xs:sequence>
+            <xs:element name="Params">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="DilutionType">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="DilutionTypes">
+                                        <xs:attribute name="EditDataID" fixed="ED_221" type="xs:string" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="DilutionValues">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="Fixed" minOccurs="0" maxOccurs="5">
+                                        <xs:complexType>
+                                            <xs:sequence>
+                                                <xs:element name="Concentration">
+                                                    <xs:complexType>
+                                                        <xs:sequence>
+                                                            <xs:element name="FixedConcentrationValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_222" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                        </xs:sequence>
+                                                    </xs:complexType>
+                                                </xs:element>
+                                                <xs:element name="DoseSingleVolume">
+                                                    <xs:complexType>
+                                                        <xs:sequence>
+                                                            <xs:element name="FixedDoseValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_226" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                            <xs:element name="SingleVolumeValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_227" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                        </xs:sequence>
+                                                    </xs:complexType>
+                                                </xs:element>
+                                                <xs:element name="CoupleDoseVolume">
+                                                    <xs:complexType>
+                                                        <xs:sequence>
+                                                            <xs:element name="FixedDoseValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_226" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                            <xs:element name="FixedVolumeValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_228" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                        </xs:sequence>
+                                                    </xs:complexType>
+                                                </xs:element>
+                                            </xs:sequence>
+                                        </xs:complexType>
+                                    </xs:element>
+                                    <xs:element name="Range">
+                                        <xs:complexType>
+                                            <xs:sequence>
+                                                <xs:element name="Concentration">
+                                                    <xs:complexType>
+                                                        <xs:sequence>
+                                                            <xs:element name="HardMinConcentrationValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_223" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                            <xs:element name="DefaultConcentrationValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_224" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                            <xs:element name="HardMaxConcentrationValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_225" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                        </xs:sequence>
+                                                    </xs:complexType>
+                                                </xs:element>
+                                                <xs:element name="Dilution">
+                                                    <xs:complexType>
+                                                        <xs:sequence>
+                                                            <xs:element name="HardMaxDoseValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_231" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                            <xs:element name="DefaultDoseValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_230" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                            <xs:element name="HardMinDoseValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_229" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                            <xs:element name="SingleVolumeValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_227" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                        </xs:sequence>
+                                                    </xs:complexType>
+                                                </xs:element>
+                                            </xs:sequence>
+                                        </xs:complexType>
+                                    </xs:element>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="DilutionUnits" type="ConcentrationUnits" />
+                        <xs:element name="Dilution">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:boolean">
+                                        <xs:attribute name="EditDataID" fixed="ED_220" type="xs:string" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="TargetDevices" type="AgiliaVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGSPDilution">
+        <xs:sequence>
+            <xs:element name="Params">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="DilutionType">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="DilutionTypes">
+                                        <xs:attribute name="EditDataID" fixed="ED_221" type="xs:string" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="DilutionValues">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="Fixed" minOccurs="0" maxOccurs="5">
+                                        <xs:complexType>
+                                            <xs:sequence>
+                                                <xs:element name="Concentration">
+                                                    <xs:complexType>
+                                                        <xs:sequence>
+                                                            <xs:element name="FixedConcentrationValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_222" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                        </xs:sequence>
+                                                    </xs:complexType>
+                                                </xs:element>
+                                                <xs:element name="DoseSingleVolume">
+                                                    <xs:complexType>
+                                                        <xs:sequence>
+                                                            <xs:element name="FixedDoseValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_226" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                            <xs:element name="SingleVolumeValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_227" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                        </xs:sequence>
+                                                    </xs:complexType>
+                                                </xs:element>
+                                                <xs:element name="CoupleDoseVolume">
+                                                    <xs:complexType>
+                                                        <xs:sequence>
+                                                            <xs:element name="FixedDoseValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_226" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                            <xs:element name="FixedVolumeValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_228" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                        </xs:sequence>
+                                                    </xs:complexType>
+                                                </xs:element>
+                                            </xs:sequence>
+                                        </xs:complexType>
+                                    </xs:element>
+                                    <xs:element name="Range">
+                                        <xs:complexType>
+                                            <xs:sequence>
+                                                <xs:element name="Concentration">
+                                                    <xs:complexType>
+                                                        <xs:sequence>
+                                                            <xs:element name="HardMinConcentrationValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_223" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                            <xs:element name="DefaultConcentrationValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_224" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                            <xs:element name="HardMaxConcentrationValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_225" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                        </xs:sequence>
+                                                    </xs:complexType>
+                                                </xs:element>
+                                                <xs:element name="Dilution">
+                                                    <xs:complexType>
+                                                        <xs:sequence>
+                                                            <xs:element name="HardMaxDoseValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_231" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                            <xs:element name="DefaultDoseValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_230" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                            <xs:element name="HardMinDoseValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_229" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                            <xs:element name="SingleVolumeValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_227" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                        </xs:sequence>
+                                                    </xs:complexType>
+                                                </xs:element>
+                                            </xs:sequence>
+                                        </xs:complexType>
+                                    </xs:element>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="DilutionUnits" type="ConcentrationUnits" />
+                        <xs:element name="Dilution">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:boolean">
+                                        <xs:attribute name="EditDataID" fixed="ED_220" type="xs:string" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="TargetDevices" type="ONGSPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGVPDilution">
+        <xs:sequence>
+            <xs:element name="Params">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="DilutionType">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="DilutionTypes">
+                                        <xs:attribute name="EditDataID" fixed="ED_221" type="xs:string" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="DilutionValues">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="Fixed" minOccurs="0" maxOccurs="5">
+                                        <xs:complexType>
+                                            <xs:sequence>
+                                                <xs:element name="Concentration">
+                                                    <xs:complexType>
+                                                        <xs:sequence>
+                                                            <xs:element name="FixedConcentrationValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_222" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                        </xs:sequence>
+                                                    </xs:complexType>
+                                                </xs:element>
+                                                <xs:element name="DoseSingleVolume">
+                                                    <xs:complexType>
+                                                        <xs:sequence>
+                                                            <xs:element name="FixedDoseValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_226" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                            <xs:element name="SingleVolumeValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_227" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                        </xs:sequence>
+                                                    </xs:complexType>
+                                                </xs:element>
+                                                <xs:element name="CoupleDoseVolume">
+                                                    <xs:complexType>
+                                                        <xs:sequence>
+                                                            <xs:element name="FixedDoseValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_226" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                            <xs:element name="FixedVolumeValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_228" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                        </xs:sequence>
+                                                    </xs:complexType>
+                                                </xs:element>
+                                            </xs:sequence>
+                                        </xs:complexType>
+                                    </xs:element>
+                                    <xs:element name="Range">
+                                        <xs:complexType>
+                                            <xs:sequence>
+                                                <xs:element name="Concentration">
+                                                    <xs:complexType>
+                                                        <xs:sequence>
+                                                            <xs:element name="HardMinConcentrationValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_223" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                            <xs:element name="DefaultConcentrationValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_224" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                            <xs:element name="HardMaxConcentrationValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_225" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                        </xs:sequence>
+                                                    </xs:complexType>
+                                                </xs:element>
+                                                <xs:element name="Dilution">
+                                                    <xs:complexType>
+                                                        <xs:sequence>
+                                                            <xs:element name="HardMaxDoseValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_231" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                            <xs:element name="DefaultDoseValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_230" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                            <xs:element name="HardMinDoseValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_229" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                            <xs:element name="SingleVolumeValue">
+                                                                <xs:complexType>
+                                                                    <xs:simpleContent>
+                                                                        <xs:extension base="xs:decimal">
+                                                                            <xs:attribute name="EditDataID" fixed="ED_227" type="xs:string" />
+                                                                        </xs:extension>
+                                                                    </xs:simpleContent>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                        </xs:sequence>
+                                                    </xs:complexType>
+                                                </xs:element>
+                                            </xs:sequence>
+                                        </xs:complexType>
+                                    </xs:element>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="DilutionUnits" type="ConcentrationUnits" />
+                        <xs:element name="Dilution">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:boolean">
+                                        <xs:attribute name="EditDataID" fixed="ED_220" type="xs:string" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="TargetDevices" type="ONGVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Continuous">
+        <xs:sequence>
+            <xs:element name="AgiliaSP" type="AgiliaSPContinuous" />
+            <xs:element name="AgiliaVP" type="AgiliaVPContinuous" />
+            <xs:element name="ONGSP" type="ONGSPContinuous" />
+            <xs:element name="ONGVP" type="ONGVPContinuous" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ContinuousParams">
+        <xs:sequence>
+            <xs:element name="RateType">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="RateType">
+                            <xs:attribute name="EditDataId" fixed="ED_250" type="xs:string" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="HardMinFlowRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_251_A" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataContinuous" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="RateLimits_HardMinVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SoftMinFlowRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_252_A" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataContinuous" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="RateLimits_SoftMinVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DefaultFlowRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_253_A" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataContinuous" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="RateLimits_DefaultVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SoftMaxFlowRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_254_A" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataContinuous" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="RateLimits_SoftMaxVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="HardMaxFlowRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_255_A" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataContinuous" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="RateLimits_HardMaxVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="HardMinDoseRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_251_B" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataContinuous" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="RateLimits_HardMinVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SoftMinDoseRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_252_B" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataContinuous" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="RateLimits_SoftMinVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DefaultDoseRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_253_B" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataContinuous" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="RateLimits_DefaultVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="HardMaxDoseRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_254_B" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataContinuous" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="RateLimits_HardMaxVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SoftMaxDoseRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_255_B" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataContinuous" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="RateLimits_SoftMaxVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="HardMinNormalizedDoseRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_251_C" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataContinuous" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="RateLimits_HardMinVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SoftMinNormalizedDoseRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_252_C" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataContinuous" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="RateLimits_SoftMinVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DefaultNormalizedDoseRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_253_C" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataContinuous" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="RateLimits_DefaultVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SoftMaxNormalizedDoseRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_254_C" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataContinuous" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="RateLimits_SoftMaxVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="HardMaxNormalizedDoseRate">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="EditDataId" fixed="ED_255_C" type="xs:string" use="required" />
+                            <xs:attribute name="TableName" fixed="TherapyDataContinuous" type="xs:string" use="required" />
+                            <xs:attribute name="ColumnName" fixed="RateLimits_HardMaxVal" type="xs:string" use="required" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="RateUnits" type="FlowRateUnits" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaSPContinuous">
+        <xs:sequence>
+            <xs:element name="Params" type="ContinuousParams" />
+            <xs:element name="TargetDevices" type="AgiliaSPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaVPContinuous">
+        <xs:sequence>
+            <xs:element name="Params" type="ContinuousParams" />
+            <xs:element name="TargetDevices" type="AgiliaVPDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGSPContinuous">
+        <xs:sequence>
+            <xs:element name="Params" type="ContinuousParams" />
+            <xs:element name="TargetDevices" type="ONGSPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGVPContinuous">
+        <xs:sequence>
+            <xs:element name="Params" type="ContinuousParams" />
+            <xs:element name="TargetDevices" type="ONGVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PrimaryOrSecondary">
+        <xs:sequence>
+            <xs:element name="AgiliaVP" type="AgiliaVPPrimaryOrSecondary" />
+            <xs:element name="ONGVP" type="ONGVPPrimaryOrSecondary" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PrimaryOrSecondaryParams">
+        <xs:sequence>
+            <xs:element name="PrimaryOrSecondaryMode">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="PrimingOrSecondaryMode">
+                            <xs:attribute name="EditDataId" fixed="ED_240" type="xs:string" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SecondaryModeAuthorisation">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:boolean">
+                            <xs:attribute name="EditDataId" fixed="ED_241" type="xs:string" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AgiliaVPPrimaryOrSecondary">
+        <xs:sequence>
+            <xs:element name="Params" type="PrimaryOrSecondaryParams" />
+            <xs:element name="TargetDevices" type="AgiliaVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ONGVPPrimaryOrSecondary">
+        <xs:sequence>
+            <xs:element name="Params" type="PrimaryOrSecondaryParams" />
+            <xs:element name="TargetDevices" type="ONGVPTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="LoadingDoseType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Volume" />
+            <xs:enumeration value="Dose" />
+            <xs:enumeration value="NormDose" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="DoseType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Volume" />
+            <xs:enumeration value="Dose" />
+            <xs:enumeration value="NormDose" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="RateType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="FlowRate" />
+            <xs:enumeration value="DoseRate" />
+            <xs:enumeration value="NormDoseRate" />
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

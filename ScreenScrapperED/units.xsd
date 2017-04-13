@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--Created with Liquid XML 2016 Designer Edition (Trial) 14.1.5.6733 (https://www.liquid-technologies.com)-->
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:simpleType name="AgeUnits">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="days" />
+            <xs:enumeration value="months" />
+            <xs:enumeration value="years" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="DemographicUnits">
+
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="m2"></xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="DropSensorUnits">
+
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="µL"></xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SequenceUnits">
+
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="mL/h"></xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="PressureUnits">
+
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="mmhg"></xs:enumeration>
+            <xs:enumeration value="kPa"></xs:enumeration>
+            <xs:enumeration value="PSI"></xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="WeightUnits">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="gram" />
+            <xs:enumeration value="kilogram" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="DurationHours">
+        <xs:restriction base="xs:string">
+            
+            <xs:enumeration value="hh" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="DurationMins">
+        <xs:restriction base="xs:string">
+         
+            <xs:enumeration value="mm" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="DurationSecs">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ss" />
+           
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="DurationUnits">       
+            <xs:union memberTypes="DurationHours  DurationMins DurationSecs" />
+    </xs:simpleType>
+
+    <xs:simpleType name="FlowRateUnits">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="mL/h" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="DoseRateUnits">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="mcg/min" />
+            <xs:enumeration value="mg/min" />
+            <xs:enumeration value="mU/min" />
+            <xs:enumeration value="U/min" />
+            <xs:enumeration value="mEq/min" />
+            <xs:enumeration value="ng/h" />
+            <xs:enumeration value="mcg/h" />
+            <xs:enumeration value="mg/h" />
+            <xs:enumeration value="g/h" />
+            <xs:enumeration value="mmol/h" />
+            <xs:enumeration value="kcal/h" />
+            <xs:enumeration value="mEq/h" />
+            <xs:enumeration value="mEq/h" />
+            <xs:enumeration value="mg/24h" />
+            <xs:enumeration value="kcl/24h" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="NormalizedDoseRateUnits">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ng/kg/min" />
+            <xs:enumeration value="mcg/kg/min" />
+            <xs:enumeration value="mg/kg/min" />
+            <xs:enumeration value="g/kg/min" />
+            <xs:enumeration value="mU/kg/min" />
+            <xs:enumeration value="U/kg/min" />
+            <xs:enumeration value="mEq/kg/min" />
+            <xs:enumeration value="mL/kg/min" />
+            <xs:enumeration value="ng/kg/h" />
+            <xs:enumeration value="mcg/kg/h" />
+            <xs:enumeration value="mg/kg/h" />
+            <xs:enumeration value="mg/m2/h" />
+            <xs:enumeration value="g/kg/h" />
+            <xs:enumeration value="mmol/kg/h" />
+            <xs:enumeration value="mU/kg/h" />
+            <xs:enumeration value="U/kg/h" />
+            <xs:enumeration value="mEq/kg/h" />
+            <xs:enumeration value="mL/kg/h" />
+            <xs:enumeration value="mg/kg/24h" />
+            <xs:enumeration value="mg/m2/24h" />
+            <xs:enumeration value="g/kg/24h" />
+            <xs:enumeration value="mmol/kg/24h" />
+      </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="ConcentrationUnits">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ng/mL" />
+            <xs:enumeration value="mcg/mL" />
+            <xs:enumeration value="mg/mL" />
+            <xs:enumeration value="g/mL" />
+            <xs:enumeration value="mmol/mL" />
+            <xs:enumeration value="mU/mL" />
+            <xs:enumeration value="U/mL" />
+            <xs:enumeration value="cal/mL" />
+            <xs:enumeration value="kcal/mL" />
+            <xs:enumeration value="mEq/mL" />
+           
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

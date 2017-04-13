@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--Created with Liquid XML 2016 Designer Edition 14.1.5.6733 (https://www.liquid-technologies.com)-->
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation=".\TherapyInfo.xsd" />
+    <xs:include schemaLocation=".\DrugLibInfo.xsd" />
+    <xs:include schemaLocation=".\DeviceConfigurationInfo.xsd" />
+    <xs:element name="ProfileInfo" type="Profile" />
+    <xs:complexType name="Profile">
+        <xs:sequence>
+            <xs:element id="ED_051" name="DeviceConfigurationInfo" minOccurs="1">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="DeviceConfiguration">
+                            <xs:attribute name="EditDataId" fixed="ED_051" type="xs:string" />
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element id="ED_052" name="DrugLibInfo" type="DrugLib" minOccurs="0" />
+            <xs:element name="ProfileName">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:string">
+                            <xs:attribute name="EditDataId" fixed="ED_050" type="xs:string" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="LastModificationDate" type="xs:dateTime" />
+            <xs:element name="CreationDate" type="xs:dateTime" />
+            <xs:element name="CreatedBy" type="xs:string" />
+            <xs:element name="LastModifiedBy" type="xs:string" />
+            <xs:element name="Version" type="xs:string" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--Created with Liquid XML 2016 Designer Edition 14.1.5.6733 (https://www.liquid-technologies.com)-->
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation=".\TherapyInfo.xsd" />
+    <xs:include schemaLocation=".\TargetDevices.xsd" />
+    <xs:complexType name="DrugLib">
+        <xs:sequence>
+            <xs:element name="DrugList">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Drug" type="DrugInfo" minOccurs="0" maxOccurs="200" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="PatientInformation" type="Patient" />
+            <xs:element name="LastModificationDate" type="xs:dateTime" />
+            <xs:element name="CreationDate" type="xs:dateTime" />
+            <xs:element name="DrugLibID" type="xs:string" />
+            <xs:element name="DrugLibName" type="xs:string" />
+            <xs:element name="DrugLibCreatedBy" type="xs:string" />
+            <xs:element name="LastModifiedBy" type="xs:string" />
+            <xs:element name="TargetDevices" type="DrugLibTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Patient">
+        <xs:sequence>
+            <xs:element name="PatientBSAType">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="MinimumValue">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:decimal">
+                                        <xs:attribute name="EditDataId" fixed="ED_005" type="xs:string" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="MaximumValue">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:decimal">
+                                        <xs:attribute name="EditDataId" fixed="ED_006" type="xs:string" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="DefaultValue">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:decimal">
+                                        <xs:attribute name="EditDataId" fixed="ED_007" type="xs:string" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="PatientBSAUnits" type="DemographicUnits" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="PatientWeightType">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="MinimumValue">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:decimal">
+                                        <xs:attribute name="EditDataId" fixed="ED_002" type="xs:string" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="MaximumValue">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:decimal">
+                                        <xs:attribute name="EditDataId" fixed="ED_003" type="xs:string" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="DefaultValue">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:decimal">
+                                        <xs:attribute name="EditDataId" fixed="ED_004" type="xs:string" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="PatientWeightUnits" type="WeightUnits" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="DrugInfo">
+        <xs:sequence>
+            <xs:element name="DrugName">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:string">
+                            <xs:attribute name="EditDataId" fixed="ED_100" type="xs:string" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DrugCategory">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:string">
+                            <xs:attribute name="EditDataId" fixed="ED_101" type="xs:string" />
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="TherapyList">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="TherapyInfo" type="Therapy" maxOccurs="30" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="LastModifiedBy" type="xs:string" />
+            <xs:element name="DrugCreatedBy" type="xs:string" />
+            <xs:element name="LastModificationDate" type="xs:dateTime" />
+            <xs:element name="CreationDate" type="xs:dateTime" />
+            <xs:element name="DrugID" type="xs:string" />
+            <xs:element name="MolecularName" type="xs:string" />
+            <xs:element name="TargetDevice" type="DrugLibTargetDevices" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>
