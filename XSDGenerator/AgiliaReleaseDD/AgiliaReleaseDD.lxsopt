@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XmlStudioProjectOptions Version="14.1.5.6733">
+  <File>.\Schemas\PumpType.xsd</File>
+  <File>.\Schemas\AgiliaShared.xsd</File>
+  <File>.\Schemas\AgiliaSPMC.xsd</File>
+  <UserProperties sourceUri=".\Schemas\AgiliaShared.xsd">
+    <Value name="Zoom">1</Value>
+  </UserProperties>
+  <UserProperties sourceUri=".\Schemas\AgiliaSPMC.xsd">
+    <Value name="Zoom">1</Value>
+  </UserProperties>
+  <UserProperties sourceUri=".\Schemas\PumpType.xsd">
+    <Value name="Zoom">1</Value>
+  </UserProperties>
+</XmlStudioProjectOptions>

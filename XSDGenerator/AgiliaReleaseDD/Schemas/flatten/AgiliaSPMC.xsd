@@ -1,0 +1,284 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- Created with Liquid XML 2016 Designer Edition (Trial) 14.1.5.6733 (https://www.liquid-technologies.com) -->
+<xs:schema elementFormDefault="qualified" targetNamespace="http://www.fresenius-kabi.com/AgiliaSPMC"
+    xmlns:SPMC="http://www.fresenius-kabi.com/AgiliaSPMC"
+    xmlns:Shared="http://www.fresenius-kabi.com/AgiliaShared"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:import namespace="http://www.fresenius-kabi.com/AgiliaShared"
+        schemaLocation="AgiliaShared.xsd"/>
+    <xs:group name="Group_AgiliaSPMC">
+        <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="1" name="Zone22">
+                <xs:complexType>
+                    <xs:all>
+                        <xs:element name="par22">
+                            <xs:complexType>
+                                <xs:all>
+                                    <xs:element name="GeneralDeviceDefinition_PreSetDilution">
+                                        <xs:complexType>
+                                            <xs:simpleContent>
+                                                <xs:extension base="Shared:BIT">
+                                                  <xs:attribute fixed="RD_0014" name="RD_ID"
+                                                  type="xs:string" use="required"/>
+                                                  <xs:attribute fixed="BIT" name="Type"
+                                                  type="xs:string" use="required"/>
+                                                  <xs:attribute fixed="NOT FOUND" name="ED_IDs"
+                                                  type="xs:string" use="required"/>
+                                                </xs:extension>
+                                            </xs:simpleContent>
+                                        </xs:complexType>
+                                    </xs:element>
+                                </xs:all>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="par12">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element maxOccurs="1" minOccurs="1"
+                                        name="InfusionOption_MaximumFlowrate50cc">
+                                        <xs:complexType>
+                                            <xs:simpleContent>
+                                                <xs:extension base="Shared:DWORD">
+                                                  <xs:attribute fixed="RD_0002" name="RD_ID"
+                                                  type="xs:string" use="required"/>
+                                                  <xs:attribute fixed="DWORD" name="Type"
+                                                  type="xs:string" use="required"/>
+                                                  <xs:attribute fixed="NOT FOUND" name="ED_IDs"
+                                                  type="xs:string" use="required"/>
+                                                </xs:extension>
+                                            </xs:simpleContent>
+                                        </xs:complexType>
+                                    </xs:element>
+                                    <xs:element maxOccurs="1" minOccurs="1"
+                                        name="InfusionOption_MaximumFlowrate30cc">
+                                        <xs:complexType>
+                                            <xs:simpleContent>
+                                                <xs:extension base="Shared:DWORD">
+                                                  <xs:attribute fixed="RD_0003" name="RD_ID"
+                                                  type="xs:string" use="required"/>
+                                                  <xs:attribute fixed="DWORD" name="Type"
+                                                  type="xs:string" use="required"/>
+                                                  <xs:attribute fixed="NOT FOUND" name="ED_IDs"
+                                                  type="xs:string" use="required"/>
+                                                </xs:extension>
+                                            </xs:simpleContent>
+                                        </xs:complexType>
+                                    </xs:element>
+                                    <xs:element maxOccurs="1" minOccurs="1"
+                                        name="InfusionOption_MaximumFlowrate20cc">
+                                        <xs:complexType>
+                                            <xs:simpleContent>
+                                                <xs:extension base="Shared:DWORD">
+                                                  <xs:attribute fixed="RD_0004" name="RD_ID"
+                                                  type="xs:string" use="required"/>
+                                                  <xs:attribute fixed="DWORD" name="Type"
+                                                  type="xs:string" use="required"/>
+                                                  <xs:attribute fixed="NOT FOUND" name="ED_IDs"
+                                                  type="xs:string" use="required"/>
+                                                </xs:extension>
+                                            </xs:simpleContent>
+                                        </xs:complexType>
+                                    </xs:element>
+                                    <xs:element maxOccurs="1" minOccurs="1"
+                                        name="InfusionOption_MaximumFlowrate10cc">
+                                        <xs:complexType>
+                                            <xs:simpleContent>
+                                                <xs:extension base="Shared:DWORD">
+                                                  <xs:attribute fixed="RD_0005" name="RD_ID"
+                                                  type="xs:string" use="required"/>
+                                                  <xs:attribute fixed="DWORD" name="Type"
+                                                  type="xs:string" use="required"/>
+                                                  <xs:attribute fixed="NOT FOUND" name="ED_IDs"
+                                                  type="xs:string" use="required"/>
+                                                </xs:extension>
+                                            </xs:simpleContent>
+                                        </xs:complexType>
+                                    </xs:element>
+                                    <xs:element maxOccurs="1" minOccurs="1"
+                                        name="InfusionOption_MaximumFlowrate5cc">
+                                        <xs:complexType>
+                                            <xs:simpleContent>
+                                                <xs:extension base="Shared:DWORD">
+                                                  <xs:attribute fixed="RD_0006" name="RD_ID"
+                                                  type="xs:string" use="required"/>
+                                                  <xs:attribute fixed="DWORD" name="Type"
+                                                  type="xs:string" use="required"/>
+                                                  <xs:attribute fixed="NOT FOUND" name="ED_IDs"
+                                                  type="xs:string" use="required"/>
+                                                </xs:extension>
+                                            </xs:simpleContent>
+                                        </xs:complexType>
+                                    </xs:element>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:all>
+                </xs:complexType>
+            </xs:element>
+            <xs:element maxOccurs="1" minOccurs="1" name="Zone8">
+                <xs:complexType>
+                    <xs:all>
+                        <xs:element maxOccurs="1" minOccurs="1" name="par2">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:group maxOccurs="1" minOccurs="1"
+                                        ref="Shared:Group_Zone8Par2"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:all>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:group>
+    <xs:group name="Group_AgiliaSPMC_Zone31Par3">
+        <xs:sequence>
+            <xs:group maxOccurs="1" minOccurs="1" ref="Shared:Group_Zone31Par3"/>
+            <xs:element name="subpar3">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:group ref="Shared:Group_Zone31Par3SubPar3"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="subpar6">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="1" minOccurs="1" name="VolumeTime_DefaultDose">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="Shared:DWORD">
+                                        <xs:attribute fixed="RD_0031" name="RD_ID" type="xs:string"
+                                            use="required"/>
+                                        <xs:attribute fixed="DWORD" name="Type" type="xs:string"
+                                            use="required"/>
+                                        <xs:attribute fixed="NOT FOUND" name="ED_IDs"
+                                            type="xs:string" use="required"/>
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element maxOccurs="1" minOccurs="1" name="VolumeTime_DefaultDuration">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="Shared:DWORD">
+                                        <xs:attribute fixed="RD_0032" name="RD_ID" type="xs:string"
+                                            use="required"/>
+                                        <xs:attribute fixed="DWORD" name="Type" type="xs:string"
+                                            use="required"/>
+                                        <xs:attribute fixed="NOT FOUND" name="ED_IDs"
+                                            type="xs:string" use="required"/>
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element maxOccurs="1" minOccurs="0" name="VolumeTime_MinimumDose">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="Shared:DWORD">
+                                        <xs:attribute fixed="RD_0033" name="RD_ID" type="xs:string"
+                                            use="required"/>
+                                        <xs:attribute fixed="DWORD" name="Type" type="xs:string"
+                                            use="required"/>
+                                        <xs:attribute fixed="NOT FOUND" name="ED_IDs"
+                                            type="xs:string" use="required"/>
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element maxOccurs="1" minOccurs="0" name="VolumeTime_MaximumDose">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="Shared:DWORD">
+                                        <xs:attribute fixed="RD_0034" name="RD_ID" type="xs:string"
+                                            use="required"/>
+                                        <xs:attribute fixed="DWORD" name="Type" type="xs:string"
+                                            use="required"/>
+                                        <xs:attribute fixed="NOT FOUND" name="ED_IDs"
+                                            type="xs:string" use="required"/>
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element maxOccurs="1" minOccurs="0" name="VolumeTime_MinimumDuration">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="Shared:DWORD">
+                                        <xs:attribute fixed="RD_0035" name="RD_ID" type="xs:string"
+                                            use="required"/>
+                                        <xs:attribute fixed="DWORD" name="Type" type="xs:string"
+                                            use="required"/>
+                                        <xs:attribute fixed="NOT FOUND" name="ED_IDs"
+                                            type="xs:string" use="required"/>
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element maxOccurs="1" minOccurs="0" name="VolumeTime_MaximumDuration">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="Shared:DWORD">
+                                        <xs:attribute fixed="RD_0036" name="RD_ID" type="xs:string"
+                                            use="required"/>
+                                        <xs:attribute fixed="DWORD" name="Type" type="xs:string"
+                                            use="required"/>
+                                        <xs:attribute fixed="NOT FOUND" name="ED_IDs"
+                                            type="xs:string" use="required"/>
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element maxOccurs="1" minOccurs="0" name="VolumeTime_KvoFlowrate">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="Shared:WORD">
+                                        <xs:attribute fixed="RD_0037" name="RD_ID" type="xs:string"
+                                            use="required"/>
+                                        <xs:attribute fixed="WORD" name="Type" type="xs:string"
+                                            use="required"/>
+                                        <xs:attribute fixed="NOT FOUND" name="ED_IDs"
+                                            type="xs:string" use="required"/>
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element maxOccurs="1" minOccurs="0" name="VolumeTime_MassOrVolumeUnit">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="Shared:UNIT">
+                                        <xs:attribute fixed="RD_0038" name="RD_ID" type="xs:string"
+                                            use="required"/>
+                                        <xs:attribute fixed="UNIT" name="Type" type="xs:string"
+                                            use="required"/>
+                                        <xs:attribute fixed="NOT FOUND" name="ED_IDs"
+                                            type="xs:string" use="required"/>
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:group>
+    <!---xs:element name="Zones"-->
+    <xs:complexType name="AgiliaSPMCType">
+        <xs:sequence>
+            <xs:group ref="SPMC:Group_AgiliaSPMC"/>
+            <xs:element maxOccurs="1" minOccurs="1" name="Zone31">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="200" minOccurs="1" name="par3">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:group ref="SPMC:Group_AgiliaSPMC_Zone31Par3"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <!--/xs:element-->
+</xs:schema>

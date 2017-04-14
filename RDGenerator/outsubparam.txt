@@ -1,0 +1,223 @@
+	Par 2 -> INFOS_LIB
+		SubPar 12 -> LABELS1
+			Params:
+			 BYTE -> Index1
+			 VSTRING(20) -> Label1
+			 BYTE -> Index2
+			 VSTRING(20) -> Label2
+			 BYTE -> Index3
+			 VSTRING(20) -> Label3
+			 BYTE -> Index4
+			 VSTRING(20) -> Label4
+			 BYTE -> Index5
+			 VSTRING(20) -> Label5
+			 BYTE -> Index6
+			 VSTRING(20) -> Label6
+			 BYTE -> Index7
+			 VSTRING(20) -> Label7
+			 BYTE -> Index8
+			 VSTRING(20) -> Label8
+			 BYTE -> Index9
+			 VSTRING(20) -> Label9
+			 BYTE -> Index10
+			 VSTRING(20) -> Label10
+		SubPar 13 -> LABELS2
+			Params:
+			 BYTE -> Index11
+			 VSTRING(20) -> Label11
+			 BYTE -> Index12
+			 VSTRING(20) -> Label12
+			 BYTE -> Index13
+			 VSTRING(20) -> Label13
+			 BYTE -> Index14
+			 VSTRING(20) -> Label14
+			 BYTE -> Index15
+			 VSTRING(20) -> Label15
+			 BYTE -> Index16
+			 VSTRING(20) -> Label16
+			 BYTE -> Index17
+			 VSTRING(20) -> Label17
+			 BYTE -> Index18
+			 VSTRING(20) -> Label18
+			 BYTE -> Index19
+			 VSTRING(20) -> Label19
+			 BYTE -> Index120
+			 VSTRING(20) -> Label20
+	Par 3 -> PARAM_DRUG
+		SubPar 1 -> NAME
+			Params:
+			 VSTRING(25) -> Name
+		SubPar 2 -> DILUTION
+			Params:
+			 DWORD -> Default
+			 UNIT -> Unit
+			 WORD -> Volume
+			 UNIT -> MassInfusUnit
+		SubPar 3 -> SEL_DILUTION
+			Params:
+			 DWORD -> MinDilution
+			 DWORD -> MaxDilution
+			 BYTE -> Flags
+				Flags Bit 1 -> @SDIL_VALUES
+				Flags Bit 4 -> @SDIL_VOLVALUES
+			 DWORD -> ValDilution4
+			 DWORD -> ValDilution5
+			 WORD -> Volume2
+			 WORD -> Volume3
+			 WORD -> Volume4
+			 WORD -> Volume5
+			 VALUES -> 
+		SubPar 4 -> FLOWRATE
+			Params:
+			 DWORD -> Default
+			 DWORD -> Min
+			 DWORD -> Max
+			 UNIT -> Unit
+		SubPar 5 -> FLOW_LOW_HIGH
+			Params:
+			 DWORD -> Low
+			 DWORD -> High
+		SubPar 7 -> BOLUS
+			Params:
+			 DWORD -> FlowRate
+			 WORD -> MaxVolume
+		SubPar 8 -> INFUS_MODE
+			Params:
+			 BYTE -> Default
+			 WORD -> Enable
+				Flags Bit 10 -> @INFUS_B_RAMP
+				Flags Bit 11 -> @INFUS_B_SEQ
+				Flags Bit 12 -> @INFUS_B_PURG_AIR
+				Flags Bit 13 -> @INFUS_B_PURG_TUB
+			 BYTE -> Flags
+		SubPar 9 -> COMMENT
+			Params:
+			 VSTRING(150) -> Comment
+		SubPar 10 -> LOADING_DOSE
+			Params:
+			 DWORD -> DefaultDose
+			 DWORD -> DefaultDuration
+			 UNIT -> Unit
+			 DWORD -> MinDose
+			 DWORD -> MaxDose
+			 DWORD -> MinDuration
+			 DWORD -> MaxDuration
+			 BYTE -> SelUnit
+				Flags Bit 0 -> @SELU_U_N
+				Flags Bit 1 -> @SELU_U_U
+				Flags Bit 2 -> @SELU_U_M
+				Flags Bit 3 -> @SELU_U_
+				Flags Bit 4 -> @SELU_U_K
+				Flags Bit 5 -> @SELU_TOGGLE_KG
+				Flags Bit 6 -> @SELU_TOGGLE_M2
+				Flags Bit 7 -> @SELU_U_ML
+		SubPar 11 -> LOADING_DOSE_LOW_HIGH
+			Params:
+			 DWORD -> Low
+			 DWORD -> High
+		SubPar 12 -> PROG_BOLUS
+			Params:
+			 DWORD -> DefaultDose
+			 DWORD -> DefaultDuration
+			 UNIT -> Unit
+			 DWORD -> MinDose
+			 DWORD -> MaxDose
+			 DWORD -> MinDuration
+			 DWORD -> MaxDuration
+			 BYTE -> SelUnit
+				Flags Bit 0 -> @SELU_U_N
+				Flags Bit 1 -> @SELU_U_U
+				Flags Bit 2 -> @SELU_U_M
+				Flags Bit 3 -> @SELU_U_
+				Flags Bit 4 -> @SELU_U_K
+				Flags Bit 5 -> @SELU_TOGGLE_KG
+				Flags Bit 6 -> @SELU_TOGGLE_M2
+				Flags Bit 7 -> @SELU_U_ML
+		SubPar 14 -> VOLUME
+			Params:
+			 DWORD -> Default
+			 DWORD -> Min
+			 DWORD -> Max
+			 WORD -> KvoFlowRate
+		SubPar 16 -> DROP_SENSOR
+			Params:
+			 WORD -> VolDrop
+			 BOOL -> Mandatory
+		SubPar 17 -> AIR
+			Params:
+			 WORD -> VolAlarm
+			 WORD -> VolMin
+		SubPar 18 -> PRESSURE
+			Params:
+			 BYTE -> Mode
+			 WORD -> PressLim
+			 WORD -> MaxLimVar
+			 WORD -> LowLim
+			 WORD -> MediumLim
+			 WORD -> HighLim
+		SubPar 27 -> RAMP
+			Params:
+			 DWORD -> PlateFlowRate
+			 DWORD -> Volume
+			 WORD -> RiseDuration
+			 WORD -> FallDuration
+		SubPar 28 -> SEQUENCE
+			Params:
+			 DWORD -> TypeBeepFlowRate1
+			 DWORD -> RepeatVolDuration1
+			 DWORD -> TypeBeepFlowRate2
+			 DWORD -> RepeatVolDuration2
+			 DWORD -> TypeBeepFlowRate3
+			 DWORD -> RepeatVolDuration3
+			 DWORD -> TypeBeepFlowRate4
+			 DWORD -> RepeatVolDuration4
+			 DWORD -> TypeBeepFlowRate5
+			 DWORD -> RepeatVolDuration5
+			 DWORD -> TypeBeepFlowRate6
+			 DWORD -> RepeatVolDuration6
+			 DWORD -> TypeBeepFlowRate7
+			 DWORD -> RepeatVolDuration7
+			 DWORD -> TypeBeepFlowRate8
+			 DWORD -> RepeatVolDuration8
+			 DWORD -> TypeBeepFlowRate9
+			 DWORD -> RepeatVolDuration9
+			 DWORD -> TypeBeepFlowRate10
+			 DWORD -> RepeatVolDuration10
+			 DWORD -> TypeBeepFlowRate11
+			 DWORD -> RepeatVolDuration11
+			 DWORD -> TypeBeepFlowRate12
+			 DWORD -> RepeatVolDuration12
+			 DWORD -> TypeBeepFlowRate13
+			 DWORD -> RepeatVolDuration13
+			 DWORD -> TypeBeepFlowRate14
+			 DWORD -> RepeatVolDuration14
+			 DWORD -> TypeBeepFlowRate15
+			 DWORD -> RepeatVolDuration15
+			 DWORD -> TypeBeepFlowRate16
+			 DWORD -> RepeatVolDuration16
+			 DWORD -> TypeBeepFlowRate17
+			 DWORD -> RepeatVolDuration17
+			 DWORD -> TypeBeepFlowRate18
+			 DWORD -> RepeatVolDuration18
+			 DWORD -> TypeBeepFlowRate19
+			 DWORD -> RepeatVolDuration19
+			 DWORD -> TypeBeepFlowRate20
+			 DWORD -> RepeatVolDuration20
+		SubPar 29 -> SECONDARY
+			Params:
+			 BYTE -> Flags
+				Flags Bit 0 -> @SEC_SELSEC
+				Flags Bit 1 -> @SEC_SELPRIM
+				Flags Bit 2 -> @SEC_INFUSENABLE
+			 BYTE -> DefNumDrug
+		SubPar 30 -> PROG_BOLUS_LOW_HIGH
+			Params:
+			 DWORD -> Low
+			 DWORD -> High
+		SubPar 31 -> CLINICAL_INFO
+			Params:
+			 DWORD -> Duration
+			 VSTRING(80) -> Msg
+		SubPar 255 -> NEXT
+			Params:
+1398  			 EMPTY [ERRSIZE] si la taille de l'ensemble des sous-paquets dépasse la taille

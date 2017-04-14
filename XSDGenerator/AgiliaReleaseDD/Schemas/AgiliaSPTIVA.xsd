@@ -1,0 +1,544 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema
+	targetNamespace="http://www.fresenius-kabi.com/AgiliaSPTiva"
+	elementFormDefault="qualified"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:Shared="http://www.fresenius-kabi.com/AgiliaShared"
+	xmlns:SPMC="http://www.fresenius-kabi.com/AgiliaSPMC">
+
+	<xs:import schemaLocation="AgiliaSPMC.xsd" namespace="http://www.fresenius-kabi.com/AgiliaSPMC" />
+	<xs:import schemaLocation="AgiliaShared.xsd" namespace="http://www.fresenius-kabi.com/AgiliaShared" />
+	
+	
+	
+	<xs:complexType name="AgiliaSPTivaType">
+		<xs:sequence>
+			<xs:group ref="SPMC:Group_AgiliaSPMC"/>
+			<xs:element name="Zone31" minOccurs="1" maxOccurs="1">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="par3" minOccurs="1" maxOccurs="200">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:group ref="SPMC:Group_AgiliaSPMC_Zone31Par3" />
+									
+									<xs:element name="subpar19">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="TCITarget_DefaultConcentration" minOccurs="1" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:DWORD">
+																<xs:attribute name="RD_ID" fixed="RD_0400" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="TCITarget_ConcentrationUnit" minOccurs="1" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:UNIT">
+																<xs:attribute name="RD_ID" fixed="RD_0401" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="UNIT" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="TCITarget_MinimumConcentration" minOccurs="0" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:DWORD">
+																<xs:attribute name="RD_ID" fixed="RD_0402" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="TCITarget_MaximumConcentration" minOccurs="0" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:DWORD">
+																<xs:attribute name="RD_ID" fixed="RD_0403" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="TCITarget_MaximumFlowRate" minOccurs="0" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:DWORD">
+																<xs:attribute name="RD_ID" fixed="RD_0404" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="TCITarget_PatientWakeUpConcentration" minOccurs="0" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:DWORD">
+																<xs:attribute name="RD_ID" fixed="RD_0405" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="TCITarget_TransitionFlowRate" minOccurs="0" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:DWORD">
+																<xs:attribute name="RD_ID" fixed="RD_0406" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="subpar20">
+										<xs:complexType>
+											<xs:all>
+												<xs:element name="TCITarget_MinimumSoftConcentration">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:DWORD">
+																<xs:attribute name="RD_ID" fixed="RD_0407" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="TCITarget_MaximumSoftConcentration">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:DWORD">
+																<xs:attribute name="RD_ID" fixed="RD_0408" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+											</xs:all>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="subpar21">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="TCIPlasma_DefaultInductionDuration" minOccurs="1" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:DWORD">
+																<xs:attribute name="RD_ID" fixed="RD_0410" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="TCIPlasma_MinimumInductionDuration" minOccurs="0" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:DWORD">
+																<xs:attribute name="RD_ID" fixed="RD_0411" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="TCIPlasma_MaximumInductionDuration" minOccurs="0" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:DWORD">
+																<xs:attribute name="RD_ID" fixed="RD_0412" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="subpar22">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="TCIEffect_DefaultMaximumPlasmaConcentration" minOccurs="1" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:DWORD">
+																<xs:attribute name="RD_ID" fixed="RD_0420" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="TCIEffect_MinimumPlasmaConcentration" minOccurs="0" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:DWORD">
+																<xs:attribute name="RD_ID" fixed="RD_0421" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="TCIEffect_MaximumPlasmaConcentration" minOccurs="0" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:DWORD">
+																<xs:attribute name="RD_ID" fixed="RD_0422" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="subpar23">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="TCIModel_NameAsStatedInList" minOccurs="1" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:String_12">
+																<xs:attribute name="RD_ID" fixed="RD_0430" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="STRING[12]" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="TCIModel_MinimumAge" minOccurs="0" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:WORD">
+																<xs:attribute name="RD_ID" fixed="RD_0431" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="WORD" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="ED_0002" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="TCIModel_MaximumAge" minOccurs="0" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:WORD">
+																<xs:attribute name="RD_ID" fixed="RD_0432" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="WORD" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="ED_0003" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="TCIModel_MinimumWeight" minOccurs="0" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:WORD">
+																<xs:attribute name="RD_ID" fixed="RD_0433" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="WORD" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="TCIModel_MaximumWeight" minOccurs="0" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:WORD">
+																<xs:attribute name="RD_ID" fixed="RD_0434" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="WORD" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="subpar24">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="TCICoeff_ParameterPType" minOccurs="1" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:BYTE">
+																<xs:attribute name="RD_ID" fixed="RD_0440" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="BYTE" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="TCICoeff_ParameterQType" minOccurs="1" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:BYTE">
+																<xs:attribute name="RD_ID" fixed="RD_0441" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="BYTE" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="TCICoeff_Clearance" minOccurs="1" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="xs:boolean">
+																<xs:attribute name="RD_ID" fixed="RD_0442" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="BOOL" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="TCICoeff_EquationVCType" minOccurs="1" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:BYTE">
+																<xs:attribute name="RD_ID" fixed="RD_0443" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="BYTE" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="TCICoeff_EquationK10TypeOrC11" minOccurs="1" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:BYTE">
+																<xs:attribute name="RD_ID" fixed="RD_0444" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="BYTE" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="TCICoeff_EquationK12TypeOrC12" minOccurs="1" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:BYTE">
+																<xs:attribute name="RD_ID" fixed="RD_0445" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="BYTE" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="TCICoeff_EquationK21TypeOrV2" minOccurs="1" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:BYTE">
+																<xs:attribute name="RD_ID" fixed="RD_0446" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="BYTE" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="TCICoeff_EquationK13TypeOrC13" minOccurs="1" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:BYTE">
+																<xs:attribute name="RD_ID" fixed="RD_0447" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="BYTE" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="TCICoeff_EquationK31TypeOrV3" minOccurs="1" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:BYTE">
+																<xs:attribute name="RD_ID" fixed="RD_0448" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="BYTE" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="TCICoeff_EquationK41Type" minOccurs="1" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:BYTE">
+																<xs:attribute name="RD_ID" fixed="RD_0449" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="BYTE" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="TCICoeff_CoefficientsFrom01To06" minOccurs="1" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:FLOAT_ARR_6">
+																<xs:attribute name="RD_ID" fixed="RD_0450" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="FLOAT[6]" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="TCICoeff_CoefficientsFrom07To12" minOccurs="0" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:FLOAT_ARR_6">
+																<xs:attribute name="RD_ID" fixed="RD_0451" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="FLOAT[6]" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+																<xs:attribute name="Name" fixed="coeff07_12" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="TCICoeff_CoefficientsFrom13To18" minOccurs="0" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:FLOAT_ARR_6">
+																<xs:attribute name="RD_ID" fixed="RD_0452" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="FLOAT[6]" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="TCICoeff_CoefficientsFrom19To24" minOccurs="0" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:FLOAT_ARR_6">
+																<xs:attribute name="RD_ID" fixed="RD_0453" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="FLOAT[6]" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="TCICoeff_CoefficientsFrom25To30" minOccurs="0" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:FLOAT_ARR_6">
+																<xs:attribute name="RD_ID" fixed="RD_0454" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="FLOAT[6]" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="TCICoeff_CoefficientsFrom31To36" minOccurs="0" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:BYTE">
+																<xs:attribute name="RD_ID" fixed="RD_0455" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="BYTE" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="TCICoeff_CoefficientsFrom37To42" minOccurs="0" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:FLOAT_ARR_6">
+																<xs:attribute name="RD_ID" fixed="RD_0456" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="FLOAT[6]" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="TCICoeff_CoefficientsFrom43To48" minOccurs="0" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:FLOAT_ARR_6">
+																<xs:attribute name="RD_ID" fixed="RD_0457" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="FLOAT[6]" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="TCICoeff_CoefficientsFrom49To54" minOccurs="0" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:FLOAT_ARR_6">
+																<xs:attribute name="RD_ID" fixed="RD_0458" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="FLOAT[6]" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="TCICoeff_CoefficientsFrom55To56" minOccurs="0" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:FLOAT_ARR_2">
+																<xs:attribute name="RD_ID" fixed="RD_0459" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="FLOAT[2]" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="subpar26">
+										<xs:complexType>
+											<xs:all>
+												<xs:element name="TCIIncrement_TargetConcentration">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:BYTE">
+																<xs:attribute name="RD_ID" fixed="RD_0460" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="BYTE" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="TCIIncrement_WakeUpConcentration">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:BYTE">
+																<xs:attribute name="RD_ID" fixed="RD_0461" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="BYTE" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+											</xs:all>
+										</xs:complexType>
+									</xs:element>
+
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			
+			
+			
+
+		</xs:sequence>
+	</xs:complexType>
+	
+</xs:schema>

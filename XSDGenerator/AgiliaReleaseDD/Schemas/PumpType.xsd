@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--Created with Liquid XML 2016 Designer Edition (Trial) 14.1.5.6733 (https://www.liquid-technologies.com)-->
+
+<!-- date 2/13/2017
+author :- jrathod
+
+1) Made pump specific xsd using groups. 
+2) High level common elements are shared at SP & VP level and resides in AgiliaShared.xsd.
+3) AgiliaSPTiva is a child of AgiliaSPMC pump and also holds TCI parameters
+4) This version have Zone31 Par3 cardinality of 1 to 300.
+5) optional and required caridnality is set.
+6) Future revision will have SPPCA pump as well which would be subset of SPMC
+
+
+
+-->
+<xs:schema xmlns:Pump="http://www.fresenius-kabi.com/PumpType" 
+		   xmlns:VPMC="http://www.fresenius-kabi.com/AgiliaVPMC" 
+		   xmlns:SPMC="http://www.fresenius-kabi.com/AgiliaSPMC" 
+		   xmlns:SPTiva="http://www.fresenius-kabi.com/AgiliaSPTiva" 
+		   elementFormDefault="qualified" 
+		   targetNamespace="http://www.fresenius-kabi.com/PumpType" 
+		   xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:import schemaLocation="AgiliaVPMC.xsd" namespace="http://www.fresenius-kabi.com/AgiliaVPMC" />
+	<xs:import schemaLocation="AgiliaSPMC.xsd" namespace="http://www.fresenius-kabi.com/AgiliaSPMC" />
+	<xs:import schemaLocation="AgiliaSPTiva.xsd" namespace="http://www.fresenius-kabi.com/AgiliaSPTiva" />
+	<xs:element name="Zones" type="Pump:PumpTypes" />
+	<xs:complexType name="PumpTypes">
+		<xs:choice>
+			<xs:element name="ZonesVPMC" type="VPMC:AgiliaVPMCType" />
+			<xs:element name="ZonesSPMC" type="SPMC:AgiliaSPMCType" />
+			<xs:element name="ZonesSPTiva" type="SPTiva:AgiliaSPTivaType" />
+		</xs:choice>
+	</xs:complexType>
+</xs:schema>

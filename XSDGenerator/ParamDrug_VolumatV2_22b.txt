@@ -1,0 +1,1574 @@
+/***************************************************************************/
+/*                                                                         */
+/*                              ParamDrug.txt                              */
+/*                                                                         */
+/***************************************************************************/
+/* :mode=maatel-param:                                                     */
+/*                                                                         */
+/* Description paramètres médicaments Volumat V2                           */
+/*                                                                         */
+/***************************************************************************/
+/* Origine      : Maquette Volumat V2          Version 0.1                 */
+/*                16.07.2013  E. Van Olden     Version 0.5                 */
+/*    - reprise importante : suppression des sous-paquets inutiles, ajout  */
+/*      attribut '$LibVigilant' pour sous-paquets autorisés uniquement     */
+/*      dans bibliothèque Vigilant (zone 31)                               */
+/* Modification : 03.04.2015  E. Van Olden     Version 1.1                 */
+/*    - reprise commentaires                                               */
+/* Modification : 23.02.2016  N. Curtil        Version 2.0                 */
+/*    - [DCR#14147] ajout sous-paquet CLINICAL_INFO (information clinique) */
+/*    - [DCR#14150] ajout unité 'ml/kg/min'                                */
+/*    - [DCR#14153] ajout sous-paquet PRESSURE (pression)                  */
+/*    - évolution format bibliothèque médicament                           */
+/* Modification : 22.11.2016  E. Van Olden     Version 2.2a                */
+/*    - reprise commentaires                                               */
+/***************************************************************************/
+
+
+
+#define __SPECVALNAME
+#include "Decod.txt"
+
+
+
+/*-------------------------------------------------------------------------*/
+/* Version format bibliothèque médicament                                  */
+/*-------------------------------------------------------------------------*/
+
+Version format disponible avec Id-40h/DataId-08h :
+   - "01.6 " : appareil standard, sans débit massique
+               (z9/p2[DEVICE_TYPE]/DeviceType/DEVTYPE_MASSFLOW à FALSE)
+   - "02.7 " : appareil MC, avec débit massique
+               (z9/p2[DEVICE_TYPE]/DeviceType/DEVTYPE_MASSFLOW à TRUE)
+
+
+
+/*-------------------------------------------------------------------------*/
+/* Description paramètres                                                  */
+/*-------------------------------------------------------------------------*/
+
+Pour chaque sous-paquet :
+   - $subpar <Id> <Name> [$mandatory] [$LibVigilant]
+        . <Id> : identificateur du sous-paquet, 1-n
+        . <Name> : nom du sous-paquet
+        . $mandatory : indication qu'il s'agit d'un sous-paquet obligatoire
+        . $LibVigilant : indication qu'il s'agit d'un sous-paquet pour une
+                         bibliothèque Vigilant (zone 31), erreur si tentative
+                         écriture dans une bibliothèque liste noms médicament
+                         (zone 30)
+   - pour chaque champ :
+        . <FieldType> <FieldName> [<Default>|*] [<Min> <Max>|*]
+             - <FieldType> : type du champ, voir conventions dans Communic.txt
+             - <FieldName> : nom du champ
+             - <Default> : valeur par défaut, '*' si valeur par défaut non
+                           spécifiée, valeur 0 dans ce cas
+             - <Min> : valeur minimum
+             - <Max> : valeur maximum
+             - '*' : valeurs minimum et maximum non spécifiées
+   - $option : les champs qui suivent cette ligne sont optionnels
+        . ATTENTION : les champs optionnels sont répartis en groupe. Si un
+          champ est présent après une ligne $option, tous les champs juqu'à
+          ligne $option suivante ou jusqu'à la fin du sous-paquet doivent
+          être présents.
+        . exemple : pour $subpar FLOWRATE de PARAM_DRUG les combinaisons
+          autorisés sont :
+             1) <Default>
+             2) <Default> <Min> <Max>
+             3) <Default> <Min> <Max> <Unit>
+        . lorsqu'un champ optionnel est absent du sous-paquet, le logiciel
+          initialise en interne ce champ à la valeur par défaut pour les
+          traitements avec ce médicament.
+
+Note : dans de nombreux cas, la valeur par défaut est à 0 (ou à FFFFh) pour
+indiquer une «absence» de valeur qui provoque un traitement spécifique. Dans
+ces cas, la valeur par défaut peut ne pas être comprise entre la valeur
+minimum et la valeur maximum.
+
+
+
+/*-------------------------------------------------------------------------*/
+/* Organisation paramètres dans paquets communication                      */
+/*-------------------------------------------------------------------------*/
+
+Les paramètres des médicaments sont présents dans les paquets suivants :
+   - Id-82h : réponse lecture paramètres médicament sélectionné
+   - Id-A0h : réponse lecture configuration
+   - Id-21h : écriture configuration
+   - Id-A4h : réponse lecture care area
+   - Id-25h : écriture care area
+
+Dans tous ces paquets, le champ <Data> qui contient les données du paramètre
+est organisé ainsi :
+   pour chaque sous-paquet :
+      BYTE Size : taille données y compris <Id>
+      BYTE Id : identificateur sous-paquet
+      BYTE DataSubPar : données du sous-paquet
+
+Si tous les sous-paquets ne tiennent pas dans un seul paquet, il est possible
+de «chaîner» des paquets avec l'identificateur spécifique de sous-paquet
+`NEXT (voir ci-dessous).
+
+
+
+/*-------------------------------------------------------------------------*/
+/* Stockage informations bibliothèque et paramètres médicaments            */
+/*-------------------------------------------------------------------------*/
+
+La totalité des paramètres pour les bibliothèques de médicaments est stockée
+dans une zone de 100 ko.
+
+Cela inclut :
+   - informations bibliothèque (z30/p2[INFOS_LIB] et z31/p2[INFOS_LIB])
+   - paramètres médicament (z30/p3[PARAM_DRUG] et z31/p3[PARAM_DRUG])
+
+Chaque paramètre est stocké dans un bloc :
+   - un bloc pour les informations d'une bibliothèque, soit 2 blocs pour
+     les bibliothèques liste noms médicament (zone 30) et Vigilant (zone 31)
+   - un bloc pour chaque médicament d'une bibliothèque, soit 400 blocs au
+     total pour 200 médicaments pour la bibliothèque liste noms médicament
+     (zone 30) et 200 médicaments pour la bibliothèque Vigilant (zone 31)
+
+La taille d'un bloc est de :
+   - 8 octets pour l'entête du bloc
+   - pour chaque sous-paquet :
+        . 2 octets pour l'entête du sous-paquet
+        . <n> octets pour les champs du sous-paquet
+        . les champs optionnels qui ne sont pas définis ne sont pas
+          comptabilisés dans la taille
+        . la taille pour les chaînes de longueur variable (type VSTRING)
+          est le nombre de caractères de la chaîne + le 0 de fin de chaîne
+          éventuel. Si la chaîne est plus longue que le nombre maximum de
+          caractères défini dans la description du sous-paquet, la taille
+          reste celle du sous-paquet reçu (et n'est donc pas limitée au
+          nombre maximum de caractères)
+   - 1 à 3 octets pour que la taille totale du bloc soit un multiple de
+     4 octets
+
+C'est la somme de la taille de tous les blocs qui ne doit pas dépasser
+le maximum de 100 ko.
+
+
+
+/*-------------------------------------------------------------------------*/
+/* Informations bibliothèque                                               */
+/*-------------------------------------------------------------------------*/
+
+$par 2 INFOS_LIB
+
+
+Non utilisés : $subpar 1 à $subpar 11
+
+
+$subpar 12 LABELS1                  `1er groupe libellés liste médicaments
+   BYTE Index1           1 1 200    `1er index vers liste médicaments
+   VSTRING(20) Label1    **         libellé 1er index à afficher dans liste
+   $option
+   BYTE Index2           0 1 200    `2ème index vers liste médicaments
+   VSTRING(20) Label2    **         libellé 2ème index à afficher dans liste
+   $option
+   BYTE Index3           0 1 200    `3ème index vers liste médicaments
+   VSTRING(20) Label3    **         libellé 3ème index à afficher dans liste
+   $option
+   BYTE Index4           0 1 200    `4ème index vers liste médicaments
+   VSTRING(20) Label4    **         libellé 4ème index à afficher dans liste
+   $option
+   BYTE Index5           0 1 200    `5ème index vers liste médicaments
+   VSTRING(20) Label5    **         libellé 5ème index à afficher dans liste
+   $option
+   BYTE Index6           0 1 200    `6ème index vers liste médicaments
+   VSTRING(20) Label6    **         libellé 6ème index à afficher dans liste
+   $option
+   BYTE Index7           0 1 200    `7ème index vers liste médicaments
+   VSTRING(20) Label7    **         libellé 7ème index à afficher dans liste
+   $option
+   BYTE Index8           0 1 200    `8ème index vers liste médicaments
+   VSTRING(20) Label8    **         libellé 8ème index à afficher dans liste
+   $option
+   BYTE Index9           0 1 200    `9ème index vers liste médicaments
+   VSTRING(20) Label9    **         libellé 9ème index à afficher dans liste
+   $option
+   BYTE Index10          0 1 200    `10ème index vers liste médicaments
+   VSTRING(20) Label10   **         libellé 10ème index à afficher dans liste
+
+Correct si :
+   - <Index1> différent de 0 (1 libellé au moins doit être défini)
+   - <Index1> à <Index10> en ordre strictement croissant
+   - index non définis parmi <Index2> à <Index10> (avec une valeur à 0)
+     regroupés en fin de liste
+   - voir note #1 pour <Label1> à <Label10>
+   - chaîne vide (tout à 0) pour <Label2> à <Label10> si <Index2> à <Index10>
+     respectivement à 0
+Note : pour une sélection de médicament sans gestion d'un 1er écran avec une
+liste de libellés, ce sous-paquet doit être absent. S'il est présent, il doit
+définir 1 libellé au moins.
+Note : un index avec une valeur à 0 indique que le libellé correspondant
+n'est pas exploité.
+Note : on considère qu'un libellé est utile s'il y a au moins un médicament
+présent entre l'index associé au libellé et l'index du libellé suivant ou la
+fin de la liste des médicaments. Si le libellé n'est pas utile, il est
+automatiquement supprimer de la liste des libellés. Avec le fait que certains
+des 200 médicaments peuvent être présents uniquement dans la liste des
+médicaments primaires ou uniquement dans la liste des médicaments secondaires,
+on peut avoir des libellés qui sont considérés comme utiles uniquement pour
+une sélection de médicament primaire ou uniquement pour une sélection de
+médicament secondaire.
+
+
+$subpar 13 LABELS2                  `2ème groupe libellés liste médicaments
+   BYTE Index11          1 1 200    `11ème index vers liste médicaments
+   VSTRING(20) Label11   **         libellé 11ème index à afficher dans liste
+   $option
+   BYTE Index12          0 1 200    `12ème index vers liste médicaments
+   VSTRING(20) Label12   **         libellé 12ème index à afficher dans liste
+   $option
+   BYTE Index13          0 1 200    `13ème index vers liste médicaments
+   VSTRING(20) Label13   **         libellé 13ème index à afficher dans liste
+   $option
+   BYTE Index14          0 1 200    `14ème index vers liste médicaments
+   VSTRING(20) Label14   **         libellé 14ème index à afficher dans liste
+   $option
+   BYTE Index15          0 1 200    `15ème index vers liste médicaments
+   VSTRING(20) Label15   **         libellé 15ème index à afficher dans liste
+   $option
+   BYTE Index16          0 1 200    `16ème index vers liste médicaments
+   VSTRING(20) Label16   **         libellé 16ème index à afficher dans liste
+   $option
+   BYTE Index17          0 1 200    `17ème index vers liste médicaments
+   VSTRING(20) Label17   **         libellé 17ème index à afficher dans liste
+   $option
+   BYTE Index18          0 1 200    `18ème index vers liste médicaments
+   VSTRING(20) Label18   **         libellé 18ème index à afficher dans liste
+   $option
+   BYTE Index19          0 1 200    `19ème index vers liste médicaments
+   VSTRING(20) Label19   **         libellé 19ème index à afficher dans liste
+   $option
+   BYTE Index120         0 1 200    `20ème index vers liste médicaments
+   VSTRING(20) Label20   **         libellé 20ème index à afficher dans liste
+
+Correct si :
+   - <Index11> différent de 0 (1 libellé au moins doit être défini)
+   - <Index11> à <Index20> en ordre strictement croissant
+   - <Index11> > `LABELS1/<Index10> (ce qui implique présence sous-paquet
+     `LABELS1)
+   - index non définis parmi <Index12> à <Index20> (avec une valeur à 0)
+     regroupés en fin de liste
+   - voir note #1 pour <Label11> à <Label20>
+   - chaîne vide (tout à 0) pour <Label12> à <Label20> si <Index12> à
+     <Index20> respectivement à 0
+Note : si ce sous-paquet est présent, il doit définir au moins un libellé et
+dans ce cas, tous les libellés du sous-paquet `LABELS1 doivent être définis.
+Pour une configuration avec 10 libellés ou moins, ce sous-paquet doit être
+absent.
+Note : voir notes sous-paquets `LABELS1.
+
+
+Injectomat V2 : $subpar 14 `PCA_LABELS1 1er groupe libellés liste médicaments Pca
+Injectomat V2 : $subpar 15 `PCA_LABELS2 2ème groupe libellés liste médicaments Pca
+
+
+
+/*-------------------------------------------------------------------------*/
+/* Paramètres médicament                                                   */
+/*-------------------------------------------------------------------------*/
+
+$nb DRUGS 200   nombre médicaments dans une bibliothèque
+
+
+$par 3 PARAM_DRUG [DRUGS]
+
+
+$subpar 1 NAME $mandatory           nom (obligatoire)
+   VSTRING(25) Name  **             nom médicament tel qu'il apparaît dans les
+                                    listes et en haut de l'écran de perfusion,
+                                    note #1
+
+Correct si :
+   - voir note #1 pour <Name>
+
+
+$subpar 2 DILUTION $LibVigilant     dilution
+   DWORD Default  1000 10 70000000  dose/dilution par défaut ou 1ère valeur
+                                    dose/dilution pour sélection dans liste
+                                    valeurs, 1/1000 unité, note #3
+   UNIT Unit          "mg/ml" *     unité dilution
+   $option
+   WORD Volume        0 1 9999      volume associé à dilution ou 1er volume
+                                    associé à 1ère valeur dose/dilution
+                                    <Default> pour sélection dans liste, ml
+   $option
+   UNIT MassInfusUnit "ml" *        unité masse perfusée
+
+Correct si :
+   - voir note #3 pour <Default>
+   - <Unit> appartient à liste des unités de dilution et bits 1-2 (dilution)
+     à 01b '/ml' ou 11b '/Xml'
+   - <Volume> à 0 si unité dilution <Unit> pas avec '/Xml', c'est à dire
+     si bit 1-2 (dilution) autre que 11b
+   - <MassInfusUnit> si appareil configuré sans débit massique : égal à 'ml'
+   - <MassInfusUnit> si appareil configuré avec débit massique :
+        . bit 0 (plasma) à 0 (pas '/ml plasma')
+        . bits 1-2 (dilution) à 00b (pas '/ml', ni '/l', ni '/X ml')
+        . bits 3-4 (temps) à 00b (pas '/min', ni '/h', ni '/24h')
+        . bit 5 (poids) à 0 (pas '/kg')
+        . bits 6-8 (unité) identique à bits 6-8 de <Unit> ou à 001b 'l' pour
+          afficher volume perfusé au lieu masse perfusée (bits 9-11, préfixe,
+          obligatoirement à 011b 'm' dans ce cas)
+        . bits 9-11 (préfixe) de 1 à 5 ('n', 'µ', 'm', '-', 'k')
+        . bit 12 (surface) à 0 (pas '/m²')
+        . bit 13 (décimales) à 0 (2 décimales)
+Note : ce sous-paquet peut être présent pour un médicament ml/h. Dans ce cas,
+il est exploité uniquement pour l'affichage d'une dilution à côté du nom mais
+pas pour des conversions de débit massique.
+Note : si médicament sélectionné en mode secondaire, ce sous-paquet est
+exploité comme dans le cas d'un médicament ml/h (voir note ci-dessus) :
+affichage uniquement dilution.
+
+
+$subpar 3 SEL_DILUTION $LibVigilant sélection dilution
+   DWORD MinDilution       10 10 70000000 \
+                                    dose/dilution minimum ou 2ème valeur
+                                    dose/dilution pour sélection dans liste
+                                    valeurs, 1/1000 unité, note #3
+   DWORD MaxDilution 70000000 10 70000000 \
+                                    dose/dilution maximum ou 3ème valeur
+                                    dose/dilution pour sélection dans liste
+                                    valeurs, 1/1000 unité, à 0 si sélection
+                                    dans liste et absence 3ème valeur
+                                    dose/dilution, note #3
+   $option
+   BYTE Flags **                    flags gestion dilution
+      $bit 1 @SDIL_VALUES FALSE *   sélection dose/dilution dans liste de 2
+                                    à 5 valeurs (au lieu sélection entre
+                                    minimum et maximum)
+      $bit 4 @SDIL_VOLVALUES FALSE * \
+                                    sélection volume dans liste de 2 à 5
+                                    volumes associés aux 2 à 5 valeurs de
+                                    dilution (au lieu volume fixe)
+   $option
+   DWORD ValDilution4 0 10 70000000 `4ème valeur dose/dilution pour sélection
+                                    dans liste valeurs, 1/1000 unité, à 0 si
+                                    absence 4ème valeur dose/dilution, note #3
+   $option
+   DWORD ValDilution5 0 10 70000000 `5ème valeur dose/dilution pour sélection
+                                    dans liste valeurs, 1/1000 unité, à 0 si
+                                    absence 5ème valeur dose/dilution, note #3
+   $option
+   WORD Volume2       0  1 9999     `2ème volume associé à 2ème valeur
+                                    dilution <MinDilution>
+   $option
+   WORD Volume3       0  1 9999     `3ème volume associé à 3ème valeur
+                                    dilution <MaxDilution>, à 0 si absence
+                                    3ème volume
+   $option
+   WORD Volume4       0  1 9999     `4ème volume associé à 4ème valeur
+                                    dilution <ValDilution4>, à 0 si absence
+                                    4ème volume
+   $option
+   WORD Volume5       0  1 9999     `5ème volume associé à 5ème valeur
+                                    dilution <ValDilution5>, à 0 si absence
+                                    5ème volume
+
+Note : il y a 3 modes de sélection de la dose/dilution en fonction des flags :
+              VALUES  VOLVALUES
+   - mode 1 :  FALSE    FALSE  : entre mininum et maximum, dilution seule si
+                                 '/ml' ou dose avec volume fixe si '/Xml'
+   - mode 2 :  TRUE     FALSE  : liste de 2 à 5 valeurs, dilution seule si
+                                 '/ml' ou dose avec volume fixe si '/Xml'
+   - mode 3 :  TRUE     TRUE   : liste de 2 à 5 couples dose/volume, toujours
+                                 avec '/Xml'
+Correct si :
+   - présence sous-paquet `DILUTION
+   - appareil configuré avec débit massique. Si appareil configuré sans débit
+     massique, ce sous-paquet est interdit
+   - voir note #3 pour <MinDilution>, <MaxDilution>, <ValDilution4> et
+     <ValDilution5>
+   - mode 1 : sélection entre minimum et maximum (@SDIL_VALUES à FALSE) :
+        . <Flags>/SDIL_VOLVALUES à FALSE
+        . <MinDilution> <= <MaxDilution>
+        . <MinDilution> <= `DILUTION/<Default>
+        . `DILUTION/<Default> <= <MaxDilution>
+        . <ValDilution4> et <ValDilution5> à 0
+        . <Volume2> à <Volume5> à 0
+   - mode 2 : sélection avec liste de 2 à 5 valeurs (@SDIL_VALUES à TRUE et
+     @SDIL_VOLVALUES à FALSE) :
+        . <MinDilution> différent de 0 (au moins 2 valeurs dans la liste)
+        . valeurs non définies parmi <MaxDilution>, <ValDilution4> et
+          <ValDilution5> (c'est à dire à 0) regroupées en fin de liste
+        . valeurs définies parmi `DILUTION/<Default>, <MinDilution>,
+          <MaxDilution>, <ValDilution4> et <ValDilution5> toutes différentes
+          les unes des autres
+        . <Volume2> à <Volume5> à 0
+   - mode 3 : sélection avec liste de 2 à 5 couples dose/volume
+     (@SDIL_VALUES à TRUE et @SDIL_VOLVALUES à TRUE) :
+        . bits 1-2 (dilution) de `DILUTION/<Unit> à 11b '/X ml'
+        . <MinDilution> et <Volume2> différents de 0 (au moins 2 couples dans
+          la liste)
+        . couples non définis parmi <MaxDilution>/<Volume3>,
+          <ValDilution4>/<Volume4> et <ValDilution5>/<Volume5> (c'est à dire
+          à 0) regroupés en fin de liste
+        . couples définis parmi `DILUTION/<Default>/`DILUTION/<Volume>,
+          <MinDilution>/<Volume2>, <MaxDilution>/<Volume3>,
+          <ValDilution4>/<Volume4> et <ValDilution5>/<Volume5> tous
+          différents les uns des autres soit sur la valeur de la dose, soit
+          sur la valeur du volume
+        . aucun couple partiellement défini : pour chaque dose différente de
+          0, volume correspondant également différent de 0
+Note : ce sous-paquet peut être présent pour un médicament ml/h. Dans ce cas,
+il est exploité pour la sélection d'une dilution après la sélection du
+médicament. La dilution sélectionnée est exploitée uniquement pour l'affichage
+à côté du nom mais pas pour des conversions de débit massique.
+Note : si médicament sélectionné en mode secondaire, ce sous-paquet est
+exploité comme dans le cas d'un médicament ml/h (voir note ci-dessus) :
+sélection dilution après sélection médicament secondaire puis affichage
+uniquement.
+Note : pour l'affichage du nom de médicament dans la liste, la valeur de
+dose/dilution est remplacée par 'X' si elle est sélectionnable et la valeur
+de volume est remplacée par 'X' si le volume peut varier. Exemples pour unité
+'mg' et dose/dilution par défaut à 2000 :
+   - '2.00 mg/ml'    : absence sous-paquet `SEL_DILUTION et unité avec '/ml'
+   - '2.00 mg/100ml' : absence sous-paquet `SEL_DILUTION, unité avec '/Xml'
+                       et volume à 100
+   - 'X mg/ml'       : mode 1 et unité avec '/ml'
+   - 'X mg/100ml'    : mode 1, unité avec '/Xml' et volume à 100
+   - 'X mg/ml'       : mode 2 et unité avec '/ml'
+   - 'X mg/100ml'    : mode 2, unité avec '/Xml' et volume à 100
+   - 'X mg/Xml'      : mode 3
+Note : pour le mode 1 de sélection, si <MinDilution> = <MaxDilution> (et
+donc égal à `DILUTION/<Default>), la dilution n'est pas sélectionnable et
+on est donc dans le même cas que si ce sous-paquet est absent.
+
+
+$subpar 4 FLOWRATE $LibVigilant     débit perfusion
+   DWORD Default    0 10 9999000    débit par défaut, 1/1000 unité, à 0 si pas
+                                    de débit par défaut (débit à 0 après
+                                    sélection médicament), note #4
+   $option
+   DWORD Min        0 10 9999000    débit minimum, 1/1000 unité, à 0 si pas de
+                                    débit minimum pour utilisation débit
+                                    minimum sans médicament, note #4
+   DWORD Max        0 10 9999000    débit maximum, 1/1000 unité, à 0 si pas de
+                                    débit maximum pour utilisation débit
+                                    maximum sans médicament, note #4
+   $option
+   UNIT Unit        "ml/h" *        unité débit
+
+Correct si :
+   - voir note #4 pour <Default>, <Min> et <Max>
+   - <Min> <= <Max> (si <Min> et <Max> différents de 0)
+   - <Min> <= <Default> (si <Min> et <Default> différents de 0)
+   - <Default> <= <Max> (si <Default> et <Max> différents de 0)
+   - <Unit> si appareil configuré sans débit massique : égale à 'ml/h'
+   - <Unit> si appareil configuré avec débit massique :
+        . appartient à liste des unités de débit ou est égal à 'ml/h'
+        . si bits 6-8 (unité) autre que 001b ('l') alors identique à bits 6-8
+          de `DILUTION/<Unit> (ce qui implique présence sous-paquet `DILUTION)
+        . bit 12 (surface) à 0 (pas '/m²') si unités avec '/m²' inhibées
+          (paramètre z9/p2[DEVICE_TYPE]/DeviceType/DEVTYPE_INHIBITM2 à TRUE)
+        . bit 13 (décimales) à 0 (2 décimales) ou à 1 (3 décimales)
+Note : l'unité de débit définie avec le champ <Unit> est utilisée pour
+afficher le débit des 5 modes de base (V/T, V/D, T/D, V/T/D et débit seul).
+Note : les débits par défaut, minimum et maximum sont également exploités
+pour le mode gouttes/min (uniquement si unité 'ml/h').
+Note : pour les modes rampe et séquence, seul le débit maximum est exploité.
+Les débits par défaut et minimum sont ignorés.
+Note : si médicament sélectionné en mode secondaire, ce sous-paquet est
+exploité de la même manière que pour un médicament primaire.
+Note : débits sans médicament :
+   - débit massique minimum : 0.01 unité
+   - débit massique maximum : 9999 unités
+   - débit ml/h minimum : 0.1 ml/h (affichage 0.10 ml/h si précision fine)
+   - débit ml/h maximum :
+        . mode primaire : paramètre z22/p12[MAX_FLOWRATE]/MaxFlowPrim
+        . mode secondaire : paramètre z22/p46[MAX_FLOWRATE_SEC]/MaxFlowSec
+
+
+                                    limites basse et haute débit
+$subpar 5 FLOW_LOW_HIGH $LibVigilant
+   DWORD Low         10 10 9999000  limite basse débit, 1/1000 unité
+                                    (`FLOWRATE/<Unit>), note #4
+   DWORD High   9999000 10 9999000  limite haute débit, 1/1000 unité
+                                    (`FLOWRATE/<Unit>), note #4
+
+Correct si :
+   - voir note #4 pour <Low> et <High>
+   - <Low> <= <High>
+Note : les limites haute et basse de débit définies avec ce sous-paquet sont
+exploitées pour vérifier le débit des 5 modes de bases (V/T, V/D, T/D, V/T/D
+et débit seul) ainsi que du mode gouttes/min. Elles sont ignorées pour les
+modes rampe et séquence.
+Note : si médicament sélectionné en mode secondaire, ce sous-paquet est
+exploité de la même manière que pour un médicament primaire.
+
+
+Injectomat V2 : $subpar 6 `VOL_TIME volume/temps
+
+
+$subpar 7 BOLUS $LibVigilant        bolus simple
+   DWORD FlowRate 1500000 50000 1500000 \
+                                    débit bolus simple, 1/1000 ml/h, à 0 si
+                                    débit non défini pour utilisation débit
+                                    bolus simple sans médicament, note #5
+   $option
+   WORD MaxVolume 0xFFFF 100 60000  volume maximum bolus simple, 1/1000 ml, à
+                                    FFFFh si pas de volume maximum pour
+                                    utilisation volume maximum sans médicament
+
+Correct si :
+   - voir note #5 pour <FlowRate>
+   - mode perfusion bolus simple autorisé pour médicament, c'est à dire :
+        . soit absence sous-paquet `INFUS_MODE. Si paramètres médicament ne
+          définissent pas les modes de perfusion autorisés, on considère
+          toujours que le bolus simple est autorisé indépendamment de l'état
+          de z22/p24[INFUS_ENABLE]/InfusEnable/INFUS_B_BOLS
+        . soit présence sous-paquet `INFUS_MODE avec bit @INFUS_B_BOLS armé
+          dans <Enable>
+   - médicament sélectionnable en primaire. Ce sous-paquet est interdit si
+     présence sous-paquet `SECONDARY sans flags @SEC_SELPRIM ce qui indique
+     qu'il s'agit d'un médicament sélectionnable en secondaire uniquement
+Note : si médicament sélectionné en mode secondaire, ce sous-paquet est
+ignoré ; les paramètres pour un bolus simple en cours secondaire sont ceux du
+médicament primaire sélectionné.
+Note : débit bolus simple sans médicament : débit configuré dans paramètre
+z22/p21[BOLUS_FLOWRATE]/BolsFlowRate.
+Note : volume maximum sans médicament : 20 ml.
+
+
+$subpar 8 INFUS_MODE $LibVigilant   mode perfusion
+   BYTE Default  2  1  12           mode perfusion par défaut
+                                    [e_infusMode!..\Control.h] :
+                                       -  1 : volume/temps
+                                       -  2 : volume/débit
+                                       -  3 : temps/débit
+                                       -  4 : volume/temps/débit
+                                       -  5 : débit seul
+                                       -  6 : gouttes/min
+                                       - 11 : rampe
+                                       - 12 : séquence
+   $option
+   WORD Enable **                   liste modes perfusion autorisés
+      $bit  0 @INFUS_B_VT        TRUE  *  volume/temps
+      $bit  1 @INFUS_B_VR        TRUE  *  volume/débit
+      $bit  2 @INFUS_B_TR        TRUE  *  temps/débit
+      $bit  3 @INFUS_B_VTR       TRUE  *  volume/temps/débit
+      $bit  4 @INFUS_B_R         TRUE  *  débit seul
+      $bit  5 @INFUS_B_DROP      TRUE  *  gouttes/min
+      $bit  6 @INFUS_B_BOLS      TRUE  *  bolus simple
+      $bit  8 @INFUS_B_LOAD      TRUE  *  dose charge
+      $bit  9 @INFUS_B_BOLP      TRUE  *  bolus programmé
+      $bit 10 @INFUS_B_RAMP      TRUE  *  rampe
+      $bit 11 @INFUS_B_SEQ       TRUE  *  séquence
+      $bit 12 @INFUS_B_PURG_AIR  TRUE  *  purge air
+      $bit 13 @INFUS_B_PURG_TUB  TRUE  *  purge tubulure
+   $option
+   BYTE Flags **                    flags mode perfusion
+                                    mode définition état durée perfusion cachée :
+                                       - TRUE état défini par @INFUS_F_HIDEDURATION
+                                       - FALSE état défini par paramètre
+                                         z22/p44[MISCELLANEOUS2]/Flags/MISC2_HIDEDURATION.
+      $bit  0 @INFUS_F_HIDEDURFROMDRUG FALSE *
+                                    durée perfusion cachée pendant exécution
+                                    perfusion, ignoré si @INFUS_F_HIDEDURFROMDRUG
+                                    à FALSE
+      $bit  1 @INFUS_F_HIDEDURATION    FALSE *
+
+Correct si :
+   - <Default> pas compris entre 7 et 10
+   - au moins un mode primaire (volume/temps, volume/débit, temps/débit,
+     volume/temps/débit, débit seul, gouttes/min, rampe ou séquence) autorisé
+     dans <Enable>
+   - <Enable>/INFUS_B_DROP, <Enable>/INFUS_B_RAMP et <Enable>/INFUS_B_SEQ à
+     FALSE si `FLOWRAT/<Unit> autre que 'ml/h'
+   - mode perfusion dans <Default> est un mode autorisé dans <Enable>
+   - <Enable>/INFUS_B_DROP à FALSE si mode perfusion gouttes/min pas
+     disponible (z9/p2[DEVICE_TYPE]/DeviceType/DEVTYPE_DROP à FALSE)
+   - <Enable>/INFUS_B_LOAD à FALSE si fonction dose charge pas disponible
+     (z9/p2[DEVICE_TYPE]/DeviceType/DEVTYPE_LOAD à FALSE)
+   - <Enable>/INFUS_B_BOLP à FALSE si fonction bolus programmé pas disponible
+     (z9/p2[DEVICE_TYPE]/DeviceType/DEVTYPE_BOLP à FALSE)
+   - <Enable>/INFUS_B_RAMP à FALSE si mode perfusion rampe pas disponible
+     (z9/p2[DEVICE_TYPE]/DeviceType/DEVTYPE_RAMP à FALSE)
+   - <Enable>/INFUS_B_SEQ à FALSE si mode perfusion séquence pas disponible
+     (z9/p2[DEVICE_TYPE]/DeviceType/DEVTYPE_SEQ à FALSE)
+Note : si médicament sélectionné en mode secondaire, seul le champ <Flags>
+est exploité pour définir si la durée de perfusion secondaire est cachée ou
+non. Les champs <Default> et <Enable> sont ignorés :
+   - le mode de perfusion en secondaire est le même que celui du médicament
+     primaire (sauf si mode débit seul en primaire, dans ce cas le mode de
+     perfusion secondaire est volume/débit)
+   - le fait que le bolus simple, la purge air ou la purge tubulure soit
+     autorisé ou non provient du champ <Enable> du médicament primaire
+     sélectionné
+Note : la durée de perfusion cachée ou non avec les bits @INFUS_F_HIDExxx
+concerne la durée restante de perfusion en mode de base, en mode gouttes/min
+et en mode secondaire. La durée restante de perfusion en mode rampe et en
+mode séquence est toujours affichée pendant exécution perfusion quel que soit
+l'état de ces bits.
+Note : si sous-paquet absent :
+   - le mode perfusion par défaut provient du paramètre
+     z22/p29[INFUS_MODE]/InfusMode
+   - la liste des modes de perfusion autorisés provient du paramètre
+     z22/p24[INFUS_ENABLE]/InfusEnable
+   - la durée perfusion cachée ou non pendant exécution perfusion provient du
+     paramètre z22/p44[MISCELLANEOUS2]/Flags/MISC2_HIDEDURATION
+
+
+
+$subpar 9 COMMENT                   commentaire
+   VSTRING(150) Comment **          commentaire associé au médicament,
+                                    visualisable après sélection médicament
+                                    ou dans écran bibliothèque médicaments
+                                    du menu, note #2
+
+Correct si :
+   - voir note #2 pour <Comment>
+Note : ce sous-paquet est également exploité pour la bibliothèque en zone 30
+en mode nom médicament (ml/h ou débit massique).
+Note : si médicament sélectionné en mode secondaire, ce sous-paquet est
+exploité de la même manière que pour un médicament primaire pour afficher le
+commentaire après la sélection du médicament.
+
+
+                                    dose charge
+$subpar 10 LOADING_DOSE $LibVigilant
+   DWORD DefaultDose  0 10 9999000  volume/masse par défaut, 1/1000 unité,
+                                    à 0 si pas de volume/masse par défaut pour
+                                    utilisation volume/masse par défaut sans
+                                    médicament, note #6
+   DWORD DefaultDuration 0 1 (24*3600) \
+                                    durée par défaut, s, à 0 si pas de durée
+                                    par défaut pour utilisation durée par
+                                    défaut sans médicament
+   UNIT Unit          "ml" *        unité volume/masse
+   $option
+   DWORD MinDose      0 10 9999000  volume/masse minimum, 1/1000 unité, à 0
+                                    si pas de volume/masse minimum pour
+                                    utilisation volume/masse minimum sans
+                                    médicament, note #6
+   DWORD MaxDose      0 10 9999000  volume/masse maximum, 1/1000 unité, à 0
+                                    si pas de volume/masse maximum pour
+                                    utilisation volume/masse maximum sans
+                                    médicament, note #6
+   $option
+   DWORD MinDuration 0 1 (24*3600)  durée minimum, s, à 0 si pas de durée
+                                    minimum pour utilisation durée minimum
+                                    sans médicament
+   DWORD MaxDuration 0 1 (24*3600)  durée maximum, s, à 0 si pas de durée
+                                    maximum pour utilisation durée maximum
+                                    sans médicament
+   $option
+   BYTE SelUnit      **             mode sélection unité
+      $bit 0 @SELU_U_N       FALSE * préfixe 'n' (nano) et bits 6-8 (unité)
+                                     de `DILUTION/<Unit>.
+      $bit 1 @SELU_U_U       FALSE * préfixe 'µ' (micro) et unité dilution
+      $bit 2 @SELU_U_M       FALSE * préfixe 'm' (milli) et unité dilution
+      $bit 3 @SELU_U_        FALSE * sans préfixe et unité dilution
+      $bit 4 @SELU_U_K       FALSE * préfixe 'k' (kilo) et unité dilution
+      $bit 5 @SELU_TOGGLE_KG FALSE * inversion '/kg'
+      $bit 6 @SELU_TOGGLE_M2 FALSE * inversion '/m²'
+      $bit 7 @SELU_U_ML      FALSE * 'ml', possibilité commuter la dose en
+                                     volume
+
+Correct si :
+   - voir note #6 pour <DefaultDose>, <MinDose> et <MaxDose>
+   - <MinDose> <= <MaxDose> (si <MinDose> et <MaxDose> différents de 0)
+   - <MinDose> <= <DefaultDose> (si <MinDose> et <DefaultDose> différents de 0)
+   - <DefaultDose> <= <MaxDose> (si <DefaultDose> et <MaxDose> différents de 0)
+   - <MinDuration> <= <MaxDuration> (si <MinDuration> et <MaxDuration>
+     différents de 0)
+   - <MinDuration> <= <DefaultDuration> (si <MinDuration> et <DefaultDuration>
+     différents de 0)
+   - <DefaultDuration> <= <MaxDuration> (si <DefaultDuration> et <MaxDuration>
+     différents de 0)
+   - si unité 'ml' :
+        . débit par défaut calculé à partir <DefaultDose> et <DefaultDuration>
+          >= 0.1 ml/h et <= 1500 ml/h si <DefaultDose> et <DefaultDuration>
+          différents de 0
+        . débit minimum calculé à partir <MinDose> et <MaxDuration>
+          <= 1500 ml/h, si <MinDose> et <MaxDuration> différents de 0
+        . débit maximum calculé à partir <MaxDose> et <MinDuration>
+          >= 0.1 ml/h, si <MaxDose> et <MinDuration> différents de 0
+   - <Unit> si appareil configuré sans débit massique : égal à 'ml'
+   - <Unit> si appareil configuré avec débit massique :
+        . bit 0 (plasma) à 0 (pas '/ml plasma')
+        . bits 1-2 (dilution) à 00b (pas '/ml', ni '/l', ni '/X ml')
+        . bits 3-4 (temps) à 00b (pas '/min', ni '/h', ni '/24h')
+        . bit 5 (poids) à 1 ou 0 ('/kg' ou non), sauf si bit 12 (surface) à 1
+          dans `FLOWRATE/<Unit>, besoin à 0 dans ce cas
+        . bits 6-8 (unité) à 001b 'l' pour volume au lieu masse (bits 9-11,
+          préfixe, obligatoirement à 011b 'm' dans ce cas) ou identique à bits
+          6-8 de `DILUTION/<Unit> (ce qui implique présence sous-paquet `DILUTION)
+        . bits 9-11 (préfixe) de 1 à 5 ('n', 'µ', 'm', '-', 'k')
+        . bit 12 (surface) à 1 ou 0 ('/m²' ou non), sauf si unités avec '/m²'
+          inhibées (z9/p2[DEVICE_TYPE]/DeviceType/DEVTYPE_DEVTYPE_INHIBITM2 à
+          TRUE) ou si bit 5 (poids) à 1 dans `FLOWRATE/<Unit>, besoin à 0 dans
+          ces cas
+        . bit 13 (décimales) à 0 (2 décimales)
+        . bit 5 (poids) et bit 12 (surface) pas tous les deux à 1 (pas '/kg'
+          et '/m²')
+   - mode sélection unité <SelUnit> :
+        . à 0 si <DefaultDose>, <MinDose> ou <MaxDose> différents de 0. Il
+          n'est pas possible de définir des valeurs de volume si l'unité de
+          dose de charge est sélectionnable
+        . à 0 si appareil configuré sans débit massique
+        . @SELU_U_N à @SELU_U_K à FALSE si absence sous-paquet `DILUTION
+        . @SELU_TOGGLE_KG et @SELU_TOGGLE_M2 pas tous les deux à TRUE
+        . @SELU_TOGGLE_KG à FALSE si bit 12 (surface) à 1 dans <Unit>,
+          `FLOWRATE/<Unit> ou `PROG_BOLUS/<Unit>
+        . @SELU_TOGGLE_KG à FALSE si `PROG_BOLUS/<SelUnit>/SELU_TOGGLE_M2
+          à TRUE
+        . @SELU_TOGGLE_M2 à FALSE si bit 5 (poids) à 1 dans <Unit>,
+          `FLOWRATE/<Unit> ou `PROG_BOLUS/<Unit>
+        . @SELU_TOGGLE_M2 à FALSE si `PROG_BOLUS/<SelUnit>/SELU_TOGGLE_KG
+          à TRUE
+        . @SELU_TOGGLE_M2 à FALSE si unités avec '/m²' inhibées
+          (paramètre z9/p2[DEVICE_TYPE]/DeviceType/DEVTYPE_DEVTYPE_INHIBITM2
+          à TRUE)
+        . @SELU_U_ML à FALSE si <Unit> est 'ml', 'ml/kg' ou 'ml/m²'
+   - fonction dose charge autorisée pour médicament, c'est à dire :
+        . soit absence sous-paquet `INFUS_MODE. Si paramètres médicament ne
+          définissent pas les modes de perfusion autorisés, on considère
+          toujours que la dose de charge est autorisée indépendamment de
+          l'état de z22/p24[INFUS_ENABLE]/InfusEnable/INFUS_B_LOAD
+        . soit présence sous-paquet `INFUS_MODE avec bit @INFUS_B_LOAD armé
+          dans <Enable>
+   - fonction dose charge disponible, c'est à dire paramètre
+     z9/p2[DEVICE_TYPE]/DeviceType/DEVTYPE_LOAD à TRUE
+   - médicament sélectionnable en primaire. Ce sous-paquet est interdit si
+     présence sous-paquet `SECONDARY sans flags @SEC_SELPRIM ce qui indique
+     qu'il s'agit d'un médicament sélectionnable en secondaire uniquement
+Note : si médicament sélectionné en mode secondaire, ce sous-paquet est
+ignoré ; il n'est pas possible de perfuser une dose de charge en secondaire.
+Note : volumes/masses sans médicament :
+   - masse par défaut : 0.01 unité
+   - masse minimum : 0.01 unité
+   - masse maximum : 9999 unités
+   - volume ml par défaut : 0.1 ml (affichage 0.10 ml si précision fine)
+   - volume ml minimum : 0.1 ml (affichage 0.10 ml si précision fine)
+   - volume ml maximum : 1000 ml
+Note : durées sans médicament :
+   - par défaut : 2 min
+   - minimum : 1 s
+   - maximum : 24 h
+
+Note : liste unités dose charge en sélection :
+  <Unit> |SELU_U_x|TOGGLE_KG|TOGGLE_M2| U_ML | liste unités
+---------+--------+---------+---------+------+------------------------------
+ 'ml'    |    0   |     0   |     0   |   0  | 'ml'
+         |    0   |     0   |     1   |   0  | 'ml', 'ml/m²'
+         |    0   |     1   |     0   |   0  | 'ml', 'ml/kg'
+         |    1   |     0   |     0   |   0  | 'ml', 'xg'
+         |    1   |     0   |     1   |   0  | 'ml', 'ml/m²', 'xg', 'xg/m²'
+         |    1   |     1   |     0   |   0  | 'ml', 'ml/kg', 'xg', 'xg/kg'
+---------+--------+---------+---------+------+------------------------------
+ 'ml/kg' |    0   |     0   |     0   |   0  | 'ml/kg'
+         |    0   |     1   |     0   |   0  | 'ml/kg', 'ml'
+         |    1   |     0   |     0   |   0  | 'ml/kg', 'xg/kg'
+         |    1   |     1   |     0   |   0  | 'ml/kg', 'ml', 'xg/kg', 'xg'
+---------+--------+---------+---------+------+------------------------------
+ 'ml/m²' |    0   |     0   |     0   |   0  | 'ml/m²'
+         |    0   |     0   |     1   |   0  | 'ml/m²', 'ml'
+         |    1   |     0   |     0   |   0  | 'ml/m²', 'xg/m²'
+         |    1   |     0   |     1   |   0  | 'ml/m²', 'ml', 'xg/m²', 'xg'
+---------+--------+---------+---------+------+------------------------------
+ 'mg'    |    0   |     0   |     0   |   0  | 'mg'
+         |    0   |     0   |     0   |   1  | 'mg', 'ml'
+         |    0   |     0   |     1   |   0  | 'mg', 'mg/m²'
+         |    0   |     0   |     1   |   1  | 'mg', 'mg/m²', 'ml', 'ml/m²'
+         |    0   |     1   |     0   |   0  | 'mg', 'mg/kg'
+         |    0   |     1   |     0   |   1  | 'mg', 'mg/kg', 'ml', 'ml/kg'
+         |    1   |     0   |     0   |   0  | 'xg'
+         |    1   |     0   |     0   |   1  | 'xg', 'ml'
+         |    1   |     0   |     1   |   0  | 'xg', 'xg/m²'
+         |    1   |     0   |     1   |   1  | 'xg', 'xg/m²', 'ml', 'ml/m²'
+         |    1   |     1   |     0   |   0  | 'xg', 'xg/kg'
+         |    1   |     1   |     0   |   1  | 'xg', 'xg/kg', 'ml', 'ml/kg'
+---------+--------+---------+---------+------+------------------------------
+ 'mg/kg' |    0   |     0   |     0   |   0  | 'mg/kg'
+         |    0   |     0   |     0   |   1  | 'mg/kg', 'ml/kg'
+         |    0   |     1   |     0   |   0  | 'mg/kg', 'mg'
+         |    0   |     1   |     0   |   1  | 'mg/kg', 'mg', 'ml/kg', 'ml'
+         |    1   |     0   |     0   |   0  | 'xg/kg'
+         |    1   |     0   |     0   |   1  | 'xg/kg', 'ml/kg'
+         |    1   |     1   |     0   |   0  | 'xg/kg', 'xg'
+         |    1   |     1   |     0   |   1  | 'xg/kg', 'xg', 'ml/kg', 'ml'
+---------+--------+---------+---------+------+------------------------------
+ 'mg/m²' |    0   |     0   |     0   |   0  | 'mg/m²'
+         |    0   |     0   |     0   |   1  | 'mg/m²', 'ml/m²'
+         |    0   |     0   |     1   |   0  | 'mg/m²', 'mg'
+         |    0   |     0   |     1   |   1  | 'mg/m²', 'mg', 'ml/m²', 'ml'
+         |    1   |     0   |     0   |   0  | 'xg/m²'
+         |    1   |     0   |     0   |   1  | 'xg/m²', 'ml/m²'
+         |    1   |     0   |     1   |   0  | 'xg/m²', 'xg'
+         |    1   |     0   |     1   |   1  | 'xg/m²', 'xg', 'ml/m²', 'ml'
+'x' pour la liste des préfixes selon les flags @SELU_U_xxx
+
+
+                                    limites basse et haute dose charge
+$subpar 11 LOADING_DOSE_LOW_HIGH $LibVigilant
+   DWORD Low         10 10 9999000  limite basse volume/masse dose charge,
+                                    1/1000 unité (`LOADING_DOSE/<Unit>), valeur
+                                    par défaut augmentée à 100 (0.1 ml) si
+                                    `LOADING_DOSE/<Unit> à 'ml', note #6
+   DWORD High   9999000 10 9999000  limite haute volume/masse dose charge,
+                                    1/1000 unité (`LOADING_DOSE/<Unit>), valeur
+                                    par défaut diminunée à 1000000 (1000 ml)
+                                    si `LOADING_DOSE/<Unit> à 'ml', note #6
+
+Correct si :
+   - voir note #6 pour <Low> et <High>
+   - <Low> <= <High>
+   - fonction dose charge autorisée pour médicament (voir sous-paquet
+     `LOADING_DOSE)
+   - fonction dose charge disponible (voir sous-paquet `LOADING_DOSE)
+   - médicament sélectionnable en primaire (voir sous-paquet `LOADING_DOSE)
+   - `LOADING_DOSE/<SelUnit> à 0. Ce sous-paquet est interdit si sélection
+     unité dose charge possible. En effet il est incorrect de définir des
+     limites basse et haute si l'unité pour la dose de charge est variable.
+Note : si médicament sélectionné en mode secondaire, ce sous-paquet est
+ignoré ; il n'est pas possible de perfuser une dose de charge en secondaire.
+
+
+$subpar 12 PROG_BOLUS $LibVigilant  bolus programmé
+   DWORD DefaultDose  0 10 9999000  volume/masse par défaut, 1/1000 unité,
+                                    à 0 si pas de volume/masse par défaut pour
+                                    utilisation volume/masse par défaut sans
+                                    médicament, note #6
+   DWORD DefaultDuration 0 1 (24*3600) \
+                                    durée par défaut, s, à 0 si pas de durée
+                                    par défaut pour utilisation durée par
+                                    défaut sans médicament
+   UNIT Unit          "ml" *        unité volume/masse
+   $option
+   DWORD MinDose      0 10 9999000  volume/masse minimum, 1/1000 unité, à 0
+                                    si pas de volume/masse minimum pour
+                                    utilisation volume/masse minimum sans
+                                    médicament, note #6
+   DWORD MaxDose      0 10 9999000  volume/masse maximum, 1/1000 unité, à 0
+                                    si pas de volume/masse maximum pour
+                                    utilisation volume/masse maximum sans
+                                    médicament, note #6
+   $option
+   DWORD MinDuration 0 1 (24*3600)  durée minimum, s, à 0 si pas de durée
+                                    minimum pour utilisation durée minimum
+                                    sans médicament
+   DWORD MaxDuration 0 1 (24*3600)  durée maximum, s, à 0 si pas de durée
+                                    maximum pour utilisation durée maximum
+                                    sans médicament
+   $option
+   BYTE SelUnit      **             mode sélection unité
+      $bit 0 @SELU_U_N       FALSE * préfixe 'n' (nano) et bits 6-8 (unité)
+                                     de `DILUTION/<Unit>.
+      $bit 1 @SELU_U_U       FALSE * préfixe 'µ' (micro) et unité dilution
+      $bit 2 @SELU_U_M       FALSE * préfixe 'm' (milli) et unité dilution
+      $bit 3 @SELU_U_        FALSE * sans préfixe et unité dilution
+      $bit 4 @SELU_U_K       FALSE * préfixe 'k' (kilo) et unité dilution
+      $bit 5 @SELU_TOGGLE_KG FALSE * inversion '/kg'
+      $bit 6 @SELU_TOGGLE_M2 FALSE * inversion '/m²'
+      $bit 7 @SELU_U_ML      FALSE * 'ml', possibilité commuter la dose en
+                                     volume
+
+Correct si :
+   - voir règles validité sous-paquet `LOADING_DOSE
+   - mode sélection unité <SelUnit> :
+        . @SELU_TOGGLE_KG à FALSE si bit 12 (surface) à 1 dans <Unit>,
+          `FLOWRATE/<Unit> ou `LOADING_DOSE/<Unit>
+        . @SELU_TOGGLE_KG à FALSE si `LOADING_DOSE/<SelUnit>/SELU_TOGGLE_M2
+          à TRUE
+        . @SELU_TOGGLE_M2 à FALSE si bit 5 (poids) à 1 dans <Unit>,
+          `FLOWRATE/<Unit> ou `LOADING_DOSE/<Unit>
+        . @SELU_TOGGLE_M2 à FALSE si `LOADING_DOSE/<SelUnit>/SELU_TOGGLE_KG
+          à TRUE
+   - fonction bolus programmé autorisée pour médicament, c'est à dire :
+        . soit absence sous-paquet `INFUS_MODE. Si paramètres médicament ne
+          définissent pas les modes de perfusion autorisés, on considère
+          toujours que le bolus programmé est autorisé indépendamment de
+          l'état de z22/p24[INFUS_ENABLE]/InfusEnable/INFUS_B_BOLP
+        . soit présence sous-paquet `INFUS_MODE avec bit @INFUS_B_BOLP armé
+          dans <Enable>
+   - fonction bolus programmé disponible, c'est à dire paramètre
+     z9/p2[DEVICE_TYPE]/DeviceType/DEVTYPE_BOLP à TRUE
+   - médicament sélectionnable en primaire. Ce sous-paquet est interdit si
+     présence sous-paquet `SECONDARY sans flags @SEC_SELPRIM ce qui indique
+     qu'il s'agit d'un médicament sélectionnable en secondaire uniquement
+Note : si médicament sélectionné en mode secondaire, ce sous-paquet est
+ignoré ; il n'est pas possible de perfuser un bolus programmé en secondaire.
+Note : voir sous-paquet `LOADING_DOSE pour volumes/masses et durées par
+défaut, minimum et maximum.
+
+
+Non utilisé : $subpar 13
+
+
+$subpar 14 VOLUME $LibVigilant      volume à perfuser
+   DWORD Default    0  100 9999000  volume par défaut, 1/1000 ml, à 0 si pas
+                                    de volume par défaut (volume à 0 après
+                                    sélection médicament), note #7
+   $option
+   DWORD Min        0  100 9999000  volume minimum, 1/1000 ml, à 0 si pas de
+                                    volume minimum pour utilisation volume
+                                    minimum sans médicament, note #7
+   DWORD Max        0  100 9999000  volume maximum, 1/1000 ml, à 0 si pas de
+                                    volume maximum pour utilisation volume
+                                    maximum sans médicament, note #7
+   $option
+   WORD KvoFlowRate 0 1000   20000  débit perfusion Kvo, 1/1000 ml/h, à 0 pour
+                                    arrêt perfusion, à FFFFh si pas de débit
+                                    perfusion Kvo pour utilisation débit Kvo
+                                    sans médicament
+
+Correct si :
+   - voir note #7 pour <Default>, <Min> et <Max>
+   - <Min> <= <Max>, si <Min> et <Max> différents de 0
+   - <Min> <= <Default>, si <Min> et <Default> différents de 0
+   - <Default> <= <Max>, si <Default> et <Max> différents de 0
+   - <KvoFlowRate> multiple de 1000 (1 ml/h), si différent de FFFFh
+Note : même avec un médicament en mode débit massique, le volume à perfuser
+reste toujours exprimé en ml.
+Note : pour les modes rampe et séquence, seul le volume maximum est exploité.
+Les volumes par défaut et minimum sont ignorés.
+Note : pour le mode séquence, le débit perfusion Kvo est également exploité
+pour les phases Kvo de la séquence. S'il est à 0, il n'est pas possible
+d'avoir des phases Kvo dans la séquence.
+Note : si médicament sélectionné en mode secondaire, ce sous-paquet est
+exploité de la même manière que pour un médicament primaire, à l'exception du
+champ <KvoFlowRate> qui est ignoré (jamais de débit Kvo en mode secondaire).
+Note : volumes sans médicament :
+   - minimum : 0.1 ml (affichage 0.10 ml si précision fine)
+   - maximum :
+        . mode primaire : 9999 ml
+        . mode secondaire : 2000 ml
+Note : débit Kvo sans médicament : paramètre z22/p16[END_INFUS]/KvoFlowRate.
+
+
+Non utilisé : $subpar 15
+
+
+$subpar 16 DROP_SENSOR              détecteur gouttes
+   WORD VolDrop     0 150 1200      volume goutte, 1/10 µl, 0.0150 ml à
+                                    0.1200 ml, à 0 si pas de volume goutte
+                                    pour utilisation volume goutte sans
+                                    médicament
+   $option
+   BOOL Mandatory   FALSE *         détecteur gouttes obligatoire :
+                                        - TRUE pas possible utiliser ce
+                                               médicament si détecteur gouttes
+                                               absent
+                                        - FALSE besoin ou non détecteur gouttes
+                                                pour ce médicament selon
+                                                configuration appareil
+
+Note : si détecteur gouttes obligatoire (<Mandatory> à TRUE) et détecteur
+gouttes absent au moment validation médicament, un écran d'avertissement
+apparaît pour indiquer que le détecteur de gouttes est obligatoire.
+L'utilisateur est obligé d'éteindre l'appareil ; en effet, s'il branche le
+détecteur de gouttes à ce moment une alarme se déclenche car le détecteur
+doit être connecté avant l'exécution du contrôle d'occlusivité.
+Note : si le détecteur est obligatoire au niveau de la configuration de
+l'appareil, il n'est pas possible de sélectionner un médicament tant que le
+détecteur n'est pas connecté car l'appareil reste en alarme après le
+démarrage.
+Note : ce sous-paquet est autorisé pour la bibliothèque liste noms médicaments
+en zone 30. Cela permet de définir des médicaments en mode nom médicament
+(ml/h ou débit massique) avec des volumes de gouttes différents pour obtenir
+un fonctionnement correct du détecteur de gouttes.
+Note : si médicament sélectionné en mode secondaire, seul le champ <VolDrop>
+de ce sous-paquet est exploité pour configurer les contrôles avec le détecteur
+de gouttes et pour éventuellement limiter le débit maximum. Le fait que le
+détecteur de gouttes soit obligatoire ou non provient soit du médicament
+sélectionné en primaire, soit de la configuration de l'appareil.
+Note : volume goutte sans médicament : volume goutte de la tubulure soit
+0.0500 ml, c'est à dire 20 gouttes par ml.
+Note : si champ <Mandatory> absent ou à FALSE, c'est le paramètre
+z22/p42[DROP_CONFIG]/Flags/DROP_MANDATORY qui définit si le détecteur de
+gouttes est nécessaire ou non.
+
+
+$subpar 17 AIR $LibVigilant         détecteur air
+   WORD VolAlarm   0   100 20000    volume d'air admissible sur 15 min,
+                                    1/10 µl, à 0 si non défini pour utilisation
+                                    volume sans médicament
+   WORD VolMin   0xFFFF  0  2500    volume bulle non pris en compte, 1/10 µl,
+                                    à FFFFh si non défini pour utilisation
+                                    volume sans médicament
+
+Correct si :
+   - <VolMin> <= <VolAlarm> - 100 (10.0 µl), si <VolAlarm> différent de 0
+     et <VolMin> différent de FFFFh
+   - médicament sélectionnable en primaire. Ce sous-paquet est interdit si
+     présence sous-paquet `SECONDARY sans flags @SEC_SELPRIM ce qui indique
+     qu'il s'agit d'un médicament sélectionnable en secondaire uniquement
+Note : si médicament sélectionné en mode secondaire, ce sous-paquet est
+ignoré ; on conserve les paramètres du médicament primaire pour le détecteur
+d'air pendant la perfusion en secondaire.
+Note : volumes sans médicament :
+   - volume air admissible sur 15 min : paramètre z22/p20[PARAM_VOL_AIR]/VolAlarm
+   - volume bulle non pris en compte : paramètre z22/p20[PARAM_VOL_AIR]/VolMin.
+
+
+                                    pression
+$subpar 18 PRESSURE $LibVigilant
+   BYTE Mode          1     1    2  mode gestion alarme occlusion
+                                    [PRESS_M_!..\DefParam.h] :
+                                       1 : limite pression variable
+                                       2 : 3 niveaux
+   WORD PressLim     450   50  750  limite pression, mmHg
+   WORD MaxLimVar    750  300  750  limite pression variable maximum, mmHg
+   $option
+   WORD LowLim       200   50  310  limite basse en mode 3 niveaux, mmHg
+   WORD MediumLim    450  150  625  limite moyenne en mode 3 niveaux, mmHg
+   WORD HighLim      750  225  750  limite haute en mode 3 niveaux, mmHg
+
+Correct si :
+   - si mode variable (<Mode> à 1), <PressLim> inférieur à <MaxLimVar>
+   - si mode 3 niveaux (<Mode> à 2), <PressLim> égal à soit <LowLim>, soit
+     <MediumLim>, soit <HighLim>
+   - <LowLim>, <MediumLim> et <HighLim> à 0 (ou absents) si mode variable
+     (<Mode> à 1)
+   - <MaxLimVar> à 0 si mode 3 niveaux (<Mode> à 2)
+   - écart entre <LowLim> et <MediumLim> au minimum de 100 mmHg si unité mmHg
+     ou PSI ou de 75 mmHg si unité kPa
+   - écart entre <MediumLim> et <HighLim> au minimum de 100 mmHg si unité
+     mmHg ou PSI ou de 75 mmHg si unité kPa
+Note : les valeurs dans les champs <PressLim>, <MaxLimVar>, <LowLim>,
+<MediumLim> et <HighLim> sont toujours exprimées en mmHg quelle que soit
+l'unité de pression définie avec le paramètre z22/p19[PRESS_LIM]/Unit.
+Note : dans le cas de l'écriture d'un médicament dans une care area avec une
+commande Id-25h, si mode 3 niveaux (<Mode> à 2) et que l'unité de pression
+est inconnue car le paramètre z22/p19[PRESS_LIM] n'a pas encore été écrit,
+une erreur ErrId-11h [ERRLIMIT] est retournée. En effet si l'unité de pression
+n'est pas connue, il n'est pas possible de déterminer quel est l'écart
+minimum autorisé entre les 3 limites (100 mmHg ou 75 mmHg).
+Note : dans le cas de l'écriture directe d'un médicament avec une commande
+Id-21h, la valeur de l'écart minimum (100 mmHg ou 75 mmHg) en mode 3 niveaux
+(<Mode> à 2) est élaborée à partir de la valeur courante du paramètre
+z22/p19[PRESS_LIM]/Unit (stocké précédemment ou écrit avec une commande Id-21h
+précédente). Si l'unité est modifiée après l'écriture du médicament, on peut
+passer en configuration/test PC lors du prochain démarrage lors de la
+vérification des paramètres de ce médicament. Le passage en configuration/test
+PC peut également se produire dans le cas de la modification manuelle de
+l'unité en Util 4. Ce cas ne se produit jamais à priori vu que les médicaments
+sont toujours définis à l'intérieur d'une care area dans une utilisation
+normale de l'appareil.
+
+
+Injectomat V2 : $subpar 19 `TCI_TARGET cible Tci
+Injectomat V2 : $subpar 20 `TCI_TARGET_LOW_HIGH limites basse et haute cible Tci
+Injectomat V2 : $subpar 21 `TCI_PLASMA Tci mode plasma
+Injectomat V2 : $subpar 22 `TCI_EFFECT Tci mode effet
+Injectomat V2 : $subpar 23 `TCI_MODEL modèle Tci
+Injectomat V2 : $subpar 24 `TCI_COEFF coefficients Tci
+Non utilisé : $subpar 25
+Injectomat V2 : $subpar 26 `TCI_INCREMENT mode incrément valeur Tci
+
+
+$subpar 27 RAMP $LibVigilant        rampe
+   DWORD PlateFlowRate 0 2000 1500000 débit plateau, 1/1000 ml/h, à 0 si non
+                                      défini (débit à 0 après sélection
+                                      médicament), note #5
+   DWORD Volume  1000000  100 9999000 volume à perfuser, 1/1000 ml, à 0 si non
+                                      défini (volume à 0 après sélection
+                                      médicament), note #7
+   WORD RiseDuration 3600  0 (6*3600) durée montée, s
+   WORD FallDuration 3600  0 (6*3600) durée descente, s
+
+Correct si :
+   - voir note #5 pour <PlateFlowRate>
+   - voir note #7 pour <Volume>
+   - si sous-paquet `FLOWRATE présent, `FLOWRATE/<Unit> égale à 'ml/h'
+   - <PlateFlowRate> <= `FLOWRATE/<Max>, si <PlateFlowRate> différent de 0 et
+     si sous-paquet `FLOWRATE présent, si `FLOWRATE/<Max> différent de 0 et
+     si `FLOWRATE/<Unit> est 'ml/h'
+   - <Volume> <= `VOLUME/<Max>, si <Volume> différent de 0 et si sous-paquet
+     `VOLUME présent et si `VOLUME/<Max> différent de 0
+   - volume pendant montée (calculée à partir <PlateFlowRate> et <RiseDuration>)
+     + volume pendant descente (calculée à partir <PlateFlowRate> et
+     <FallDuration>) <= <Volume>, si <PlateFlowRate> et <Volume> différents
+     de 0
+   - <RiseDuration> multiple de 60 (1 min)
+   - <FallDuration> multiple de 60 (1 min)
+   - mode perfusion rampe autorisé pour médicament, c'est à dire :
+        . soit absence sous-paquet `INFUS_MODE. Si paramètres médicament ne
+          définissent pas les modes de perfusion autorisés, on considère
+          toujours que la rampe est autorisée indépendamment de l'état de
+          z22/p24[INFUS_ENABLE]/InfusEnable/INFUS_B_RAMP
+        . soit présence sous-paquet `INFUS_MODE avec bit @INFUS_B_RAMP armé
+          dans <Enable>
+   - mode perfusion rampe disponible, c'est à dire paramètre
+     z9/p2[DEVICE_TYPE]/DeviceType/DEVTYPE_RAMP à TRUE
+   - médicament sélectionnable en primaire. Ce sous-paquet est interdit si
+     présence sous-paquet `SECONDARY sans flags @SEC_SELPRIM ce qui indique
+     qu'il s'agit d'un médicament sélectionnable en secondaire uniquement
+Note : si sous-paquet `FLOWRATE présent, `FLOWRATE/<Max> définit le débit
+maximum sélectionnable en mode rampe. Par contre `FLOWRATE/<Min> n'est pas
+exploité : débit minimum est toujours 2 ml/h.
+Note : si sous-paquet `VOLUME présent, `VOLUME/<Max> définit le volume
+maximum sélectionnable en mode rampe. Par contre `VOLUME/<Min> n'est pas pas
+exploité : volume minimum est toujours 0.1 ml.
+Note : si débit plateau non défini (à 0) ou volume à perfuser non défini
+(à 0), la durée totale de la rampe de ne peut pas être calculée. Dans ce cas,
+c'est la durée par défaut de 12 h qui est proposée sur l'écran de
+programmation initiale.
+Note: si médicament sélectionné en mode secondaire, ce sous-paquet est
+ignoré ; il n'est pas possible de perfuser une rampe en secondaire.
+
+
+$subpar 28 SEQUENCE $LibVigilant    séquence
+   DWORD TypeBeepFlowRate1    0 *   type phase 1, bip fin phase 1 et débit
+                                    phase 1 [$d!SEQ_TBF()] :
+                                       - bits 0-23 phase volume/débit : débit
+                                         perfusion 1/1000 ml/h, 0.1 ml/h à
+                                         1500 ml/h, note #5
+                                       - bits 0-23 phase Kvo, 1/1000 ml/h,
+                                         1 ml/h à 20 ml/h, à 0 pour utilisation
+                                         débit Kvo du médicament ou débit
+                                         Kvo sans médicament
+                                       - bits 24-30 : type phase :
+                                            0 : fin séquence
+                                            1 : répétition
+                                            2 : phase Stop
+                                            3 : phase Kvo
+                                            4 : phase volume/débit
+                                       - bit 31 : bip fin phase :
+                                            0 pas de bip en fin phase
+                                            1 bip en fin phase
+   DWORD RepeatVolDuration1   0 *   nombre répétitions et volume ou durée
+                                    phase 1 [$d!SEQ_RVD()] :
+                                       - bits 0-23 phase volume/débit : volume
+                                         à perfuser, 1/1000 ml, 0.1 ml à
+                                         9999 ml, note #7
+                                       - bits 0-23 phase Stop : durée arrêt,
+                                         s, 1 min à 96 h
+                                       - bits 0-23 phase Kvo : durée perfusion
+                                         Kvo, s, 1 min à 96 h
+                                       - bits 24-31 : nombre répétitions,
+                                         2 à 20
+   DWORD TypeBeepFlowRate2    0 *   idem <TypeBeepFlowRate1> pour phase 2 [$d!SEQ_TBF()]
+   DWORD RepeatVolDuration2   0 *   idem <RepeatVolDuration1> pour phase 2 [$d!SEQ_RVD()]
+   $option
+   DWORD TypeBeepFlowRate3    0 *   idem <TypeBeepFlowRate1> pour phase 3 [$d!SEQ_TBF()]
+   DWORD RepeatVolDuration3   0 *   idem <RepeatVolDuration1> pour phase 3 [$d!SEQ_RVD()]
+   DWORD TypeBeepFlowRate4    0 *   idem <TypeBeepFlowRate1> pour phase 4 [$d!SEQ_TBF()]
+   DWORD RepeatVolDuration4   0 *   idem <RepeatVolDuration1> pour phase 4 [$d!SEQ_RVD()]
+   $option
+   DWORD TypeBeepFlowRate5    0 *   idem <TypeBeepFlowRate1> pour phase 5 [$d!SEQ_TBF()]
+   DWORD RepeatVolDuration5   0 *   idem <RepeatVolDuration1> pour phase 5 [$d!SEQ_RVD()]
+   DWORD TypeBeepFlowRate6    0 *   idem <TypeBeepFlowRate1> pour phase 6 [$d!SEQ_TBF()]
+   DWORD RepeatVolDuration6   0 *   idem <RepeatVolDuration1> pour phase 6 [$d!SEQ_RVD()]
+   $option
+   DWORD TypeBeepFlowRate7    0 *   idem <TypeBeepFlowRate1> pour phase 7 [$d!SEQ_TBF()]
+   DWORD RepeatVolDuration7   0 *   idem <RepeatVolDuration1> pour phase 7 [$d!SEQ_RVD()]
+   DWORD TypeBeepFlowRate8    0 *   idem <TypeBeepFlowRate1> pour phase 8 [$d!SEQ_TBF()]
+   DWORD RepeatVolDuration8   0 *   idem <RepeatVolDuration1> pour phase 8 [$d!SEQ_RVD()]
+   $option
+   DWORD TypeBeepFlowRate9    0 *   idem <TypeBeepFlowRate1> pour phase 9 [$d!SEQ_TBF()]
+   DWORD RepeatVolDuration9   0 *   idem <RepeatVolDuration1> pour phase 9 [$d!SEQ_RVD()]
+   DWORD TypeBeepFlowRate10   0 *   idem <TypeBeepFlowRate1> pour phase 10 [$d!SEQ_TBF()]
+   DWORD RepeatVolDuration10  0 *   idem <RepeatVolDuration1> pour phase 10 [$d!SEQ_RVD()]
+   $option
+   DWORD TypeBeepFlowRate11   0 *   idem <TypeBeepFlowRate1> pour phase 11 [$d!SEQ_TBF()]
+   DWORD RepeatVolDuration11  0 *   idem <RepeatVolDuration1> pour phase 11 [$d!SEQ_RVD()]
+   DWORD TypeBeepFlowRate12   0 *   idem <TypeBeepFlowRate1> pour phase 12 [$d!SEQ_TBF()]
+   DWORD RepeatVolDuration12  0 *   idem <RepeatVolDuration1> pour phase 12 [$d!SEQ_RVD()]
+   $option
+   DWORD TypeBeepFlowRate13   0 *   idem <TypeBeepFlowRate1> pour phase 13 [$d!SEQ_TBF()]
+   DWORD RepeatVolDuration13  0 *   idem <RepeatVolDuration1> pour phase 13 [$d!SEQ_RVD()]
+   DWORD TypeBeepFlowRate14   0 *   idem <TypeBeepFlowRate1> pour phase 14 [$d!SEQ_TBF()]
+   DWORD RepeatVolDuration14  0 *   idem <RepeatVolDuration1> pour phase 14 [$d!SEQ_RVD()]
+   $option
+   DWORD TypeBeepFlowRate15   0 *   idem <TypeBeepFlowRate1> pour phase 15 [$d!SEQ_TBF()]
+   DWORD RepeatVolDuration15  0 *   idem <RepeatVolDuration1> pour phase 15 [$d!SEQ_RVD()]
+   DWORD TypeBeepFlowRate16   0 *   idem <TypeBeepFlowRate1> pour phase 16 [$d!SEQ_TBF()]
+   DWORD RepeatVolDuration16  0 *   idem <RepeatVolDuration1> pour phase 16 [$d!SEQ_RVD()]
+   $option
+   DWORD TypeBeepFlowRate17   0 *   idem <TypeBeepFlowRate1> pour phase 17 [$d!SEQ_TBF()]
+   DWORD RepeatVolDuration17  0 *   idem <RepeatVolDuration1> pour phase 17 [$d!SEQ_RVD()]
+   DWORD TypeBeepFlowRate18   0 *   idem <TypeBeepFlowRate1> pour phase 18 [$d!SEQ_TBF()]
+   DWORD RepeatVolDuration18  0 *   idem <RepeatVolDuration1> pour phase 18 [$d!SEQ_RVD()]
+   $option
+   DWORD TypeBeepFlowRate19   0 *   idem <TypeBeepFlowRate1> pour phase 19 [$d!SEQ_TBF()]
+   DWORD RepeatVolDuration19  0 *   idem <RepeatVolDuration1> pour phase 19 [$d!SEQ_RVD()]
+   DWORD TypeBeepFlowRate20   0 *   idem <TypeBeepFlowRate1> pour phase 20 [$d!SEQ_TBF()]
+   DWORD RepeatVolDuration20  0 *   idem <RepeatVolDuration1> pour phase 20 [$d!SEQ_RVD()]
+
+Correct si :
+   - si sous-paquet `FLOWRATE présent, `FLOWRATE/<Unit> égale à 'ml/h'
+   - bits 24-30 de <TypeBeepFlowRatex> de 0 à 4
+   - si bits 24-30 de <TypeBeepFlowRatex> à 0 (fin séquence) :
+        . bit 31 de <TypeBeepFlowRatex> à 0 (bip fin phase sans objet pour
+          fin séquence)
+        . bits 0-23 de <TypeBeepFlowRatex> à 0
+        . <RepeatVolDurationx> à 0
+   - si bits 24-30 de <TypeBeepFlowRatex> à 1 (répétition) :
+        . bit 31 de <TypeBeepFlowRatex> à 0 (bip fin phase sans objet pour
+          répétition)
+        . bits 0-23 de <TypeBeepFlowRatex> à 0
+        . bits 24-31 de <RepeatVolDurationx> compris entre 2 et 20
+        . bits 0-23 de <RepeatVolDurationx> à 0
+   - si bits 24-30 de <TypeBeepFlowRatex> à 2 (phase Stop) :
+        . bits 0-23 de <TypeBeepFlowRatex> à 0
+        . bits 0-23 de <RepeatVolDurationx> compris entre 60 (1 min) et
+          345 600 (96 h)
+        . bits 0-23 de <RepeatVolDurationx> multiple de 60 (1 min)
+        . bits 24-31 de <RepeatVolDurationx> à 0
+   - si bits 24-30 de <TypeBeepFlowRatex> à 3 (phase Kvo) :
+        . bits 0-23 de <TypeBeepFlowRatex> compris entre 1000 (1 ml/h) et
+          20000 (20 ml/h) ou à 0 (pour utilisation débit Kvo du médicament ou
+          débit Kvo sans médicament)
+        . bits 0-23 de <TypeBeepFlowRatex> multiple de 1000 (1 ml/h)
+        . bits 0-23 de <RepeatVolDurationx> compris entre 60 (1 min) et
+          345 600 (96 h)
+        . bits 0-23 de <RepeatVolDurationx> multiple de 60 (1 min)
+        . volume calculé à partir débit Kvo et durée <= 99990000 (9999 ml) ou
+          à `VOLUME/<Max>, si sous-paquet `VOLUME présent et si `VOLUME/<Max>
+          différent de 0. Si débit Kvo à 0, utilisation débit Kvo minimum
+          soit 1 ml/h pour le calcul
+        . bits 24-31 de <RepeatVolDurationx> à 0
+   - si bits 24-30 de <TypeBeepFlowRatex> à 4 (phase volume/débit) :
+        . voir note #5 pour bits 0-23 de <TypeBeepFlowRatex>
+        . bits 0-23 de <TypeBeepFlowRatex> >= 100 (0.1 ml/h)
+        . bits 0-23 de <TypeBeepFlowRatex> <= 1500000 (1500 ml/h)
+        . bits 0-23 de <TypeBeepFlowRatex> <= `FLOWRATE/<Max>, si sous-paquet
+          `FLOWRATE présent, si `FLOWRATE/<Max> différent de 0 et si
+          `FLOWRATE/<Unit> est 'ml/h'
+        . voir note #7 pour bits 0-23 de <RepeatVolDurationx>
+        . bits 0-23 de <RepeatVolDurationx> >= 100 (0.1 ml)
+        . bits 0-23 de <RepeatVolDurationx> <= 99990000 (9999 ml)
+        . bits 0-23 de <RepeatVolDurationx> <= `VOLUME/<Max>, si sous-paquet
+          `VOLUME présent et si `VOLUME/<Max> différent de 0
+        . bits 24-31 de <RepeatVolDurationx> à 0
+   - au moins une phase volume/débit, Kvo ou Stop
+   - toutes les phases après une répétition ou une 1ère phase fin sont des
+     phases fin
+   - volume total de la séquence <= 9999 ml ou `VOLUME/<Max> si sous-paquet
+     `VOLUME présent et `VOLUME/<Max> différent de 0
+   - débit Kvo identique dans toutes les phases Kvo : soit tous à 0 (pour
+     utilisation débit Kvo du médicament ou débit Kvo sans médicament), soit
+     tous à la même valeur entre 1 ml/h et 20 ml/h. Il n'est pas possible pour
+     une même séquence d'avoir plusieurs phases Kvo avec des débits différents
+   - mode perfusion séquence autorisé pour médicament, c'est à dire :
+        . soit absence sous-paquet `INFUS_MODE. Si paramètres médicament ne
+          définissent pas les modes de perfusion autorisés, on considère
+          toujours que la séquence est autorisée indépendamment de l'état de
+          z22/p24[INFUS_ENABLE]/InfusEnable/INFUS_B_SEQ
+        . soit présence sous-paquet `INFUS_MODE avec bit @INFUS_B_SEQ armé
+          dans <Enable>
+   - mode perfusion séquence disponible, c'est à dire paramètre
+     z9/p2[DEVICE_TYPE]/DeviceType/DEVTYPE_SEQ à TRUE
+   - médicament sélectionnable en primaire. Ce sous-paquet est interdit si
+     présence sous-paquet `SECONDARY sans flags @SEC_SELPRIM ce qui indique
+     qu'il s'agit d'un médicament sélectionnable en secondaire uniquement
+Note : si sous-paquet `FLOWRATE présent, `FLOWRATE/<Max> définit le débit
+maximum sélectionnable pour chaque phase en mode séquence. Par contre
+`FLOWRATE/<Min> n'est pas exploité : débit minimum est toujours 0.1 ml/h.
+Note : si sous-paquet `VOLUME présent, `VOLUME/<Max> définit le volume
+maximum sélectionnable pour chaque phase en mode séquence ainsi que le volume
+total de la séquence. Par contre `VOLUME/<Min> n'est pas pas exploité :
+volume minimum est toujours 0.1 ml.
+Note : si médicament sélectionné en mode secondaire, ce sous-paquet est
+ignoré ; il n'est pas possible de perfuser une séquence en secondaire.
+Note : débit Kvo du médicament : si sous-paquet `VOLUME présent, valeur débit
+Kvo dans `VOLUME/<KvoFlowRate> ; utilisation débit Kvo sans médicament si
+`VOLUME/<KvoFlowRate> contient FFFFh.
+Note : débit Kvo sans médicament : paramètre z22/p16[END_INFUS]/KvoFlowRate.
+Le paramètre peut lui-même être à 0 ; dans ce cas, les phases Kvo ne sont pas
+autorisées dans la séquence. Si présence d'une phase Kvo, le sous-paquet est
+considéré comme incohérent et un écran d'avertissement apparaît avant la
+programmation de la séquence.
+
+
+Injectomat V2 : $subpar 29 `THERAPEUTIC_FUNC fonction thérapeutique
+
+
+$subpar 29 SECONDARY                secondaire
+   BYTE Flags **                    flags gestion secondaire
+      $bit 0 @SEC_SELSEC    FALSE * médicament sélectionnable pour perfusion
+                                    secondaire
+      $bit 1 @SEC_SELPRIM    TRUE * médicament sélectionnable pour perfusion
+                                    primaire
+      $bit 2 @SEC_INFUSENABLE TRUE * activation perfusion secondaire possible
+                                    si médicament sélectionnée pour perfusion
+                                    primaire
+   $option
+   BYTE DefNumDrug  249 1 200       numéro médicament par défaut pour perfusion
+                                    secondaire [{\bDRG_~_(CS|DAT)}!..\Control.h] :
+                                       249 : inconnu "----"
+                                       248 : "Médicament X (ml/h)"
+                                       1-200 : médicament de la bibliothèque
+
+Correct si :
+   - si bit @SEC_INFUSENABLE à TRUE, alors bit @SEC_SELPRIM doit être à TRUE
+   - bits @SEC_SELSEC et @SEC_SELPRIM pas tout les 2 à FALSE
+   - si bit @SEC_SELSEC armé ou bit @SEC_INFUSENABLE armé, l'unité de débit
+     dans `FLOWRATE/<Unit> doit être 'ml/h' et `DILUTION/<MassInfusUnit> doit
+     être 'ml'
+   - fonction secondaire disponible, c'est à dire paramètre
+     z9/p2[DEVICE_TYPE]/DeviceType/DEVTYPE_SEC à TRUE
+Note : les différentes combinaisons possibles pour <Flags> sont :
+   SELSEC  SELPRIM  INFUSENABLE
+      0        1         0       médicament primaire, accès secondaire pas
+                                 possible
+      0        1         1       médicament primaire, accès secondaire possible
+      1        0         0       médicament secondaire uniquement
+      1        1         0       médicament primaire ou secondaire, si sélection
+                                 en primaire accès secondaire pas possible
+      1        1         1       médicament primaire ou secondaire, si sélection
+                                 en primaire accès secondaire possible
+Note : lorsque ce sous-paquet est absent, le médicament n'est jamais proposé
+pour une perfusion secondaire (bit @SEC_SELSEC à FALSE par défaut). Si ce
+médicament est sélectionné pour une perfusion primaire, l'activation de la
+perfusion secondaire est possible (bit @SEC_INFUSENABLE à TRUE par défaut).
+Note : si le numéro de médicament précisé dans <DefNumDrug> est absent de
+la bibliothèque ou n'est pas sélectionnable pour une perfusion secondaire,
+c'est le médicament inconnu "----" qui est proposé par défaut lors de la
+sélection du médicament secondaire.
+Note : ce sous-paquet est également exploité pour la bibliothèque en zone 30
+en mode nom médicament ml/h.
+
+
+                                    limites basse et haute bolus programmé
+$subpar 30 PROG_BOLUS_LOW_HIGH $LibVigilant
+   DWORD Low         10 10 9999000  limite basse volume/masse bolus programmé,
+                                    1/1000 unité (`PROG_BOLUS/<Unit>), valeur
+                                    par défaut augmentée à 100 (0.1 ml) si
+                                    `PROG_BOLUS/<Unit> à 'ml', note #6
+   DWORD High   9999000 10 9999000  limite haute volume/masse bolus programmé,
+                                    1/1000 unité (`PROG_BOLUS/<Unit>), valeur
+                                    par défaut diminunée à 1000000 (1000 ml)
+                                    si `PROG_BOLUS/<Unit> à 'ml', note #6
+
+Correct si :
+   - voir note #6 pour <Low> et <High>
+   - <Low> <= <High>
+   - fonction bolus programmé autorisée pour médicament (voir sous-paquet
+     `PROG_BOLUS)
+   - fonction bolus programmé disponible (voir sous-paquet `PROG_BOLUS)
+   - médicament sélectionnable en primaire (voir sous-paquet `PROG_BOLUS)
+   - `PROG_BOLUS/<SelUnit> à 0. Ce sous-paquet est interdit si sélection
+     unité bolus programmé possible. En effet il est incorrect de définir des
+     limites basse et haute si l'unité pour le bolus programmé est variable.
+Note : si médicament sélectionné en mode secondaire, ce sous-paquet est
+ignoré ; il n'est pas possible de perfuser un bolus programmé en secondaire.
+
+
+                                    message information clinique
+$subpar 31 CLINICAL_INFO $LibVigilant
+   DWORD Duration   60 60 (24*3600) durée avant affichage message, s
+   VSTRING(80) Msg  **              message à afficher, affiché dans écran
+                                    indication à la fin de la durée <Duration>
+                                    et dans l'écran information clinique du
+                                    menu, note #2
+
+Correct si :
+   - voir note #2 pour <Msg>
+
+
+Injectomat V2 : $subpar 32 `PCA_MODE mode Pca
+Injectomat V2 : $subpar 33 `PCA_CLINICIAN_BOLUS bolus médecin Pca
+Injectomat V2 : $subpar 34 `PCA_PATIENT_BOLUS bolus patient Pca
+Injectomat V2 : $subpar 35 `PCA_FLOWRATE_SEQ séquence débits Pca
+Injectomat V2 : $subpar 36 `PCA_LOCKOUT_TIME période réfractaire Pca
+Injectomat V2 : $subpar 37 `PCA_SAFETY sécurité Pca
+
+
+
+/*-------------------------------------------------------------------------*/
+/* Informations bibliothèque et paramètres médicament                      */
+/*-------------------------------------------------------------------------*/
+
+$subpar 255 NEXT                    suite sous-paquets dans paquet suivant
+
+Note : identificateur sous-paquet spécifique pour indiquer suite des
+sous-paquets dans paquet suivant pour l'accés au paramètre 3 des zones 30-3x :
+   - pour commande écriture paramètres Id-21h
+   - pour commande écriture care area Id-25h
+   - pour réponse lecture paramètre Id-A0h
+   - pour réponse lecture care area Id-A4h
+Egalement exploité pour réponse lecture paramètres courants médicament
+sélectionné Id-82h.
+Note : ce sous-paquet ne doit contenir aucune donnée après l'identificateur.
+Si ce n'est le cas, une erreur ErrId-1Bh [ERRPARSUBSIZE] est retournée.
+Note : cet identificateur spécifique n'est reconnu qu'en fin de paquet. S'il
+est présent au milieu d'un paquet, on considère qu'il s'agit d'un
+identificateur de sous-paquet incorrect et une erreur ErrId-11h [ERRLIMIT]
+est retournée.
+Note : il peut y avoir plusieurs paquets se terminant par `NEXT avant un
+paquet sans `NEXT. Les sous-paquets dans les paquets se terminant par `NEXT ne
+sont pas vérifiés au moment où ils sont reçus mais uniquement lorsque le
+dernier paquet sans `NEXT est reçu. Lors de la réception d'un sous-paquet se
+terminant par `NEXT, la seule erreur qui peut être retournée est ErrId-0Ch
+[ERRSIZE] si la taille de l'ensemble des sous-paquets dépasse la taille
+maximum.
+Note : les paquets se terminant par `NEXT en attente sont supprimés lors d'une
+fermeture ou d'une ré-ouverture de session. Un paquet avec uniquement un
+sous-paquet `NEXT permet d'effacer tous les paquets en attente. Pour la
+commande Id-21h, écriture paramètres, et la commande Id-25h, écriture care
+area, les paquets en attente sont effacés si le triplet numéro zone, numéro
+paramètre et index paramètre n'est pas le même.
+Note : dans tous les cas, il est conseillé de relire le paramètre pour
+vérifier que l'ensemble des sous-paquets a bien été pris en compte.
+
+
+
+/*-------------------------------------------------------------------------*/
+/* Liste unités dilution                                                   */
+/*-------------------------------------------------------------------------*/
+
+Les unités dans la liste suivante sont celles autorisées pour `DILUTION/<Unit>.
+Pour chaque unité, la partie dilution (bits 1-2) doit être soit à '/ml' (01b),
+soit à '/Xml' (11b) :
+   -  1: 'ng'          -  2: 'µg'          -  3: 'mg'          -  4: 'g'
+   -  5: 'mmol'
+   -  6: 'mU'          -  7: 'U'
+   -  8: 'cal'         -  9: 'kcal'
+   - 10: 'mEq'
+
+
+
+/*-------------------------------------------------------------------------*/
+/* Liste unités débit massique                                             */
+/*-------------------------------------------------------------------------*/
+
+Les unités dans la liste suivante sont celles autorisées pour `FLOWRATE/<Unit>.
+Pour chaque unité, la partie décimales (bit 13) peut être à 0 (2 décimales)
+ou à 1 (3 décimales) :
+                       -  1: 'ng/h'
+   -  2: 'ng/kg/min'   -  3: 'ng/kg/h'
+   -  4: 'µg/min'      -  5: 'µg/h'
+   -  6: 'µg/kg/min'   -  7: 'µg/kg/h'
+   -  8: 'mg/min'      -  9: 'mg/h'        - 10: 'mg/24h'
+   - 11: 'mg/kg/min'   - 12: 'mg/kg/h'     - 13: 'mg/kg/24h'
+                       - 14: 'mg/m²/h'     - 15: 'mg/m²/24h'
+                       - 16: 'g/h'
+   - 17: 'g/kg/min'    - 18: 'g/kg/h'      - 19: 'g/kg/24h'
+                       - 20: 'mmol/h'
+                       - 21: 'mmol/kg/h'   - 22: 'mmol/kg/24h'
+   - 23: 'mU/min'
+   - 24: 'mU/kg/min'   - 25: 'mU/kg/h'
+   - 26: 'U/min'       - 27: 'U/h'
+   - 28: 'U/kg/min'    - 29: 'U/kg/h'
+                       - 30: 'kcal/h'      - 31: 'kcal/24h'
+                       - 32: 'kcal/kg/h'
+   - 33: 'mEq/min'     - 34: 'mEq/h'
+   - 35: 'mEq/kg/min'  - 36: 'mEq/kg/h'
+   - 37: 'ml/kg/min'   - 38: 'ml/kg/h'     - 39: 'ml/kg/24h'
+                       - 40: 'ml/h'
+
+Note : les unités avec '/m²' (14 'mg/m²/h' et 15 'mg/m²/24h') ne sont
+pas autorisées si unités avec '/m²' sont inhibées (paramètre
+z9/p2[DEVICE_TYPE]/DeviceType/DEVTYPE_DEVTYPE_INHIBITM2 à TRUE).
+Note : les unités en 'ml' mais avec '/kg' (37 'ml/kg/min', 38 'ml/kg/h' et
+39 'ml/kg/24h') sont considérées comme des débits massiques et sont donc
+interdites si appareil standard sans débit massique (paramètre
+z9/p2[DEVICE_TYPE]/DeviceType/DEVTYPE_MASSFLOW à FALSE).
+
+
+
+/*-------------------------------------------------------------------------*/
+/* Notes                                                                   */
+/*-------------------------------------------------------------------------*/
+
+Note #1 : chaîne en page codes 1252 par défaut sauf si échappement sélection
+          page codes en 1er caractère (voir Param.txt pour la définition des
+          échappements sélection page codes) :
+          - correcte si :
+               . caractères ASCII standard (20h à 7Fh) et caractères ASCII
+                 étendus du page codes (80h à FFh)
+               . aucun code contrôle (00h à 1Fh) sauf échappement page codes
+                 en 1er caractère
+               . non vide : au moins un caractère après échappement page codes
+                 éventuel en 1er caractère
+
+Note #2 : idem note #1 mais accepte de plus le code de contrôle 0Ah pour
+          passer à la ligne
+
+Note #3 : valeur dose/dilution :
+          - correcte si :
+               . multiple de 10 (0.01 unité) si comprise entre 10 (0.01 unité)
+                 et 9990 (9.99 unités)
+               . multiple de 100 (0.1 unité) si comprise entre 10000
+                 (10.0 unités) et 99900 (99.9 unités)
+               . multiple de 1000 (1 unité) si supérieure à 100000 (100 unités)
+
+Note #4 : valeur débit ml/h ou débit massique :
+          - si unité 'ml/h', unité à 'l' (bits 6-8 à 001b) et préfixe à 'm'
+            (bits 9-11 à 011b) :
+               . valeur minimum augmentée à 100 (0.1 ml/h) (affichée 0.10 ml/h
+                 si précision fine)
+               . valeur maximum diminuée à 1500000 (1500 ml/h)
+               . correcte si précision fine :
+                    - multiple de 10 (0.01 ml/h) si comprise entre 100
+                      (0.10 ml/h) et 9990 (9.99 ml/h)
+                    - multiple de 100 (0.1 ml/h) si comprise entre 10000
+                      (10.0 ml/h) et 99900 (99.9 ml/h)
+                    - multiple de 1000 (1 ml/h) si supérieure à 100000 (100 ml/h)
+               . correcte si précision grosse :
+                    - multiple de 100 (0.1 ml/h) si comprise entre 100
+                      (0.1 ml/h) et 99900 (99.9 ml/h)
+                    - multiple de 1000 (1 ml/h) si supérieure à 100000 (100 ml/h)
+               . voir note #6 dans Param.txt
+          - si unité autre que 'ml/h' et 2 décimales (bit 13 à 0), correcte
+            si :
+               . multiple de 10 (0.01 unité) si comprise entre 10 (0.01 unité)
+                 et 9990 (9.99 unité)
+               . multiple de 100 (0.1 unité) si comprise entre 10000
+                 (10.0 unités) et 99900 (99.9 unités)
+               . multiple de 1000 (1 unité) si supérieure à 100000 (100 unités)
+          - si unité autre que 'ml/h' et 3 décimales (bit 13 à 1), correcte
+            si :
+               . multiple de 1 (0.001 unité) si comprise entre 10 (0.010 unité)
+                 et 4999 (4.999 unités)
+               . multiple de 10 (0.01 unité) si comprise entre 5000
+                 (5.00 unités) et 9990 (9.99 unité)
+               . multiple de 100 (0.1 unité) si comprise entre 10000
+                 (10.0 unités) et 99900 (99.9 unités)
+               . multiple de 1000 (1 unité) si supérieure à 100000 (100 unités)
+
+Note #5 : valeur débit ml/h :
+          - correcte si précision fine :
+               . multiple de 10 (0.01 ml/h) si comprise entre 100 (0.10 ml/h)
+                 et 9990 (9.99 ml/h)
+               . multiple de 100 (0.1 ml/h) si comprise entre 10000 (10.0 ml/h)
+                 et 99900 (99.9 ml/h)
+               . multiple de 1000 (1 ml/h) si supérieure à 100000 (100 ml/h)
+          - correcte si précision grosse :
+               . multiple de 100 (0.1 ml/h) si comprise entre 100 (0.1 ml/h)
+                 et 99900 (99.9 ml/h)
+               . multiple de 1000 (1 ml/h) si supérieure à 100000 (100 ml/h)
+          - voir note #6 dans Param.txt
+
+Note #6 : valeur volume ml ou masse :
+          - si unité 'ml', unité à 'l' (bits 6-8 à 001b) et préfixe à 'm'
+            (bits 9-11 à 011b) :
+               . valeur minimum augmentée à 100 (0.1 ml) (affichée 0.10 ml si
+                 précision fine)
+               . valeur maximum diminuée à 1000000 (1000 ml)
+               . correcte si précision fine :
+                    - multiple de 10 (0.01 ml) si comprise entre 100 (0.10 ml)
+                      et 9990 (9.99 ml)
+                    - multiple de 100 (0.1 ml) si comprise entre 10000 (10.0 ml)
+                      et 99900 (99.9 ml)
+                    - multiple de 1000 (1 ml) si supérieure à 100000 (100 ml)
+               . correcte si précision grosse :
+                    - multiple de 100 (0.1 ml) si comprise entre 100 (0.1 ml)
+                      et 99900 (99.9 ml)
+                    - multiple de 1000 (1 ml) si supérieure à 100000 (100 ml)
+               . voir note #6 dans Param.txt
+          - si unité autre que 'ml', correcte si :
+               . multiple de 10 (0.01 unité) si comprise entre 10 (0.01 unité)
+                 et 9990 (9.99 unités)
+               . multiple de 100 (0.1 unité) si comprise entre 10000
+                 (10.0 unités) et 99900 (99.9 unités)
+               . multiple de 1000 (1 unité) si supérieure à 100000 (100 unités)
+
+Note #7 : valeur volume ml :
+          - correcte si précision fine :
+               . multiple de 10 (0.01 ml) si comprise entre 100 (0.10 ml) et
+                 9990 (9.99 ml)
+               . multiple de 100 (0.1 ml) si comprise entre 10000 (10.0 ml)
+                 et 99900 (99.9 ml)
+               . multiple de 1000 (1 ml) si supérieure à 100000 (100 ml)
+          - correcte si précision grosse :
+               . multiple de 100 (0.1 ml) si comprise entre 100 (0.1 ml) et
+                 99900 (99.9 ml)
+               . multiple de 1000 (1 ml) si supérieure à 100000 (100 ml)
+          - voir note #6 dans Param.txt

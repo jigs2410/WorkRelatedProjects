@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Created with Liquid XML 2016 Designer Edition 14.1.5.6733 (https://www.liquid-technologies.com) -->
+<xs:schema
+	targetNamespace="http://www.fresenius-kabi.com/AgiliaSPPCA"
+	elementFormDefault="qualified"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:Shared="http://www.fresenius-kabi.com/AgiliaShared"
+	xmlns:SPMC="http://www.fresenius-kabi.com/AgiliaSPMC">
+
+	<xs:import schemaLocation="AgiliaSPMC.xsd" namespace="http://www.fresenius-kabi.com/AgiliaSPMC" />
+	<xs:import schemaLocation="AgiliaShared.xsd" namespace="http://www.fresenius-kabi.com/AgiliaShared" />
+
+
+
+	<xs:complexType name="AgiliaSPPCAType">
+		<xs:sequence>
+			<xs:group ref="SPMC:Group_AgiliaSPMC"/>
+			<xs:element name="Zone31" minOccurs="1" maxOccurs="1">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="par3" minOccurs="1" maxOccurs="200">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:group ref="SPMC:Group_AgiliaSPMC_Zone31Par3" />
+
+									<xs:element name="subpar29">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="TherapeuticFunction" minOccurs="1" maxOccurs="1">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="Shared:BYTE">
+																<xs:attribute name="RD_ID" fixed="RD_0500" type="xs:string" use="required"/>
+																<xs:attribute name="Type" fixed="BYTE" type="xs:string" use="required"/>
+																<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+												
+												
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="subpar29">
+										<xs:complexType>
+											<xs:sequence>
+									<xs:element name="ModePCA_DefaultValue" minOccurs="0" maxOccurs="1">
+										<xs:complexType>
+											<xs:simpleContent>
+												<xs:extension base="Shared:BYTE">
+													<xs:attribute name="RD_ID" fixed="RD_0401" type="xs:string" use="required"/>
+													<xs:attribute name="Type" fixed="BYTE" type="xs:string" use="required"/>
+													<xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required"/>
+												</xs:extension>
+											</xs:simpleContent>
+										</xs:complexType>
+									</xs:element>
+														</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			
+		</xs:sequence>
+	</xs:complexType>
+	
+</xs:schema>

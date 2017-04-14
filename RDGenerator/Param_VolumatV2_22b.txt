@@ -1,0 +1,2288 @@
+/***************************************************************************/
+/*                                                                         */
+/*                                Param.txt                                */
+/*                                                                         */
+/***************************************************************************/
+/* :mode=maatel-param:                                                     */
+/*                                                                         */
+/* Description paramètres Volumat V2                                       */
+/*                                                                         */
+/***************************************************************************/
+/* Origine      : Volumat US3                  Version 1.6                 */
+/*                01.06.2013  E. Van Olden     Version 0.5                 */
+/*    - reprise complète : suppression zone 10 pour paramètres tubulure et */
+/*      zone 20 pour paramètres techniques, ajout zone 9 pour paramètres   */
+/*      fixes, réorganisation paramètres dans les autres zones, ajout      */
+/*      infos pour règles validité des paramètres, ajout attribut '$onlyMC'*/
+/*      pour paramètres utilisés uniquement par appareil MC                */
+/* Modification : 19.03.2015  E. Van Olden     Version 1.1                 */
+/*    - [DCR#9392] z22[USER] : reprise p16[END_INFUS]                      */
+/*    - [DCR#9656] z22[USER] : reprise p14[DPS]                            */
+/*    - [DCR#10028] reprise plages vérification poids patient (note #8)    */
+/*    - [DCR#10012] ajout z10[TUBINGSET] avec p2[PARAM_TUB]                */
+/*    - [DCR#10353] ajout z20[TECHNICAL] avec p2[WIFI_CURRENT]             */
+/*    - reprise commentaires                                               */
+/* Modification : 27.08.2015  E. Van Olden     Version 1.2                 */
+/*    - [PR#9135] reprise z22/p16[END_INFUS]/DurSilAlKvo                   */
+/*    - [PR#10463] ajout z10/p2[PARAM_TUB]/MaxFlowDrop                     */
+/*    - reprise commentaires                                               */
+/* Modification : 27.10.2015  E. Van Olden     Version 1.3                 */
+/*    - reprise commentaires                                               */
+/* Modification : 19.02.2016  C. Clavel        Version 2.0                 */
+/*    - [DCR#14147] reprise z22/p18[OPT_SCREEN1] et z26/p7[CONTEXT_MC]     */
+/*    - [DCR#14155] reprise z22/p18[OPT_SCREEN1] et z22/p43[OPT_SCREEN2]   */
+/*    - [DCR#14158] ajout z22/p43[OPT_SCREEN2]/Flags/OPTF2_ONCAREAREASET   */
+/*    - [DCR#14298] ajout z9/p7[SOFT_DEV] SWDEV_INHTMPRESTARTCHARGE        */
+/*    - [DCR#14301] reprise plages vérification poids patient (note #8)    */
+/*    - [DCR#14490] reprise commentaire MISC_INHSTARTKBDLOCK               */
+/*    - [DCR#14504] ajout z22/p22[MISCELLANEOUS]MISC_VALIDFLOW_NOSTARTINFUS*/
+/*    - [DCR#14529] reprise z22/p10[MEM_SEL] et z26/p3[CONTEXT] et ajout   */
+/*      z22/p53[AUTO_RESTART_OCCLUS]                                       */
+/*    - [DCR#14534] ajout z9/p11[TRADE_ITEM_NUMBER]                        */
+/*    - reprise commentaires                                               */
+/* Modification : 26.07.2016  E. Van Olden     Version 2.1                 */
+/*    - [DCR#14680] ajout z22/p55[MEM_SEL2] et z22/p56[AUTO_KBD_LOCK]      */
+/*    - [DCR#15318] ajout z22/p57[KBD_UNLOCK_CODE]                         */
+/*    - [DCR#15321] ajout z26/p14[MEM_KBD_LOCK]                            */
+/*    - [DCR#15380] reprise z22/p10[MEM_SEL], z22/p53[AUTO_RESTART_OCCLUS] */
+/*      et z22/p55[MEM_SEL2]                                               */
+/*    - reprise commentaires                                               */
+/***************************************************************************/
+
+
+
+#include "ConfigParam.h"
+#define __SPECVALNAME
+#include "..\_ConfPC\Decod.txt"
+
+
+
+/*-------------------------------------------------------------------------*/
+/* Attributs des paramètres                                                */
+/*-------------------------------------------------------------------------*/
+
+Chaque paramètre peut comporter les attributs suivants :
+   - $noconfpc : l'absence du paramètre ou le fait qu'il ne soit pas valide
+                 ne provoque pas un passage en configuration PC
+   - $func : fonction spécifique pour la test de validité pour vérifier
+             des règles plus évoluées qu'une simple comparaison par rapport
+             à un minimum et un maximum
+   - $accuracy paramètre dont la validité dépend de la précision fine ou
+               grosse configurée dans le paramètre z8/p2[ACCURACY],
+               voir note #6
+   - $onlyMC : paramètre présent uniquement pour un appareil MC, erreur si
+               tentative d'écriture dans un appareil standard
+   - $onlyTiva : paramètre présent uniquement pour un appareil Tiva, erreur
+                 si tentative d'écriture dans un appareil standard ou MC
+                 (pour Injectomat uniquement)
+   - $carearea : paramètre présent dans les care areas, care area invalide
+                 si paramètre absent de la care area
+   - $careareaopt : paramètre présent de manière optionnelle dans les care
+                    areas, si paramètre absent de la care area utilisation de
+                    sa valeur par défaut lors du chargement de la care area
+   - $careareadefonload : paramètre redéfini avec sa valeur par défaut lors
+                          du chargement de la care area
+   - $nofield : paramètre sans description des champs : données de longueur
+                variable pour informations bibliothèque et paramètres
+                médicaments
+   - $fixed : paramètre fixe, ne peut pas être écrit par l'application mais
+              uniquement par le Boot
+   - $blank : paramètre qui peut être écrit uniquement lorsque l'appareil
+              est vierge
+
+Note : tous les paramètres qui n'ont ni l'attribut '$carearea', ni l'attribut
+'$careareaopt' ne peuvent pas être écrits dans les care areas.
+
+
+
+/*-------------------------------------------------------------------------*/
+/* Définition type appareil et version application                         */
+/*-------------------------------------------------------------------------*/
+
+#ifdef __INC_NUMVERS_C        /* si compilation depuis application */
+
+#define __VERSION
+#include "..\Main\Numvers.c"  /* type appareil et version depuis application */
+
+$device NVERS_DEVICE
+$version NVERS_VERSION NVERS_REVISION NVERS_CORRECT
+
+#else /* __INC_NUMVERS_C */   /* pas compilation depuis application */
+
+$device 0x46                  /* type appareil par défaut, Volumat V2 */
+$version "010 "               /* version application par défaut */
+
+#endif /* __INC_NUMVERS_C */
+
+
+
+/*-------------------------------------------------------------------------*/
+/* Définitions générales                                                   */
+/*-------------------------------------------------------------------------*/
+
+$nb DILUTION_UNIT         10  nombre unités dilution
+$nb MASS_FLOW_UNIT        36  nombre unités débit massique
+
+$nb LIBDRUGS               2  nombre bibliothèques médicaments
+$nb DRUGS                200  nombre médicaments dans une bibliothèque
+
+#define FLOW_MIN         100  /* débit minimum, 1/1000 ml/h */
+#define FLOW_MAX_STD 1200000  /* débit maximum appareil standard, 1/1000 ml/h */
+#define FLOW_MAX     1500000  /* débit maximum, 1/1000 ml/h */
+
+                              date/heure par défaut, minimum et maximum
+#define DMM_DT  0 0 "31/12/2099 23:59:59"
+
+
+
+/*-------------------------------------------------------------------------*/
+/* Zone configuration globale                                              */
+/*                                                                         */
+/* Note : cette zone est utilisée pour des paramètres spécifiques dont le  */
+/* contenu influe sur la vérification de validité pour des paramètres dans */
+/* d'autres zones.                                                         */
+/*-------------------------------------------------------------------------*/
+
+$zone 8 GLOBAL G              zone configuration globale
+
+
+                              informations sur la zone
+$par 1 INFOS $noconfpc $func $careareaopt
+   $structname InfosZone
+   STRING(8) Version **       description version zone, notes #2 et #5
+   DATETIME Create   DMM_DT   date/heure utilisateur génération données
+   DATETIME ManChg   DMM_DT   date/heure utilisateur modification manuelle
+
+Note : champ <ManChg> jamais mis à jour car aucun des paramètres n'est
+modifiés dans les menus de configurations et de tests.
+Note : informations affichées en Test 1 si paramètre présent et valide mais
+pas traitées par application.
+
+
+$par 2 ACCURACY $careareaopt  précision débit ml/h et volume ml
+   BOOL Fine        FALSE 0 1 `- TRUE précision fine (2 décimales si inférieur
+                                      à 10 ml/h ou 10 ml)
+                               - FALSE précision grosse (jamais 2 décimales)
+
+Note : ce paramètre est exploité pour vérifier la validité des paramètres
+qui comporte l'attribut $accuracy ce qui inclut les paramètres des
+médicaments z3x/p3[PARAM_DRUG]. Dans le cas de l'écriture d'une care area avec
+commande Id-25h, il doit être écrit *AVANT* l'écriture d'un 1er médicament.
+Pour l'écriture des paramètres courants avec commande Id-21h, la validité des
+paramètres est analysée en exploitant la dernière valeur écrite de ce
+paramètre. Si ce paramètre est modifié *APRES* l'écriture des paramètres, il
+est possible qu'une erreur soit détectée pour des paramètres lors du prochain
+démarrage ce qui va provoquer un passage en configuration/test PC.
+
+
+
+/*-------------------------------------------------------------------------*/
+/* Zone paramètres fixes                                                   */
+/*                                                                         */
+/* Note : cette zone est dénommée paramètres fixes car il est impossible   */
+/* de modifier ces paramètres avec une commande Id-21h du logiciel         */
+/* applicatif. Seul le Boot peut écrire ces paramètres pour une            */
+/* configuration initiale de l'appareil.                                   */
+/* Note : les paramètres avec l'attribut '$blank' ne peuvent être écrits   */
+/* que lorsque l'appareil est vierge : aucun paramètre, aucune care area   */
+/* et aucun événement dans l'historique.                                   */
+/*-------------------------------------------------------------------------*/
+
+$zone 9 FIXED F               zone paramètres fixes
+
+
+                              informations sur la zone
+$par 1 INFOS $noconfpc $func $fixed
+   $usestruct InfosZone
+
+Note : champ <ManChg> jamais mis à jour car aucun des paramètres n'est
+modifiés dans les menus de configurations et de tests.
+Note : informations affichées en Test 1 si paramètre présent et valide mais
+pas traitées par application.
+
+
+                              type appareil
+$par 2 DEVICE_TYPE $fixed $blank
+   $value @
+   DWORD DeviceType      **   flags type appareil
+      $bit  0 @DEVTYPE_MASSFLOW  FALSE * fonctions débit massique disponibles
+      $bit  1 @DEVTYPE_LOAD      FALSE * fonction dose charge disponible
+      $bit  2 @DEVTYPE_BOLP      FALSE * fonction bolus programmé disponible
+      $bit  3 @DEVTYPE_KBDMC     FALSE * clavier MC (au lieu standard)
+      $bit  4 @DEVTYPE_DROP      FALSE * mode perfusion gouttes/min disponible
+      $bit  5 @DEVTYPE_SEC       FALSE * fonction secondaire disponible
+      $bit  6 @DEVTYPE_RAMP      FALSE * mode perfusion rampe disponible
+      $bit  7 @DEVTYPE_SEQ       FALSE * mode perfusion séquence disponible
+      $bit 11 @DEVTYPE_GRAPH     FALSE * écrans graphique du menu disponibles
+      $bit 12 @DEVTYPE_MENUSEC   FALSE * touche accès rapide menu pour
+                                         secondaire (au lieu pression)
+      $bit 13 @DEVTYPE_MELODY    FALSE * signalement sonore avec mélodies (au
+                                         lieu bips)
+      $bit 14 @DEVTYPE_WIFI      FALSE * présence module Wifi
+      $bit 15 @DEVTYPE_INHIBITM2 FALSE * inhibition unités avec '/m²'
+   $endvalue
+   WORD DeviceTypeEx   0 0 0  extension flags type appareil [$h]
+   $value @
+   BYTE SubDeviceId    255 *  sous-type appareil, valeur émise dans le champ
+                              <SubDevice> du sous-paquet appareil SubId-05h
+                              du paquet de supervision, 255 si sous-type
+                              non défini [$h]
+   $endvalue
+   BYTE Spare            0 *  champ disponible pour définition type appareil
+
+Note : on considère qu'il s'agit d'un appareil MC (et donc les paramètres
+avec l'attribut $onlyMC sont disponibles) si présence d'un des bits de
+configuration :
+   - @DEVTYPE_MASSFLOW fonctions débit massique disponibles
+   - @DEVTYPE_LOAD fonction dose charge disponible
+   - @DEVTYPE_BOLP fonction bolus programmé disponible
+   - @DEVTYPE_SEC fonction secondaire disponible
+   - @DEVTYPE_RAMP mode perfusion rampe disponible
+   - @DEVTYPE_SEQ mode perfusion séquence disponible
+Note : les bits @DEVTYPE_KBDMC, @DEVTYPE_DROP et @DEVTYPE_GRAPH ne sont pas
+pris en compte pour déterminer s'il s'agit d'un appareil MC ou standard :
+   - il est possible d'avoir un appareil standard avec un clavier MC ou un
+     appareil MC ou un clavier standard
+   - il est possible d'avoir un appareil standard avec le mode de perfusion
+     gouttes/min disponible
+   - il est possible d'avoir un appareil standard avec les écrans graphiques
+     disponibles
+Note : l'état du bit @DEVTYPE_MELODY influe également sur les périodes de
+clignotement des leds alarmes et pré-alarmes : clignotement normal si bips,
+clignotement rapide pour alarme et lent pour pré-alarme si mélodies.
+
+
+                              configurations spécifiques appareil
+$par 3 DEVICE_CONFIG $fixed $blank
+   $value @
+   DWORD DeviceConfig     **  flags configuration *
+                              affichage uniquement le volume actif sur écran
+                              de base en mode secondaire ou en mode primaire
+                              avec une présence de volume de secondaire
+      $bit 0 @DEVCNF_NO_VOL_PRISEC  FALSE *
+                              inhibition affichage indice correction dans
+                              écran initial et dans écrans maintenance
+      $bit 6 @DEVCNF_INHVERSCORRECT FALSE *
+   $value @
+   DWORD DeviceConfigEx 0 0 0 extension flags configuration [$h]
+
+Note : le bit @DEVCNF_NO_VOL_PRISEC n'a pas d'effet sur l'écran volume perfusé
+du menu : toujours affichage volumes primaire et secondaire si mode secondaire
+actif ou présence volume de secondaire.
+
+
+                              configurations matérielles
+$par 4 HARD_CONFIG $fixed $blank
+   DWORD HardConfig     0 0 0 flags configuration [$h]
+
+Note : il n'y a aucune configuration matérielle actuellement.
+
+
+$par 5 INH_ERROR $fixed       inhibition erreurs
+   DWORD KeyInhError    **    clé validation inhibition erreurs, doit contenir
+                              2FB7.FB17h pour prise en compte liste erreurs
+                              inhibées [$h]
+   DWORD InhError       **    liste erreurs inhibées
+      $bit  0 @ERR_I_ROTATE       FALSE * rotation (1)
+      $bit  3 @ERR_I_MICCONTSEC   FALSE * micro-contrôleur secondaire (13,14,15)
+      $bit  4 @ERR_I_BATTERY      FALSE * batterie (16,17,19,54)
+      $bit  6 @ERR_I_OPTOCLAMP    FALSE * fourche opto clamp (22)
+      $bit  7 @ERR_I_MOTCLAMP     FALSE * fourches opto et déplacement moteur
+                                          clamp (23,24)
+      $bit  8 @ERR_I_DOOR         FALSE * capteur effet hall porte (25)
+      $bit  9 @ERR_I_AIR          FALSE * détecteur air (33)
+      $bit 10 @ERR_I_DROPSENSOR   FALSE * détecteur gouttes (40)
+      $bit 11 @ERR_I_BOARD        FALSE * absence carte ou backlight Lcd (26,27)
+      $bit 12 @ERR_I_KEYBOARD     FALSE * clavier (28)
+      $bit 13 @ERR_I_ADC          FALSE * convertisseur analogique/digital (29)
+      $bit 14 @ERR_I_HORODAT      FALSE * horodateur (30)
+      $bit 16 @ERR_I_POWER        FALSE * signal présence secteur (18)
+      $bit 17 @ERR_I_FLOWPERIOD   FALSE * contrôle débit, période et sens
+                                          moteur (34,35,36)
+      $bit 18 @ERR_I_KEYOFF       FALSE * touche Off (37,38)
+      $bit 19 @ERR_I_PRESSUP      FALSE * capteur pression amont (41)
+      $bit 20 @ERR_I_PRESSDOWN    FALSE * capteur pression avale (42)
+      $bit 21 @ERR_I_LCD          FALSE * contrôleur Lcd (43,44,45)
+      $bit 22 @ERR_I_BACKUP       FALSE * température et tensions super-capa
+                                          et booster 5 V sécurité (46,47,49)
+      $bit 23 @ERR_I_TETADEVICE   FALSE * température appareil (48)
+      $bit 24 @ERR_I_SOUND        FALSE * haut-parleur et buzzer (51,52)
+      $bit 25 @ERR_I_PARAMBAT     FALSE * paramètre batterie dans E²prom
+                                          coulombmètre (53)
+      $bit 26 @ERR_I_POWERVOLTAGE FALSE * tension bloc alimentation secteur (50)
+      $bit 27 @ERR_I_CMDFAIL      FALSE * ligne CMD_FAIL (56)
+   DWORD InhErrorEx     0 0 0 extension liste erreurs inhibées [$h]
+
+Note : la liste des erreurs inhibées définie dans <InhError> et <InhErrorEx>
+est exploitée uniquement si la clé <KeyInhError> contient la valeur adéquate.
+Si <KeyInhError> contient une autre valeur que 2FB7.FB17h (ce qui inclut
+FFFF.FFFFh lorsque la Flash est effacée), on considère que <InhError> et
+<InhErrorEx> sont à 0.
+
+
+$par 6 DEVICE_VALID $fixed    appareil opérationnel
+   DWORD KeyDeviceValid  **   clé validation pour appareil opérationnel :
+                                 - 110F.A4B6h : appareil opérationnel
+                                 - 9405.E272h : appareil en cours maintenance
+                                 - autre : appareil en cours production [$h]
+
+Note : si <KeyDeviceValid> contient une autre valeur que 110F.A4B6h (ce qui
+inclut FFFF.FFFFh lorsque la Flash est effacée), un écran d'avertissement que
+l'appareil est en cours de production ou en cours de maintenance s'affiche à
+chaque démarrage. Cet écran doit être acquitter pour utiliser l'appareil.
+
+
+$par 7 SOFT_DEV $func $fixed  appareil avec logiciel en cours développement
+   $value @
+   DWORD KeySoftDev      0 *  clé déblocage fonctions mise au point pour
+                              développement logiciel, doit contenir 5C5C.5C5Ch
+                              pour que les fonctions de mise au point soient
+                              accessibles [$h]
+   $value @
+   DWORD SoftDevConfig   **   configurations spécifiques pour développement
+                              logiciel *
+
+                              affichage date/heure événement avec les secondes
+                              dans les écrans graphiques
+      $bit 0 @SWDEV_GRAPHSECOND     FALSE *
+                              activation trace sortie décharge profonde batterie
+                              sur liaison Ttl
+      $bit 1 @SWDEV_TRACEEXDISCH    FALSE *
+                              inbibition tempo attente 1 h après fin charge
+                              avant reprise charge si tension < 7.9 V
+      $bit 2 @SWDEV_INHTMPRESTARTCHARGE \
+                                    FALSE *
+
+Correct si :
+   - configurations spécifiques <SoftDevConfig> à 0 si absence clé déblocage
+     fonctions mise au point (<KeySoftDev> différent de 5C5C.5C5Ch)
+Note : si <KeySoftDev> contient 5C5C.5C5Ch, un écran d'avertissement que
+l'appareil est équipé d'un logiciel en cours de développement s'affiche à
+chaque démarrage. Cet écran doit être acquitter pour utiliser l'appareil. La
+présence de la clé 'déverrouille' des fonctions de mise au point nécessaires
+au développement du logiciel.
+
+
+                              numéro série, notes #2 et #5
+$par 8 SERIAL_NUMBER $func $fixed
+   STRING(16) SerialNumber **
+
+Note : affiché dans écran maintenance du menu et en Test 1.
+
+
+$par 9 DATE_PROD $fixed       date/heure production appareil
+   DATETIME DateProd  DMM_DT  date/heure utilisateur production appareil
+
+Note : affiché en Test 1.
+
+
+                              nom appareil, note #2
+$par 10 DEVICE_NAME $func $fixed
+                              nom affiché sur l'écran de démarrage
+   STRING(32) DeviceName "Volumat V2" *
+
+Note : affiché sur écran démarrage, dans écran maintenance du menu et en
+Test 1.
+
+
+                              code article international (GTIN), notes #2 et #5
+$par 11 TRADE_ITEM_NUMBER $func $fixed
+   STRING(16) TradeItemNumber **
+
+Note : même si le code article international n'est composé normalement que de
+chiffres, il est possible d'écrire n'importe quels caractères dans ce
+paramètre.
+Note : le code article international est composé de 14 chiffres pour les
+dispositifs médicaux. Par contre, la taille de <TradeItemNumber> est de 16
+caractères car tous les paramètres fixes qui sont gérés par le Boot doivent
+avoir une taille multiple de 4.
+Note : affiché en Test 1.
+
+
+
+/*-------------------------------------------------------------------------*/
+/* Zone tubulure                                                           */
+/*-------------------------------------------------------------------------*/
+
+$zone 10 TUBINGSET TS         zone tubulures
+
+
+$par 1 INFOS $noconfpc $func  informations sur la zone
+   $usestruct InfosZone
+
+Note : champ <ManChg> jamais mis à jour car aucun des paramètres n'est
+modifiés dans les menus de configurations et de tests.
+Note : informations affichées en Test 1 si paramètre présent et valide mais
+pas traitées par application.
+
+
+$nb TUBCORRFLOW   4           nombre couples débit/coefficient pour correction
+                              selon débit perfusion
+$nb TUBCORRDUR    6           nombre couples durée/coefficient pour correction
+                              selon durée perfusion
+
+
+$par 2 PARAM_TUB $func        paramètres tubulure
+   $structname ConfigParamTub
+   WORD VolTurn         2415 1000 10000   volume par tour d'axe, 1/10 µl,
+                                          0.1000 ml à 1.0000 ml
+   WORD VolDrop          500  150  1200   volume goutte, 1/10 µl, 0.0150 ml à
+                                          0.1200 ml
+   WORD Step1ml         1725  400  4200   nombre pas moteur pour 1 ml
+                                          débit maximum avec détecteur gouttes,
+                                          1/1000 ml/h
+   DWORD MaxFlowDrop 1100000 400000 FLOW_MAX
+   $struct TubCorrFlow [TUBCORRFLOW]      coefficients correcteur débit perfusion *
+                                          débit perfusion, 1/10 ml/h
+      WORD FlowRate        *  (FLOW_MIN/100) (FLOW_MAX/100)
+      BYTE CorrFlow        *   90   110   coefficient correcteur, %, 0.90 à 1.10
+   $struct TubCorrDur [TUBCORRDUR]        coefficients correcteur durée perfusion
+      BYTE Duration        *    0    96   durée écoulée, h
+      BYTE CorrDur         *  100   105   coefficient correcteur, %, 1.00 à 1.05
+
+tableau corrections débit par défaut :
+   $defminmax TubCorrFlow[1].FlowRate     1 *
+   $defminmax TubCorrFlow[1].CorrFlow   100 *
+   $defminmax TubCorrFlow[2].FlowRate    20 *
+   $defminmax TubCorrFlow[2].CorrFlow   100 *
+   $defminmax TubCorrFlow[3].FlowRate   200 *
+   $defminmax TubCorrFlow[3].CorrFlow   100 *
+   $defminmax TubCorrFlow[4].FlowRate 15000 *
+   $defminmax TubCorrFlow[4].CorrFlow   100 *
+
+tableau corrections durée par défaut :
+   $defminmax TubCorrDur[1].Duration   0 *
+   $defminmax TubCorrDur[1].CorrDur  100 *
+   $defminmax TubCorrDur[2].Duration   1 *
+   $defminmax TubCorrDur[2].CorrDur  100 *
+   $defminmax TubCorrDur[3].Duration   2 *
+   $defminmax TubCorrDur[3].CorrDur  100 *
+   $defminmax TubCorrDur[4].Duration  24 *
+   $defminmax TubCorrDur[4].CorrDur  101 *
+   $defminmax TubCorrDur[5].Duration  48 *
+   $defminmax TubCorrDur[5].CorrDur  102 *
+   $defminmax TubCorrDur[6].Duration  96 *
+   $defminmax TubCorrDur[6].CorrDur  104 *
+
+Correct si :
+   - <MaxFlowDrop> <= 1200000 si appareil standard
+   - voir note #7 pour <MaxFlowDrop>
+   - débits <FlowRate> dans tableau <TubCorrFlow> en ordre croissant
+   - durées <Duration> dans tableau <TubCorrDur> en ordre croissant
+   - nombre pas moteur pour 1 ml <Step1ml> correspond à la valeur attendue
+     en fonction volume par tour d'axe <VolTurn>
+   - période maximum pas moteur nécessaire pour perfuser au débit minimum,
+     soit 0.1 ml/h, avec correction minimum, est inférieure ou égale à 238 s
+     (période la plus grande que le driver moteur est capable de générer),
+     y compris pour les 12 périodes différentes lors d'une commande avec une
+     compensation
+   - période minimum pas moteur nécessaire pour perfuser au débit maximum,
+     soit 1200 ml/h si appareil standard ou 1500 ml/h, avec correction
+     maximum, est supérieure ou égale à 960 µs (période la plus petite que
+     le driver moteur est capable de générer)
+Note : le nombre de pas moteur pour 1 ml <Step1ml> doit être égal à la
+formule :
+   - ( 10000 / <VolTurn> ) x <NbStepTurn>
+   - <NbStepTurn> nombre pas moteur pour un tour d'axe = 416.66667
+   - la valeur écrite pour le champ doit être le résultat du calcul avec un
+     arrondi à l'entier inférieur
+   - exemple pour volume par tour d'axe de 0.2415 ml :
+        . ( 10000 / 2415 ) x 416.66667 = 1725
+Note : correction minimum :
+   - minimum des 4 corrections <CorrFlow> dans tableau <TubCorrFlow>
+   - x minimum des 6 corrections <CorrDur> dans tableau <TubCorrDur>
+   - x correction appareil minimum (valeur minimum paramètre
+     z21/p8[CAL_FLOW]/CorrDev), soit 0.8
+Note : correction maximum :
+   - maximum des 4 corrections <CorrFlow> dans tableau <TubCorrFlow>
+   - x maximum des 6 corrections <CorrDur> dans tableau <TubCorrDur>
+   - x correction appareil maximum (valeur maximum paramètre
+     z21/p8[CAL_FLOW]/CorrDev), soit 1.1
+Note : calcul période pas moteur pour un débit :
+   - volume en ml par tour d'axe corrigé :
+        . <VolTurnCorr> = ( <VolTurn> / 10000 ) / <Corr>
+   - période tour d'axe en µs pour un débit de 1 nl/h (nano-litre par
+     heure) :
+        . <PerTurn1nlh> = <VolTurnCorr> x 3600e12
+   - période en µs d’un pas moteur pour un débit de 1 nl/h (nano-litre par
+     heure) <Per1nlh> :
+        . <Per1nlh> = <PerTurn1nlh> / <NbStepTurn> = <PerTurn1nlh> / 416.66667
+   - période en µs à un certain débit en nl/h :
+        . <Period> = <Per1nlh> / débit
+   - exemple pour volume par tour d'axe de 0.2415 ml et pas de correction :
+        . <Per1nlh> = 2 086 559 983 307
+   - exemple pour débit de 0.1 ml/h :
+        . 2 086 559 983 307 / 100 000 = 20 865 599 µs
+   - exemple pour débit de 1500 ml/h :
+        . 2 086 559 983 307 / 1500 000 000 = 1 391 µs
+
+
+
+/*-------------------------------------------------------------------------*/
+/* Zone paramètres techniques                                              */
+/*-------------------------------------------------------------------------*/
+
+$zone 20 TECHNICAL T          zone paramètres techniques
+
+
+$par 1 INFOS $noconfpc $func  informations sur la zone
+   $usestruct InfosZone
+
+Note : champ <ManChg> jamais mis à jour car aucun des paramètres n'est
+modifiés dans les menus de configurations et de tests.
+Note : informations affichées en Test 1 si paramètre présent et valide mais
+pas traitées par application.
+
+
+$par 2 WIFI_CURRENT           courant moyen consommé par module Wifi
+   WORD Current    100 0 500  courant moyen consommé par module Wifi, mA
+
+Note : le courant défini avec ce paramètre est pris en compte pour
+l'évaluation du courant consommé par l'appareil uniquement si appareil avec
+module Wifi (paramètre z9/p2[DEVICE_TYPE]/DeviceType/DEVTYPE_WIFI à TRUE) et
+si module Wifi activé (paramètre z22/p51[WIFI_STATE]/Enable à TRUE). Il est
+ignoré si le module Wifi lui-même indique le courant qu'il consomme avec la
+donnée DataId-0Fh de la commande Id-42h.
+Note : ATTENTION : il s'agit du courant consommé sur la batterie ou le bloc
+secteur en amont du régulateur du module Wifi et non pas le courant en sortie
+de l'alimentation 3.3V directement fourni au module Wifi ; il est donc
+nécessaire de prendre en compte le ratio entre la tension d'entrée et la
+tension de sortie et le rendement du régulateur.
+
+
+
+/*-------------------------------------------------------------------------*/
+/* Zone étalonnages                                                        */
+/*-------------------------------------------------------------------------*/
+
+$zone 21 CALIB C              zone étalonnage
+
+
+$par 1 INFOS $noconfpc $func  informations sur la zone
+   $usestruct InfosZone
+
+Note : champ <ManChg> jamais mis à jour car aucun des paramètres n'est
+modifiés dans les menus de configurations et de tests.
+Note : informations affichées en Test 1 si paramètre présent et valide mais
+pas traitées par application.
+
+
+$par 2 CAL_EXEC $noconfpc     informations exécution étalonnages
+   $value @                   infos exécution étalonnage pression amont
+   $struct ExecCal @ExecCalUp
+      DATETIME ManCal DMM_DT  date/heure utilisateur exécution étalonnage
+      WORD CntCal     **      compteur nombre étalonnages
+   $value @                   infos exécution étalonnage pression avale
+   $usestruct ExecCal @ExecCalDown
+   $value @                   infos exécution étalonnage porte
+   $usestruct ExecCal @ExecCalDoor
+   $value @                   infos exécution étalonnage détecteur air
+   $usestruct ExecCal @ExecCalAir
+   $value @
+                              infos exécution étalonnage débit (coefficient
+                              correcteur appareil)
+   $usestruct ExecCal @ExecCalFlow
+
+Note : informations affichées en test manuel mais jamais modifiées par
+l'application :
+   - Test 5 : exécution étalonnage pression amont <ExecCalUp>
+   - Test 6 : exécution étalonnage pression avale <ExecCalDown>
+   - Test 7 : exécution étalonnage porte <ExecCalDoor>
+   - Test 14 : exécution étalonnage détecteur air <ExecCalAir>
+   - Test 17 : exécution étalonnage débit (coefficient correcteur
+               appareil) <ExecCalFlow>
+
+
+$par 3 CAL_PRESS_UP $func     étalonnage pression amont
+   WORD AdcOpen     3100 0 4095     valeur Adc porte ouverte, Lsb
+   WORD AdcClose0   1736 0 4095     valeur Adc porte fermée avec tubulure
+                                    0 mmHg, Lsb
+   WORD Offset       175 0  255     offset pour 0 capteur, Lsb
+
+Correct si :
+   - Adc porte ouverte <AdcOpen> compris entre 2.4 V (2978 Lsb) et 2.6 V
+     (3226 Lsb)
+   - Adc porte fermée avec tubulure 0 mmHg <AdcClose0> compris entre 0.7 V
+     (869 Lsb) et 2.2 V (2730 Lsb)
+   - différence <AdcOpen> - <AdcClose0> comprise entre 0.4 V (496 Lsb ) et
+     1.8 V (2234 Lsb)
+Note : valeurs affichées en Test 5.
+
+
+$par 4 CAL_PRESS_DOWN $func   étalonnage pression avale
+   WORD AdcOpen     3100 0 4095     valeur Adc porte ouverte, Lsb
+   WORD AdcClose0   2232 0 4095     valeur Adc porte fermée avec tubulure
+                                    0 mmHg, Lsb
+   WORD AdcClose760 1428 0 4095     valeur Adc porte fermée avec tubulure
+                                    760 mmHg, Lsb
+   WORD Offset       210 0  255     offset pour 0 capteur, Lsb
+
+Correct si :
+   - Adc porte ouverte <AdcOpen> compris entre 2.4 V (2978 Lsb) et 2.6 V
+     (3226 Lsb)
+   - Adc porte fermée avec tubulure 0 mmHg <AdcClose0> compris entre 1.4 V
+     (1737 Lsb) et 2.3 V (2854 Lsb)
+   - Adc porte fermée avec tubulure 760 mmHg <AdcClose760> compris entre
+     0.5 V (620 Lsb) et 2.0 V (2482 Lsb)
+   - différence <AdcClose0> - <AdcClose760> comprise entre 0.5 V (620 Lsb)
+     et 1.5 V (1861 Lsb)
+   - différence <AdcOpen> - <AdcClose0> supérieure à 0.2 V (248 Lsb)
+Note : valeurs affichées en Test 6.
+
+
+$par 5 CAL_DOOR $func         étalonnage porte
+   WORD AdcOpen     1960 0 4095     valeur Adc porte ouverte, Lsb
+   WORD AdcInterm   2280 0 4095     valeur Adc porte intermédiaire, Lsb
+   WORD AdcClose    2600 0 4095     valeur Adc porte fermée, Lsb
+
+Correct si :
+   - Adc porte ouverte <AdcOpen> compris entre 1.4 V (1737 Lsb) et 1.8 V
+     (2234 Lsb)
+   - Adc porte intermédiaire <AdcInterm> compris entre Adc porte ouverte
+     <AdcOpen> et Adc porte fermée <AdcClose>
+   - si sens nord (<AdcOpen> inférieure à <AdcClose>) : Adc porte fermée
+     <AdcClose> compris entre 1.5 V (1861 Lsb) et 2.7 V (3350 Lsb)
+   - si sens sud (<AdcOpen> supéreire à <AdcClose>) : Adc porte fermée
+     <AdcClose> compris entre 0.6 V (745 Lsb) et 1.5 V (1861 Lsb)
+   - valeur absolue de <AdcOpen> - <AdcInterm> supérieure à 0.1 V (124 Lsb)
+   - valeur absolue de <AdcClose> - <AdcInterm> supérieure à 0.1 V (124 Lsb)
+Note : valeurs affichées en Test 7.
+
+
+$par 6 CAL_AIR $func          étalonnage détecteur air
+   WORD FreqReso    1110 1000 1200  fréquence résonance, kHz
+   WORD AdcNoSet      60    0 4095  valeur Adc sans tubulure, Lsb
+   WORD AdcSetAir    180    0 4095  valeur Adc avec tubulure avec air, Lsb
+   WORD AdcSetWater 1400    0 4095  valeur Adc avec tubulure avec eau, Lsb
+
+Correct si :
+   - Adc sans tubulure <AdcNoSet> inférieure à 0.3 V (372 Lsb)
+   - Adc avec tubulure avec air <AdcSetAir> inférieure à 0.3 V (372 Lsb)
+   - Adc avec tubulure avec eau <AdcSetWater> comprise entre 0.6 V (745 Lsb)
+     et 2.5 V (3102 Lsb)
+   - différence <AdcSetWater> - <AdcNoSet> supérieure à 0.4 V (496 Lsb)
+   - différence <AdcSetWater> - <AdcSetAir> supérieure à 0.4 V (496 Lsb)
+   - valeur absolue de <AdcNoSet> - <AdcSetAir> inférieure à 0.1 V (124 Lsb)
+Note : valeurs affichées en Test 14.
+
+
+                              ajustement étalonnage détecteur air
+$par 7 CAL_AIR_ADJUST $noconfpc
+   WORD FreqReso    1110 1000 1200  fréquence résonance, kHz
+   WORD AdcNoSet      60    0 4095  valeur Adc sans tubulure, Lsb
+
+Note : si ce paramètre est absent ou hors limites lors du démarrage, il est
+initialisé avec les champs <Freq> et <AdcNoSet> de `CAL_AIR.
+Note : écart en % entre <FreqReso> de ce paramètre et z21/p6[CAL_AIR]/FreqReso
+affiché en Test 14.
+
+
+$par 8 CAL_FLOW               coefficient correcteur appareil
+   WORD CorrDev   10000 8000 11000  coefficient correcteur, 1/100 %,
+                                    0.8000 à 1.1000
+
+Note : valeurs affichée en Test 17.
+
+
+
+/*-------------------------------------------------------------------------*/
+/* Zone utilisateur/service                                                */
+/*-------------------------------------------------------------------------*/
+
+$zone 22 USER U               zone utilisateur/service
+
+
+$par 1 INFOS $noconfpc $func  informations sur la zone
+   $usestruct InfosZone
+
+Note : le champ <ManChg> est mis à jour avec la date/heure utilisateur
+courante lors d'une modification d'un paramètre de la zone en
+configuration/test manuel. Il n'est pas modifié lors de l'écriture d'un
+paramètre à l'extinction de l'appareil en mode manuel.
+Note : informations affichées en Test 1 si paramètre présent et valide mais
+pas traitées par application.
+
+
+$par 2 MAINT                  dates maintenance
+   $value @
+   DATETIME DateMaint DMM_DT  date utilisateur exécution maintenance,
+                              0 si inconnue
+   $value @
+   DATETIME NextMaint DMM_DT  date utilisateur prochaine maintenance,
+                              0 correspond à date minimum (01.01.2000)
+   $value
+   DATETIME ResetBat  DMM_DT  date utilisateur mise à zéro durée utilisation
+                              sur batterie, 0 si inconnue
+
+Note : champ <DateMaint> affiché en Test 2.
+Note : champ <NextMaint> affiché en SAV 1.
+Note : champ <ResetBat> affiché en Test 8.
+
+
+$par 3 DUR_UTIL_U             durée utilisation
+   $value                     durée utilisation totale
+   $struct DurUtil
+   DWORD Duration     **      durée utilisation depuis maintenance
+                              précédente, s
+   DWORD NbOn         **      nombre démarrages depuis maintenance précédente
+   $value                     durée utilisation sur batterie
+   $usestruct DurUtil @DurUtilBat
+                              le champ <NbOn> représente le nombre de passages
+                              sur batterie
+
+Note : à chaque extinction, la durée depuis le démarrage précédent est cumulée
+à <DurUtil>/<Duration> et <DurUtil>/<NbOn> est incrémenté. De même, la durée
+de fonctionnement sur batterie depuis le démarrage précédent est cumulée à
+<DurUtilBat>/<Duration> et le nombre de passages sur batterie est ajouté à
+<DurUtilBat>/<NbOn>. Suite à une écriture puis un redémarrage, le contenu de
+ce paramètre est donc différent lors de la prochaine lecture.
+Note : champ <DurUtil>/<Duration> affiché en Test 2.
+Note : champ <DurUtilBat>/<Duration> affiché en Test 8 sous la forme d'un
+nombre de cycles (avec une durée de cycle de 7 h).
+
+
+$par 4 DATE_OFFSET $noconfpc  offset date/heure
+   SDWORD Offset      0 *     offset entre date/heure interne et date/heure
+                              utilisateur, s
+
+Note : modifié en Pompe/Util 7 et dans écran du menu.
+
+
+$par 5 SERVICE_NAME $func     nom service, notes #2 et #5
+   STRING(20) Name    **
+
+Note : affiché :
+   - sur écran démarrage (sauf si présence nom care area et pas écran
+     confirmation care area au démarrage)
+   - dans écran maintenance du menu
+
+
+$par 6 LANGUAGE               identificateur langue active, notes #1 et #5
+   STRING(3) LangId   * "   " "~~~"
+
+Note : modifié en Pompe/Util 8.
+Note : utilisation 1ère langue définie dans les ressources si identificateur
+ne correspond à aucune langue présente dans les ressources.
+
+
+$par 7 LCD_CONTRAST           contraste Lcd
+   BYTE Contrast    170 0 201
+
+Note : modifié en Pompe/Util 3.
+
+
+$par 8 BUZZER1                paramètres effets sonore (pas dans care area)
+   $value
+   BYTE Mode        **        mode effets sonores *
+                              autorisation silence alarme préventif
+      $bit 1 @BUZ_PREVENTIVESILAL  FALSE *
+   $value
+   BYTE NbTone      1 1 2     nombre tonalités pour signalement sonore avec
+                              bips
+   $value
+   BYTE DurSilence  0 0 100   durée silence entre 2 bips alarme, pré-alarme ou
+                              indications, 100 ms, 0 pour durée par défaut
+                              du bip
+
+Note : champ <Mode>/BUZ_PREVENTIVESILAL modifié en Pompe/Par 37.
+Note : champs <NbTone> et <DurSilence> exploités et modifiés en Pompe/Par 37
+uniquement si signalement sonore avec bips (paramètre
+z9/p2[DEVICE_TYPE]/DeviceType/DEVTYPE_MELODY à FALSE).
+
+
+                              mémorisation mode programmation
+$par 9 MEM_PROGRAM_MODE $carearea
+   BYTE ProgramMode 1 1 5     mode programmation [e_prgmMode!..\Control.h] :
+                                 1 : sans nom médicament ml/h
+                                 2 : sans nom médicament débit massique
+                                 3 : nom médicament ml/h
+                                 4 : nom médicament débit massique
+                                 5 : Vigilant Drug'Lib
+
+Correct si :
+   - bit @PRGM_M_xxx correspondant à <ProgramMode> est à TRUE dans
+     z22/p25[PROGRAM_MODE]/ModeEnable.
+Note : mis à jour avec mode programmation courant à l'extinction si
+changement mode programmation au démarrage.
+Note : éventuellement ajusté en Par 22 après modification des modes de
+programmation autorisés (bits @PRGM_M_xxx dans z22/p25[PROGRAM_MODE]/ModeEnable).
+
+
+$par 10 MEM_SEL $carearea     mémorisation infos modifiables en mode manuel
+   $value
+   WORD Mem **                liste infos à mémoriser à l'extinction
+      $bit 3 @MEM_PRESSLIM           TRUE  * mémorisation limite pression
+      $bit 4 @MEM_VOLINFUS           FALSE * mémorisation volume perfusé
+      $bit 5 @MEM_SAMEINFUSION       FALSE * gestion écran même perfusion
+      $bit 6 @MEM_DPSAUTO            TRUE  * mémorisation activation
+                                             surveillance pression
+      $bit 7 @MEM_AUTORESTARTOCCLUS  FALSE * mémorisation activation redémarrage
+                                             automatique après occlusion
+   $value
+                              durée conservation contexte pour écran même
+                              perfusion, min
+   WORD DurSameInfusion   (10*60) (1*60) (24*60)
+   $value                     limite pression, mmHg
+   WORD PressLim          450 50 750
+   $value                     surveillance pression activée (état case à cocher)
+   BOOL DpsAuto           TRUE 0 1
+
+Note : champs <Mem>/MEM_VOLINFUS, <Mem>/MEM_SAMEINFUSION et <DurSameInfusion>
+modifiés en Par 3.
+Note : champs <Mem>/MEM_PRESSLIM, <Mem>/MEM_DPSAUTO, <PressLim> et <DpsAuto>
+modifiés en Util 4.
+Note : champ <Mem>/MEM_AUTORESTARTOCCLUS modifié en Util 6.
+Note : la valeur dans le champ <PressLim> est toujours exprimée en mmHg
+quelle que soit l'unité de pression définie dans z22/p19[PRESS_LIM]/Unit.
+Note : champ <PressLim> mis à jour avec limite pression courante à
+l'extinction si <Mem>/MEM_PRESSLIM à TRUE.
+Note : champ <DpsAuto> mis à jour avec état courant à l'extinction si
+<Mem>/MEM_DPSAUTO à TRUE.
+
+
+                              débit maximum au clavier pour modes primaires
+                              (modes de base, rampe, séquence et gouttes/min)
+$par 12 MAX_FLOWRATE $func $accuracy $careareaopt
+                              débit maximum primaire, 1/1000 ml/h
+   DWORD MaxFlowPrim  600000 50000 FLOW_MAX
+
+Correct si :
+   - <MaxFlowPrim> <= 1200000 si appareil standard
+   - voir note #7 pour <MaxFlowPrim>
+Note : modifié en Par 4.
+Note : voir note #6.
+
+
+$par 14 DPS $func $carearea   informations surveillance pression
+   $structname ParamDps
+   $value
+   WORD ThresholdIncr  200  50 415  seuil montée pression, mmHg
+   $value
+   WORD ThresholdDrop  200   0 415  seuil chute pression, mmHg, 0 pour
+                                    désactiver surveillance chute, 100 au
+                                    minimum si autre que 0
+
+Note : modifié en Util 4.
+Note : les valeurs dans les champs <ThresholdIncr> et <ThresholdDrop> sont
+toujours exprimées en mmHg quelle que soit l'unité de pression définie
+dans z22/p19[PRESS_LIM]/Unit.
+Note : lors d'une modification en Util 4, la valeur maximum pour le seuil
+chute <ThresholdDrop> est de 100 mmHg (ou 15 kPa (113 mmHg) ou 2.0 PSI
+(103 mmHg)) en dessous de la limite pression maximum (soit limite variable
+maximum z22/p19[PRESS_LIM]/MaxLimVar en mode variable, soit limite haute
+z22/p19[PRESS_LIM]/HighLim en mode 3 niveaux). Cet écart minimum n'est pas
+vérifié lors de l'écriture du paramètre avec une commande Id-21h.
+
+
+                              fin perfusion
+$par 16 END_INFUS $func $carearea
+   $value @
+   WORD KvoFlowRate   1000  0  20000   débit perfusion Kvo, 1/1000 ml/h, 0
+                                       pour arrêt perfusion, 1000 (1 ml/h) au
+                                       minimum si autre que 0
+   $value @
+   WORD DurPreAl    (5*60) 0 (30*60)   durée pré-alarme fin perfusion, s, 0
+                                       pour supprimer pré-alarme avec durée,
+                                       60 (1 min) au minimum si autre que 0
+   $value @
+   DWORD VolPreAl        0  0  50000   volume pour pré-alarme fin perfusion,
+                                       1/1000 ml, 0 pour supprimer pré-alarme
+                                       avec volume
+   $value @
+   BYTE PercentPreAl    10  0     15   pourcentage volume initial pour pré-
+                                       alarme fin perfusion, %, 0 pour
+                                       supprimer pré-alarme avec pourcentage
+   $value @
+   BOOL InhPreAlDrop   TRUE 0 1        inhibition pré-alarme fin perfusion si
+                                       détecteur gouttes présent
+   $value @                            durée silence alarme en perfusion Kvo, s
+   WORD DurSilAlKvo (5*60) (1*60) (12*3600)
+
+Note : champs <KvoFlowRate> et <DurSilAlKvo> modifiés en Util 5.
+Note : tous les autres champs modifiés en Par 31.
+
+
+                              options écran (dans care area)
+$par 18 OPT_SCREEN1 $func $carearea
+   $value
+   WORD Flags **              flags options
+      $bit  0 @OPTF_DPSAUTO       TRUE  * présence case à cocher DPS dans
+                                          écran pression
+      $bit  3 @OPTF_SAMETHERAPY   FALSE * affichage écran même traitement
+                                          après ouverture porte ou C(INC++)
+                                          au lancement
+      $bit  8 @OPTF_PRESSURE      TRUE  * affichage logo pression
+      $bit  9 @OPTF_BATTERY       FALSE * affichage logo batterie
+      $bit 10 @OPTF_VIGILANT      FALSE * logo Vigilant Drug'Lib (phare) plus
+                                          prioritaire que logo pression
+   $value @
+   DWORD MnuScreen1 **        liste écrans du menu activés :
+      $bit  0 @OPTS_INFUSMODE     TRUE  * mode perfusion ('VTD' pour appareil
+                                          standard, 'ml/h' ou 'DM' pour
+                                          appareil MC)
+      $bit  2 @OPTS_SOUNDLEVEL    FALSE * niveau sonore
+      $bit  3 @OPTS_HISTORIC      FALSE * historique
+      $bit  4 @OPTS_LIBDRUG       FALSE * bibliothèque médicament
+      $bit  6 @OPTS_BOLUSPROG     FALSE * bolus programmé
+      $bit  7 @OPTS_PATIENT       FALSE * patient
+      $bit  9 @OPTS_SECONDARY     FALSE * primaire/secondaire
+      $bit 10 @OPTS_GRAPH_FLOW    FALSE * graphique débit
+      $bit 11 @OPTS_GRAPH_PRESS   FALSE * graphique pression
+      $bit 12 @OPTS_TIMEWARNING   FALSE * avertissement durée
+      $bit 13 @OPTS_CHANGEDRUG    FALSE * changement médicament
+      $bit 14 @OPTS_INFOCASET     FALSE * informations ensemble care areas
+      $bit 15 @OPTS_INFOCAREAREA  FALSE * informations care area
+      $bit 17 @OPTS_PAUSE         TRUE  * pause
+      $bit 18 @OPTS_CLINICALINFO  FALSE * écran message information clinique
+
+Correct si :
+   - <MnuScreen1>/OPTS_BOLUSPROG à FALSE si fonction bolus programmé non
+     disponible (z9/p2[DEVICE_TYPE]/DeviceType/DEVTYPE_BOLP à FALSE)
+   - <MnuScreen1>/OPTS_PATIENT à FALSE si fonctions débit massique non
+     disponibles (z9/p2[DEVICE_TYPE]/DeviceType/DEVTYPE_MASSFLOW à FALSE)
+   - <MnuScreen1>/OPTS_PRIMSEC à FALSE si fonction secondaire non disponible
+     (z9/p2[DEVICE_TYPE]/DeviceType/DEVTYPE_SEC à FALSE)
+   - <MnuScreen1>/OPTS_GRAPH_FLOW et <MnuScreen1>/OPTS_GRAPH_PRESS à FALSE si
+     écrans graphique du menu non disponibles
+     (z9/p2[DEVICE_TYPE]/DeviceType/DEVTYPE_GRAPH à FALSE)
+Note : champ <Flags>/OPTF_DPSAUTO modifié en Util 4.
+Note : champ <Flags>/OPTF_SAMETHERAPY modifié en Par 25.
+Note : champs <Flags>/OPTF_PRESSURE, <Flags>/OPTF_BATTERY et
+<Flags>/OPTF_VIGILANT modifiés en Util 1 (standard).
+Note : champs <MnuScreen1>/OPTS_GRAPH_FLOW et <MnuScreen1>/OPTS_GRAPH_PRESS
+modifiés en Util 12.
+Note : autres bits champ <MnuScreen1> modifiés en Util 2 (standard).
+
+
+                              limites pression
+$par 19 PRESS_LIM $func $carearea
+   $value @                   limite pression variable maximum, mmHg
+   WORD MaxLimVar     750  300  750
+   $value @                   limite basse en mode 3 niveaux, mmHg
+   WORD LowLim        200   50  310
+   $value @
+                              limite moyenne en mode 3 niveaux, mmHg, écart
+                              minimum de 100 mmHg (75 mmHg pour unité kPa)
+                              avec limite basse
+   WORD MediumLim     450  150  625
+   $value @
+                              limite haute en mode 3 niveaux, mmHg, écart
+                              minimum de 100 mmHg (75 mmHg pour unité kPa)
+                              avec limite moyenne
+   WORD HighLim       750  225  750
+   $value
+   BYTE Mode          1 1 2   mode gestion alarme occlusion
+                              [PRESS_M_!..\DefParam.h] :
+                                 1 : limite pression variable
+                                 2 : 3 niveaux
+   $value
+   BYTE Unit          0 0 2   unité pression [PRESS_U_!..\DefParam.h] :
+                                 0 : mmHg
+                                 1 : kPa
+                                 2 : PSI
+
+Correct si :
+   - écart entre <LowLim> et <MediumLim> au minimum de 100 mmHg si unité mmHg
+     ou PSI ou de 75 mmHg si unité kPa
+   - écart entre <MediumLim> et <HighLim> au minimum de 100 mmHg si unité
+     mmHg ou PSI ou de 75 mmHg si unité kPa
+Note : tous les champs modifiés en Util 4.
+Note : les valeurs dans les champs <MaxLimVar>, <LowLim>, <MediumLim> et
+<HighLim> sont toujours exprimées en mmHg quelle que soit l'unité de pression
+définie avec <Unit>.
+
+
+                              paramètres volumes air
+$par 20 PARAM_VOL_AIR $func $carearea
+   $value
+   WORD VolAlarm 5000 100 20000  volume d'air admissible sur 15 min,
+                                 1/10 µl, 10 à 2000 µl, 500 µl par défaut
+   $value
+   WORD VolMin    100   0  2500  volume bulle non pris en compte, 1/10 µl,
+                                 0 à 250 µl, 10 µl par défaut
+
+Correct si :
+   - volume d'air admissible sur 15 min <VolAlarm> doit être supérieur au
+     volume bulle non pris en compte <VolMin> + 10 µl (100)
+Note : modifié en Par 27.
+
+
+                              débit bolus simple
+$par 21 BOLUS_FLOWRATE $func $accuracy $careareaopt
+                              débit bolus simple, 1/1000 ml/h
+   DWORD BolsFlowRate 1200000 50000 FLOW_MAX
+
+Correct si :
+   - <BolsFlowRate> <= 1200000 si appareil standard
+   - voir note #7 pour <BolsFlowRate>
+Note : modifié en Par 9.
+Note : voir note #6.
+
+
+$par 22 MISCELLANEOUS         configurations diverses (pas dans care area)
+   $value
+   WORD Flags **              flags configuration *
+                              mise sous tension automatique avec ouverture
+                              porte
+      $bit  2 @MISC_ONOPENDOOR             FALSE *
+                              touche START pas acceptée pour démarrer la
+                              perfusion si clavier verrouillé (par défaut
+                              démarrage perfusion possible avec touche
+                              START même si clavier verrouillé)
+      $bit  7 @MISC_INHSTARTKBDLOCK        FALSE *
+                              validation débit simple ne provoque pas démarrage
+                              perfusion (mais retour à lancement ou arrêt)
+      $bit 15 @MISC_VALIDFLOW_NOSTARTINFUS FALSE *
+   $value
+   WORD Flags2 **             `2ème groupe flags configuration *
+                              activation suppression 0 non significatifs
+      $bit 1 @MISC_2_REMOVETRAILZERO       FALSE *
+                              activation suppression 0 non significatifs y
+                              compris pendant sélection
+      $bit 2 @MISC_2_REMOVETRAILZEROSELECT FALSE *
+                              affichage assistance en cours de sélection
+      $bit 3 @MISC_2_SELECTASSISTANCE      FALSE *
+                              affichage écran information durée avant
+                              prochaine maintenance
+      $bit 4 @MISC_2_DISPDURNEXTMAINT      FALSE *
+
+Note : champ <Flags>/MISC_ONOPENDOOR modifié en Pompe/Par 28.
+Note : champs <Flags2>/MISC_2_REMOVETRAILZERO et
+<Flags2>/MISC_2_REMOVETRAILZEROSELECT modifiés en Pompe/Par 35.
+Note : champ <Flags2>/MISC_2_SELECTASSISTANCE modifié en Pompe/Util 1.
+Note : champ <Flags2>/MISC_2_DISPDURNEXTMAINT modifié en SAV 4.
+
+
+$par 23 MONTH_MAINT $noconfpc nombre mois avant prochaine maintenance
+   BYTE MonthMaint 36 0 36
+
+
+                              modes/fonctions perfusion autorisés
+$par 24 INFUS_ENABLE $func $carearea
+   DWORD InfusEnable **       modes/fonctions perfusion autorisés
+      $bit  0 @INFUS_B_VT        TRUE  *  volume/temps (base)
+      $bit  1 @INFUS_B_VR        TRUE  *  volume/débit (base)
+      $bit  2 @INFUS_B_TR        TRUE  *  temps/débit (base)
+      $bit  3 @INFUS_B_VTR       TRUE  *  volume/temps/débit (base)
+      $bit  4 @INFUS_B_R         TRUE  *  débit seul (base)
+      $bit  5 @INFUS_B_DROP      FALSE *  gouttes/min
+      $bit  6 @INFUS_B_BOLS      TRUE  *  bolus simple
+      $bit  8 @INFUS_B_LOAD      FALSE *  dose charge
+      $bit  9 @INFUS_B_BOLP      FALSE *  bolus programmé
+      $bit 10 @INFUS_B_RAMP      FALSE *  rampe
+      $bit 11 @INFUS_B_SEQ       FALSE *  séquence
+      $bit 12 @INFUS_B_PURG_AIR  FALSE *  purge air
+      $bit 13 @INFUS_B_PURG_TUB  FALSE *  purge tubulure
+
+Correct si :
+   - au moins un bit armé parmi les modes de base <InfusEnable>/INFUS_B_VT,
+     <InfusEnable>/INFUS_B_VR, <InfusEnable>/INFUS_B_TR,
+     <InfusEnable>/INFUS_B_VTR et <InfusEnable>/INFUS_B_R
+   - <InfusEnable>/INFUS_B_DROP à FALSE si mode perfusion gouttes/min non
+     disponible (z9/p2[DEVICE_TYPE]/DeviceType/DEVTYPE_DROP à FALSE)
+   - <InfusEnable>/INFUS_B_LOAD à FALSE si fonction dose charge non
+     disponible (z9/p2[DEVICE_TYPE]/DeviceType/DEVTYPE_LOAD à FALSE)
+   - <InfusEnable>/INFUS_B_BOLP à FALSE si fonction bolus programmé non
+     disponible (z9/p2[DEVICE_TYPE]/DeviceType/DEVTYPE_BOLP à FALSE)
+   - <InfusEnable>/INFUS_B_RAMP à FALSE si mode perfusion rampe non disponible
+     (z9/p2[DEVICE_TYPE]/DeviceType/DEVTYPE_RAMP à FALSE)
+   - <InfusEnable>/INFUS_B_SEQ à FALSE si mode perfusion séquence disponible
+     (z9/p2[DEVICE_TYPE]/DeviceType/DEVTYPE_SEQ à FALSE)
+Note : champs <InfusEnable>/INFUS_B_BOLS, <InfusEnable>/INFUS_B_LOAD,
+<InfusEnable>/INFUS_B_BOLP, <InfusEnable>/INFUS_B_PURG_AIR et
+<InfusEnable>/INFUS_B_PURG_TUB modifiés en Par 19.
+Note : autres bits champ <InfusEnable> modifiés en Par 29.
+
+
+                              paramètres mode programmation
+$par 25 PROGRAM_MODE $func $carearea
+   $value
+   BYTE ModeEnable  **        modes programmation autorisés
+      $bit 1 @PRGM_M_VIGILANT     FALSE *  `Vigilant Drug'Lib
+      $bit 3 @PRGM_M_NONAME_MLH   TRUE  *  sans nom médicament ml/h
+      $bit 4 @PRGM_M_NONAME_MF    FALSE *  sans nom médicament débit massique
+      $bit 5 @PRGM_M_DRUGLIST_MLH FALSE *  nom médicament ml/h
+      $bit 6 @PRGM_M_DRUGLIST_MF  FALSE *  nom médicament débit massique
+   $value
+   BYTE DrugEnable **         médicaments spécifiques autorisés
+      $bit 0 @PRGM_D_XMLH         FALSE *  `"Médicament X (ml/h)"
+      $bit 1 @PRGM_D_XMF          FALSE *  `"Médicament X (dose)"
+      $bit 2 @PRGM_D_TOP          FALSE *  positionement "Médicament X" en
+                                           haut listes (en bas listes si FALSE)
+
+Correct si :
+   - champ <ModeEnable> parmi une des combinaisons suivantes :
+        . @PRGM_M_NONAME_MLH : sans nom médicament ml/h seul
+        . @PRGM_M_NONAME_MLH + @PRGM_M_NONAME_MF : sans nom médicament ml/h +
+          sans nom médicament débit massique, uniquement si fonctions débit
+          massique disponibles (z9/p2[DEVICE_TYPE]/DeviceType/DEVTYPE_MASSFLOW
+          à TRUE)
+        . @PRGM_M_DRUGLIST_MLH : nom médicament ml/h seul
+        . @PRGM_M_DRUGLIST_MF : nom médicament débit massique seul, uniquement
+          si fonctions débit massique disponibles
+        . @PRGM_M_DRUGLIST_MLH + @PRGM_M_DRUGLIST_MF : nom médicament ml/h +
+          nom médicament débit massique, uniquement si fonctions débit
+          massique disponibles
+        . @PRGM_M_VIGILANT : Vigilant Drug'Lib seul
+   - si <ModeEnable>/PRGM_M_VIGILANT : appareil est type MC
+   - si <ModeEnable>/PRGM_M_DRUGLIST_MLH ou <ModeEnable>/PRGM_M_DRUGLIST_MF :
+     au moins un médicament dans bibliothèque liste noms médicaments (zone 30)
+   - si <ModeEnable>/PRGM_M_VIGILANT : au moins un médicament dans bibliothèque
+     Vigilant Drug'Lib (zone 31)
+   - si <DrugEnable>/PRGM_D_XMLH à TRUE : présence @PRGM_M_VIGILANT,
+     @PRGM_M_DRUGLIST_MLH ou @PRGM_M_DRUGLIST_MF dans <DrugEnable>
+   - si <DrugEnable>/PRGM_D_XMF à TRUE : présence @PRGM_M_VIGILANT,
+     @PRGM_M_DRUGLIST_MLH ou @PRGM_M_DRUGLIST_MF dans <DrugEnable>
+   - si <DrugEnable>/PRGM_D_XMF à TRUE : fonctions débit massique disponibles
+     (paramètre z9/p2[DEVICE_TYPE]/DeviceType/DEVTYPE_MASSFLOW à TRUE)
+Note : champs <ModeEnable>/PRGM_M_NONAME_MF et <ModeEnable>/PRGM_M_DRUGLIST_MF
+modifiés en Par 22.
+Note : le bit @PRGM_D_XMF qui permet d'autoriser "Médicament X (dose)" peut
+être armé si uniquement le mode sans nom médicament ml/h (bit
+@PRGM_M_NONAME_MLH) est présent. En effet, dans ce cas la configuration
+Par 22 peut armer le bit @PRGM_M_DRUGLIST_MF et on obtient alors un mode de
+programmation nom médicament débit massique avec "Médicament X (dose)"
+autorisé.
+
+
+                              mémorisation paramètres mode débit massique
+$par 26 MEM_MASSFLOW $onlyMC $careareadefonload
+   DWORD Dilution        0 *  valeur dilution, 1/1000 unité
+   UNIT DilutionUnit     0 *  unité dilution, 0 si médicament sans dilution
+   WORD DilutionVolume   0 *  volume associé à dilution, ml
+   DWORD Weight          0 *  poids patient, g, 0 si absence poids patient
+   WORD Bsa              0 *  surface patient, 1/1000 m², 0 si absence surface
+                              patient
+   DWORD MassFlow        0 *  débit massique, 1/1000 unité, à 0 si débit ml/h
+   UNIT MassFlowUnit     0 *  unité débit massique, 0 si débit ml/h uniquement
+
+Note : champs <Dilution>, <DilutionUnit>, <DilutionVolume>, <Weight>, <Bsa>,
+<MassFlow> et <MassFlowUnit> toujours écrits à l'extinction en mode manuel :
+   - avec les valeurs courantes si mémorisation numéro médicament et
+     paramètres perfusion (z22/p37[ENABLE_MEM_DRUG]/MEMD_DRUGPARAM à TRUE)
+     sauf si médicament courant est un médicament depuis la bibliothèque
+     Vigilant Drug'Lib (zone 31)
+   - avec les valeurs par défaut (tout à 0) dans le cas contraire
+Note : ce paramètre est écrit avec les valeurs par défaut lors de l'extinction
+en mode veille, configuration/test PC et configuration/test manuel si un des
+paramètres liés à la configuration de la perfusion a été écrit, note #9.
+
+
+                              paramètres mode nuit
+$par 27 NIGHT_MODE $noconfpc $careareaopt
+   $value
+   WORD Flags **              flags options mode nuit
+      $bit 0 @NM_LOWBACKLIGHT TRUE  *  réduction luminosité back-light
+      $bit 1 @NM_LOWLEDS      TRUE  *  réduction luminosité leds
+      $bit 2 @NM_INHBEEPKEY   TRUE  *  inhibition bip touche
+      $bit 3 @NM_MANUAL       FALSE *  mode manuel (présence écrans dans
+                                       menu manuel)
+      $bit 4 @NM_AUTO         FALSE *  mode automatique (avec <FromHour> et
+                                       <ToHour>)
+   $value
+                              heure début mode nuit automatique, min à partir
+                              de minuit
+   WORD FromTime  (21*60) 0 ((23*60)+59)
+   $value
+                              heure fin mode nuit automatique, min à partir
+                              de minuit
+   WORD ToTime    ( 6*60) 0 ((23*60)+59)
+
+Note : modifié en Par 18.
+
+
+                              paramètres patient
+$par 28 PARAM_PATIENT $func $onlyMC $careareaopt
+   $value                     poids patient par défaut, g
+   DWORD DefaultWeight 70000  250  350000
+   $value                     poids patient minimum, g
+   DWORD MinWeight       250  250  350000
+   $value                     poids patient maximum, g
+   DWORD MaxWeight    350000  250  350000
+   $value                     `Bsa patient par défaut, 1/1000 m²
+   WORD DefaultBsa      2500   50    4500
+   $value                     `Bsa patient minimum, 1/1000 m²
+   WORD MinBsa            50   50    4500
+   $value                      `Bsa patient maximum, 1/1000 m²
+   WORD MaxBsa          4500   50    4500
+
+Correct si :
+   - poids par défaut <DefaultWeight>, minimum <MinWeight> et maximum
+     <MaxWeight> multiples de coefficient selon valeur, note #8
+   - poids minimum <MinWeight> <= poids maximum <MaxWeight>
+   - poids minimum <MinWeight> <= poids par défaut <DefaultWeight>
+   - poids par défaut <DefaultWeight> <= poids maximum <MaxWeight>
+   - Bsa par défaut <DefaultBsa>, minimum <MinBsa> et maximum <MaxBsa>
+     multiples de 10 (0.01 m²)
+   - Bsa minimum <MinBsa> <= Bsa maximum <MaxBsa>
+   - Bsa minimum <MinBsa> <= Bsa par défaut <DefaultBsa>
+   - Bsa par défaut <DefaultBsa> <= Bsa maximum <MaxBsa>
+Note : modifié en Par 23.
+
+
+                              mémorisation mode perfusion
+$par 29 INFUS_MODE $func $careareaopt
+   $value
+   WORD Mem **                liste infos à mémoriser à l'extinction
+      $bit 0 @MEM_INFUSMODE  TRUE  *  mémorisation mode perfusion
+   $value
+   BYTE InfusMode    2 1 12   mode perfusion :
+                                 1 : volume/temps
+                                 2 : volume/débit
+                                 3 : temps/débit
+                                 4 : volume/temps/débit
+                                 5 : débit seul
+                                 6 : gouttes/min
+                                11 : rampe
+                                12 : séquence
+
+Correct si :
+   - <InfusMode> pas compris entre 7 et 10
+   - bit @INFUS_B_xxx correspondant à <InfusMode> est à TRUE dans
+     z22/p24[INFUS_ENABLE]/InfusEnable.
+Note : champ <Mem>/MEM_INFUSMODE modifié en Par 29.
+Note : champ <InfusMode> modifié en Util 10.
+Note : champ <InfusMode> mis à jour avec mode perfusion courant à l'extinction
+si <Mem>/MEM_INFUSMODE à TRUE.
+Note : champ <InfusMode> éventuellement ajusté en Par 29 après modification
+des modes de perfusion autorisés (bits @INFUS_B_xxx dans paramètre
+z22/p24[INFUS_ENABLE]/InfusEnable).
+
+
+                              mode secondaire
+$par 31 SECONDARY $onlyMC $carearea
+   WORD Flags **              flags mode fin secondaire
+     $bit 0 @SEC_STOPENDSEC  TRUE  *  arrêt perfusion en fin secondaire,
+                                      déclenchement alarme fin secondaire
+     $bit 1 @SEC_NOACKENDSEC FALSE *  indication pas besoin acquittement fin
+                                      secondaire
+
+Note : modifié en Par 36.
+
+
+                              validation des unités
+$par 32 ENABLE_UNIT $func $onlyMC $careareaopt
+   $value                     unités dilution
+   BOOL[DILUTION_UNIT]  Dilution TRUE 0 1
+   $value                     unités débit massique
+   BOOL[MASS_FLOW_UNIT] MassFlow TRUE 0 1
+   $value
+   BYTE EnablePer **          type dilution et 'ml' pour dose
+      $bit 0 @PER_DIL_ML   TRUE  * dilution '/ml'
+      $bit 1 @PER_DIL_XML  TRUE  * dilution '/Xml'
+      $bit 7 @PER_U_ML     FALSE * 'ml', pour autoriser 'ml' dans liste unités
+                                   dose charge et bolus programmé avec
+                                   médicament "Médicament X (dose)"
+
+Correct si :
+   - au moins une unité de dilution validée dans <Dilution>
+   - au moins une unité de débit massique validée dans <MassFlow>
+   - <MassFlow>[14] ('mg/m²/h') et <MassFlow>[15] ('mg/m²/24h') à FALSE si
+     unités avec '/m²' inhibées (z9/p2[DEVICE_TYPE]/DeviceType/DEVTYPE_INHIBITM2
+     à TRUE)
+   - pour chaque unité de dilution validée dans <Dilution>, au moins une
+     unité de débit massique compatible validée dans <MassFlow>, c'est à dire
+     avec la partie unité (sans préfixe, ni temps, ni poids, ni surface)
+     identique
+   - un des 2 types de dilution parmi '/ml' (@PER_DIL_ML) et '/Xml'
+     (@PER_DIL_XML) validé dans <EnablePer>
+Note : la liste des unités de dilution est définie dans le logiciel :
+   -  1: 'ng'          -  2: 'µg'          -  3: 'mg'          -  4: 'g'
+   -  5: 'mmol'
+   -  6: 'mU'          -  7: 'U'
+   -  8: 'cal'         -  9: 'kcal'
+   - 10: 'mEq'
+Note : la liste des unités de débit massique est définie dans le logiciel :
+                       -  1: 'ng/h'
+   -  2: 'ng/kg/min'   -  3: 'ng/kg/h'
+   -  4: 'µg/min'      -  5: 'µg/h'
+   -  6: 'µg/kg/min'   -  7: 'µg/kg/h'
+   -  8: 'mg/min'      -  9: 'mg/h'        - 10: 'mg/24h'
+   - 11: 'mg/kg/min'   - 12: 'mg/kg/h'     - 13: 'mg/kg/24h'
+                       - 14: 'mg/m²/h'     - 15: 'mg/m²/24h'
+                       - 16: 'g/h'
+   - 17: 'g/kg/min'    - 18: 'g/kg/h'      - 19: 'g/kg/24h'
+                       - 20: 'mmol/h'
+                       - 21: 'mmol/kg/h'   - 22: 'mmol/kg/24h'
+   - 23: 'mU/min'
+   - 24: 'mU/kg/min'   - 25: 'mU/kg/h'
+   - 26: 'U/min'       - 27: 'U/h'
+   - 28: 'U/kg/min'    - 29: 'U/kg/h'
+                       - 30: 'kcal/h'      - 31: 'kcal/24h'
+                       - 32: 'kcal/kg/h'
+   - 33: 'mEq/min'     - 34: 'mEq/h'
+   - 35: 'mEq/kg/min'  - 36: 'mEq/kg/h'
+Note : modifié en Par 20 (sauf <EnablePer>/PER_U_ML).
+
+
+                              mémorisation rampe sélectionnée
+$par 34 MEM_RAMP $onlyMC $careareadefonload
+   $structname ParamRamp
+   DWORD PlateFlowRate  **    débit plateau, nl/h
+   DWORD VolToInfus     **    volume à perfuser, 10 nl
+   WORD RiseDuration    **    durée montée, s
+   WORD FallDuration    **    durée descente, s
+
+Note : pour garder suffisamment de précision dans le calcul de la durée de
+plateau, le débit et le volume à perfuser sont stockés avec des unités plus
+précises que 1/1000 ml/h et 1/1000 ml.
+Note : voir notes z22/p26[MEM_MASSFLOW], note #9.
+
+
+$nb PHASESEQ 20               nombre maximum de phases dans une séquence
+
+                              mémorisation séquence sélectionnée
+$par 35 MEM_SEQ $onlyMC $careareadefonload
+   $structname PackParamSeq
+                              paramètres des phases
+   $struct PackPhaseSeq [NB_PHASESEQ]
+      DWORD TypeBeepFlowRate  ** type phase, bip fin phase et débit
+      DWORD RepeatVolDuration ** nombre répétitions et volume ou durée phase
+
+Note : voir ParamDrug.txt pour le codage des informations d'une phase dans
+les champs <TypeBeepFlowRate> et <RepeatVolDuration>.
+Note : voir notes z22/p26[MEM_MASSFLOW], note #9.
+
+
+$par 36 CARE_AREA_TYPE        type care area
+   BOOL Dedicated   FALSE 0 1 care area active est une care area dédiée
+
+Note : mis à jour lors de l'activation d'une care area.
+Note : lorsque la care area active est une care area dédiée, la majorité des
+menus de configuration est inaccessible.
+
+
+                              validation mémorisation médicament
+$par 37 ENABLE_MEM_DRUG $func $careareaopt
+   WORD Mem **                modes mémorisation médicament
+      $bit 0 @MEMD_DRUGONLY  FALSE * mémorisation numéro médicament uniquement
+      $bit 1 @MEMD_DRUGPARAM FALSE * mémorisation numéro médicament et paramètres
+
+Correct si :
+   - <Mem>/MEMD_DRUGONLY et <Mem>/MEMD_DRUGPARAM pas tous les 2 deux armés
+Note : champs <Mem>/MEMD_DRUGONLY et <Mem>/MEMD_DRUGPARAM modifiés en Par 3.
+
+
+$par 40 BUZZER2 $carearea     paramètres effets sonore (dans care area)
+   $value
+   BYTE Mode        **        mode effets sonores
+      $bit 0 @BUZ2_INHKEY  FALSE *  inhibition bip touche
+   $value
+   BYTE Level       7 1 7     niveau sonore, 1 le plus faible, 7 le plus fort
+
+Note : champ <Mode>/BUZ2_INHKEY modifié en Par 1.
+Note : champ <Level> modifié en Par 2 et dans écran du menu.
+
+
+                              mémorisation paramètres perfusion
+$par 41 MEM_INFUS_PARAM $careareadefonload
+   WORD NumDrug     249 *     numéro dernier médicament sélectionné [$d!DRG_NUM()] :
+                                   0 : sans nom médicament ml/h
+                                 249 : inconnu "----"
+                                 251 : "Médicament X (dose)"
+                                 248 : "Médicament X (ml/h)"
+                                 247 : sans nom médicament débit massique
+                                 0300h + 1-200 : nom médicament ml/h
+                                 0400h + 1-200 : nom médicament débit massique
+                                 0500h + 1-200 : Vigilant Drug'Lib
+   DWORD FlowRate     0 *     débit perfusion modes base et gouttes/min, nl/h
+   DWORD VolToInfus   0 *     volume à perfuser modes base et gouttes/min, 10 nl
+   DWORD VolInfus     0 *     volume perfusé, 10 nl
+   DWORD DurInfus     0 *     durée perfusion, s
+
+Note : champ <NumDrug> toujours écrit à l'extinction en mode manuel :
+   - avec numéro médicament courant si mémorisation numéro médicament seul
+     (z22/p37[ENABLE_MEM_DRUG]/MEMD_DRUGONLY à TRUE) ou mémorisation numéro
+     médicament et paramètres (z22/p37[ENABLE_MEM_DRUG]/MEMD_DRUGPARAM à TRUE)
+   - avec 249 (inconnu) dans le cas contraire
+Note : champs <FlowRate> et <VolToInfus> toujours écrits à l'extinction en
+mode manuel :
+   - avec les valeurs courantes si mémorisation numéro médicament et
+     paramètres perfusion (z22/p37[ENABLE_MEM_DRUG]/MEMD_DRUGPARAM à TRUE)
+     sauf si médicament courant est un médicament depuis la bibliothèque
+     Vigilant Drug'Lib (zone 31)
+   - avec les valeurs par défaut (tout à 0) dans le cas contraire
+Note : champs <VolInfus> et <DurInfus> toujours écrit à l'extinction en
+mode manuel :
+   - avec les valeurs courantes si mémorisation volume perfusé activée
+     (z22/p10[MEM_SEL]/MEM_VOLINFUS à TRUE)
+   - avec les valeurs par défaut (tout à 0) dans le cas contraire
+Note : ce paramètre est écrit avec les valeurs par défaut lors de l'extinction
+en mode veille, configuration/test PC et configuration/test manuel si un des
+paramètres liés à la configuration de la perfusion a été écrit, note #9.
+Note : pour garder suffisamment de précision dans le calcul du temps de
+perfusion, le débit et les volumes sont stockés avec des unités plus précises
+que 1/1000 ml/h et 1/1000 ml.
+
+
+                              configuration détecteur de gouttes
+$par 42 DROP_CONFIG $careareaopt
+   WORD Flags **
+     $bit 0 @DROP_MANDATORY  FALSE *  détecteur gouttes obligatoire
+
+Correct si :
+   - si <Flags>/DROP_MANDATORY armé et fonction secondaire disponible
+     (z9/p2[DEVICE_TYPE]/DeviceType/DEVTYPE_SEC à TRUE) alors
+     <Flags>/DROPS_ONPRIM_INFUSSEC dans z22/p50[DROP_CONFIG_SEC] doit
+     également être armé
+Note : voir note pour z22/p50[DROP_CONFIG_SEC].
+Note : modifié en Par 30 et Par 36.
+
+
+$par 43 OPT_SCREEN2           options écran (pas dans care area)
+   $value
+   WORD Flags **              flags options
+      $bit 2 @OPTF2_DISCPOWER     TRUE  * gestion indication déconnexion secteur
+      $bit 4 @OPTF2_ONCAREAREA    TRUE  * affichage écrans confirmation/sélection
+                                          care area au démarrage
+      $bit 5 @OPTF2_ONCAREAREASET TRUE  * affichage écran info. ensemble care
+                                          areas après écran initial au démarrage
+   $value @
+   DWORD MnuScreen2 **        liste écrans du menu activés :
+      $bit 0 @OPTS2_MAINT         FALSE * maintenance
+      $bit 1 @OPTS2_DATETIME      FALSE * réglage date/heure
+   $value
+   WORD PumpCode   0 0 9999   code accès menu paramètres pompe, 0 pour accès
+                              sans code
+
+Note : champ <Flags>/OPTF2_DISCPOWER modifié en Pompe/Par 13.
+Note : champ <Flags>/OPTF2_ONCAREAREA modifié en Pro 2.
+Note : champ <Flags>/OPTF2_ONCAREAREASET modifié en Pro 4.
+Note : champs <MnuScreen2>/OPTS2_MAINT et <MnuScreen2>/OPTS2_DATETIME
+modifiés en Pompe/Util 2.
+Note : champ <PumpCode> modifié en Test 20.
+
+
+                              configurations diverses (dans care area)
+$par 44 MISCELLANEOUS2 $careareaopt
+   WORD Flags **              flags configuration *
+                              inhibition sélection débit en cours perfusion
+      $bit 0 @MISC2_INHSELFLOWINFUS FALSE *
+                              activation automatique mode débit simple si
+                              détecteur gouttes présent au démarrage
+      $bit 2 @MISC2_AUTOINFUSR      TRUE  *
+                              durée perfusion cachée pendant exécution perfusion,
+                              ignoré si état défini dans paramètres médicament
+      $bit 3 @MISC2_HIDEDURATION    FALSE *
+
+Note : champ <Flags>/MISC2_INHSELFLOWINFUS modifié en Par 34.
+Note : la durée de perfusion cachée ou non avec bit @MISC2_HIDEDURATION
+concerne la durée restante de perfusion en mode de base, en mode gouttes/min
+et en mode secondaire. La durée restante de perfusion en mode rampe et en
+mode séquence est toujours affichée pendant exécution perfusion quel que soit
+l'état de ce bit.
+
+
+$par 45 DROP_MIN $func        configuration mode gouttes/min
+   BYTE FlowDropEnable **     sélections débits autorisées en mode gouttes/min
+      $bit 0 @DROP_EN_MLH       FALSE *  débit ml/h
+      $bit 1 @DROP_EN_DROPMIN   TRUE  *  débit gouttes/min
+
+Correct si :
+   - champs <FlowDropEnable>/DROP_EN_MLH et <FlowDropEnable>/DROP_EN_DROPMIN
+     pas tous les 2 à FALSE
+Note : modifié en Pompe/Par 33.
+
+
+                              débit maximum au clavier pour mode secondaire
+$par 46 MAX_FLOWRATE_SEC $func $accuracy $onlyMC $careareaopt
+                              débit maximum secondaire, 1/1000 ml/h
+   DWORD MaxFlowSec 1000000 50000 1000000
+
+Correct si :
+   - voir note #7 pour <MaxFlowSec>
+Note : modifié en Par 4.
+Note : voir note #6.
+
+
+                              débit maximum au clavier pour bolus programmé
+                              et dose charge
+$par 47 MAX_FLOWRATE_LOADBOLP $func $accuracy $onlyMC $careareaopt
+                              débit maximum bolus programmé et dose charge,
+                              1/1000 ml/h
+   DWORD MaxFlowLoadBolp  FLOW_MAX 100 FLOW_MAX
+
+Correct si :
+   - voir note #7 pour <MaxFlowLoadBolp>
+Note : modifié en Par 9.
+Note : voir note #6.
+
+
+                              numéro d'inventaire, notes #2 et #5
+$par 48 INVENTORY_NUMBER $func
+   STRING(20) Number   **
+
+Note : ce paramètre n'est pas exploité par l'application. Il est uniquement
+stocké pour être fourni lors d'une lecture avec une commande Id-20h.
+
+
+$par 49 HOSPITAL_NAME $func   nom hôpital, notes #2 et #5
+   STRING(20) Name    **
+
+Note : ce paramètre n'est pas exploité par l'application. Il est uniquement
+stocké pour être fourni lors d'une lecture avec une commande Id-20h.
+
+
+                              configuration détecteur de gouttes en secondaire
+$par 50 DROP_CONFIG_SEC $func $onlyMC $careareaopt
+   WORD Flags **              position détecteur pendant perfusion secondaire
+     $bit 1 @DROPS_ONPRIM_INFUSSEC FALSE *  détecteur gouttes sur primaire
+                                            pendant perfusion secondaire
+     $bit 2 @DROPS_ONSEC_INFUSSEC  FALSE *  détecteur gouttes sur secondaire
+                                            pendant perfusion secondaire
+
+Correct si :
+   - si <Flags>/DROPS_ONSEC_INFUSSEC armé, <Flags>/DROPS_ONPRIM_INFUSSEC
+     doit également être armé
+Note : les différentes combinaisons possibles avec z22/p42[DROP_CONFIG] et
+ce paramètre sont :
+   MANDATORY  ONPRIM  ONSEC
+       0         0      0    détecteur pas obligatoire, pas besoin détecteur
+                             pour perfusion secondaire
+       0         1      0    détecteur pas obligatoire, besoin détecteur pour
+                             perfusion secondaire
+       0         1      1    détecteur pas obligatoire, besoin détecteur pour
+                             perfusion secondaire
+       1         1      0    détecteur obligatoire
+       1         1      1    détecteur obligatoire
+Note : modifié en Par 30 et Par 36.
+
+
+$par 51 WIFI_STATE            état module Wifi
+   BOOL Enable      TRUE  0 1 module Wifi activé
+
+Note : modifié en Pompe/Util 14.
+Note : l'état actif ou inactif du module Wifi défini avec ce paramètre n'est
+pas traité par le logiciel (sauf pour prendre en compte ou non le courant
+consommé par le module Wifi défini avec le paramètre z20/p2[WIFI_CURRENT]).
+Le contenu du champ <Enable> est uniquement fourni au module Wifi avec la
+donnée DataId-33h de la commande Id-42h.
+
+
+$par 52 SERVER_MODE $noconfpc mode serveur
+   BOOL Enable      FALSE 0 1 mode serveur activé
+
+Note : ce paramètre n'est pas exploité par l'application. Il est uniquement
+stocké pour être fourni lors d'une lecture avec une commande Id-20h.
+
+
+                              redémarrage automatique après occlusion
+$par 53 AUTO_RESTART_OCCLUS $func $careareaopt
+   $value
+   BOOL Valid           FALSE 0 1      redémarrage automatique validé, présence
+                                       case à cocher redémarrage automatique
+                                       dans écran pression
+   $value
+   BYTE MaxWaitDur      10  5  30      durée maximum attente diminution pression
+                                       pour redémarrage, s
+   $value
+   WORD DecPressRestart 50 25 525      valeur de diminution pression pour
+                                       exécuter redémarrage automatique, mmHg
+   $value
+   WORD InhibitPressLim  0  0 525      limite pression en dessous de laquelle
+                                       le redémarrage automatique est inhibé,
+                                       mmHg, 0 pour redémarrage automatique
+                                       jamais inhibé avec limite pression,
+                                       25 au minimum si autre que 0
+   $value
+   DWORD InhibitFlow     0  0 FLOW_MAX débit en dessous duquel le redémarrage
+                                       automatique est inhibé, 1/1000 ml/h,
+                                       0 pour redémarrage automatique jamais
+                                       inhibé avec débit, 100 (0.1 ml/h) au
+                                       minimum si autre que 0
+   $value
+   BYTE MaxNbRestart     5  1  10      nombre maximum de redémarrage automatique
+                                       exécuté pendant <CountRestartDur> pour
+                                       inhiber redémarrage automatique
+   $value
+   WORD CountRestartDur 60  1 (5*60)   durée glissante pendant laquelle le
+                                       nombre de redémarrage automatique est
+                                       compté, min
+
+Correct si :
+   - <InhibitFlow> <= 1200000 si appareil standard
+   - voir note #7 pour <InhibitFlow>
+Note : le redémarrage automatique est inhibé si la limite de pression courante
+est *STRICTEMENT* inférieure à <InhibitPressLim> ou si le débit de perfusion
+courant est *STRICTEMENT* inférieur à <InhibitFlow>.
+Note : les valeurs dans les champs <DecPressRestart> et <InhibitPress> sont
+toujours exprimées en mmHg quelle que soit l'unité de pression définie avec
+z22/p19[PRESS_LIM]/Unit.
+Note : les maximums pour les champs <DecPressRestart> et <InhibitPress> sont
+à 525 (et non pas 500) pour pouvoir stocker 70 kPa (525 mmHg) ou 10.0 PSI
+(517 mmHg).
+Note : modifié en Util 6.
+
+
+$par 55 MEM_SEL2 $careareaopt mémorisation infos modifiables en mode manuel
+                              (2ème groupe)
+   $value
+                              redémarrage automatique après occlusion activé
+                              (état case à cocher)
+   BOOL AutoRestartOcclus  FALSE 0 1
+   $value                     verrouillage clavier automatique activé
+   BOOL AutoKbdLock        FALSE 0 1
+
+Note : champ <AutoRestartOcclus> modifié en Util 6.
+Note : champ <AutoRestartOcclus> mis à jour avec état courant à l'extinction
+si z22/p10[MEM_SEL]/Mem/MEM_AUTORESTARTOCCLUS à TRUE.
+Note : champ <AutoKbdLock> modifié en Par 39.
+Note : champ <AutoKbdLock> mis à jour avec état courant à l'extinction.
+
+
+                              verrouillage clavier automatique
+$par 56 AUTO_KBD_LOCK $careareaopt
+   $value
+   BYTE Flags **              flags verrouillage clavier automatique
+      $bit 0 @LOCK_SELMENU FALSE *  sélection activation/désactivation
+                                    verrouillage clavier automatique dans
+                                    menu manuel
+   $value
+                              durée avant reverrouillage clavier automatique
+                              si déverrouillage en cours perfusion
+   BYTE DurBeforeLock  30 15 60
+
+Note : champs <Flags>/LOCK_SELMENU et <DurBeforeLock> modifiés en Par 39.
+
+
+$par 57 KBD_UNLOCK_CODE $func code déverrouillage clavier
+   WORD KbdUnlockCode 0 0 4444   code déverrouillage, 0 pour déverrouillage
+                                 clavier sans code
+
+Correct si :
+   - code <KbdUnlockCode> composé de 4 digits entre 0 et 4
+Note : modifié en Pompe/Par 38.
+
+
+
+/*-------------------------------------------------------------------------*/
+/* Zone initialisation                                                     */
+/*-------------------------------------------------------------------------*/
+
+$zone 23 INIT I               zone initialisation
+
+
+$par 1 INFOS $noconfpc $func  informations sur la zone
+   $usestruct InfosZone
+
+Note : le champ <ManChg> est mis à jour avec la date/heure utilisateur
+courante lors d'une modification d'un paramètre de la zone en
+configuration/test manuel. Il n'est pas modifié lors de l'écriture d'un
+paramètre à l'extinction de l'appareil en mode manuel.
+Note : informations affichées en Test 1 si paramètre présent et valide mais
+pas traitées par application.
+
+
+$par 4 DUR_UTIL               durée totale utilisation
+   $usestruct DurUtil         durée totale utilisation et nombre total de
+                              démarrages
+
+Note : à chaque extinction, la durée depuis le démarrage précédent est cumulée
+à <DurUtil>/<Duration> et <DurUtil>/<NbOn> est incrémenté. Suite à une
+écriture puis un redémarrage, le contenu de ce paramètre est donc différent
+lors de la prochaine lecture.
+
+
+$par 7 INITIAL_CONFIG         configuration initiale
+   BOOL InitialConfig FALSE 0 1 `- TRUE configuration initiale (choix langue)
+                                        effectuée
+                                 - FALSE configuration initiale non effectuée,
+                                         écran choix langue au démarrage
+
+Note : modifié en SAV 2.
+
+
+$par 8 AUTONOMY $noconfpc     autonomie batterie
+   SWORD CorrCapa    0 -1000 200  capacité corrective batterie, mAh
+   BYTE CoeffCur   100    80 120  coefficient correcteur courant consommé
+                                  théorique, %, 0.80 à 1.20
+
+
+$par 9 TOT_TURN $noconfpc     nombre total de tours effectués par bloc pompage
+   DWORD TotTurn 0 *
+
+Note : avec 0.24 ml par tour d'axe, on a plus de 1 million de litre, soit
+78 ans à 1500 ml/h.
+Note : à chaque extinction, le nombre de tours d'axe effectués depuis le
+démarrage précédent est cumulé à <TotTurn>. Suite à une écriture puis un
+redémarrage, le contenu de ce paramètre peut donc être différent lors de la
+prochaine lecture si une fonction Cmd-41h/FuncId-0Dh pour commander le moteur
+pompage a été utilisée en mode configuration/test PC en même temps que
+l'écriture et le stockage de ce paramètre.
+Note : affiché en Test 2.
+
+
+                              position arrêt moteur au sein d'un tour d'axe
+$par 10 POS_TURN $noconfpc $func
+   BYTE NumElem  1 1 12       numéro élément dans le tour
+   BYTE NbStep   0 *          nombre de pas dans élément
+
+Correct si :
+   - si <NumElem> à  1 : <NbStep> de 0 à  29
+   - si <NumElem> à  2 : <NbStep> de 0 à  19
+   - si <NumElem> à  3 : <NbStep> de 0 à  39
+   - si <NumElem> à  4 : <NbStep> de 0 à 109
+   - si <NumElem> à  5 : <NbStep> de 0 à  39
+   - si <NumElem> à  6 : <NbStep> de 0 à  19
+   - si <NumElem> à  7 : <NbStep> de 0 à  29
+   - si <NumElem> à  8 : <NbStep> de 0 à  39
+   - si <NumElem> à  9 : <NbStep> de 0 à  30
+   - si <NumElem> à 10 : <NbStep> de 0 à  29
+   - si <NumElem> à 11 : <NbStep> de 0 à  23
+   - si <NumElem> à 12 : <NbStep> à  0 ou  1
+
+
+                              tensions maximum capteurs pression porte ouverte
+$par 13 MAX_PRESS_DOOR_OPEN $noconfpc
+   $value
+   WORD PressUp   3100 0 4095 tension maximum capteur pression amont, Lsb
+   $value
+   WORD PressDown 3100 0 4095 tension maximum capteur pression avale, Lsb
+
+
+$par 16 CTR_OCCLUS_ADC0 $noconfpc
+   WORD Adc0      2232 0 4095 tension 0 pour calcul pression au début contrôle
+                              occlusivité, Lsb
+
+
+
+/*-------------------------------------------------------------------------*/
+/* Zone SAV                                                                */
+/*-------------------------------------------------------------------------*/
+
+$zone 25 AFTER_SALE AS        zone SAV
+
+
+$par 1 INFOS $noconfpc $func  informations sur la zone
+   $usestruct InfosZone
+
+Note : champ <ManChg> jamais mis à jour car aucun des paramètres n'est
+modifiés dans les menus de configurations et de tests.
+Note : informations affichées en Test 1 si paramètre présent et valide mais
+pas traitées par application.
+
+
+                              commentaires SAV
+$par 2 COMMENT $func $noconfpc
+   $structname AfterSaleComment
+   STRING(150) Comment **     commentaires SAV, notes #4 et #5
+
+Note : ce commentaire est affiché en Test 3.
+
+
+                              durées test batterie
+$par 3 DUR_TEST_BAT $noconfpc
+   DATETIME DateStore DMM_DT  date/heure utilisateur stockage durées
+   DWORD DurBatPreAl  **      durée depuis passage sur batterie jusqu'à
+                              déclenchement pré-alarme, s
+   DWORD DurBatAl     **      durée depuis passage sur batterie jusqu'à
+                              déclenchement alarme, s
+   DWORD DurAlOff     **      durée depuis déclenchement alarme jusqu'à
+                              extinction automatique, s, 0 si durée inconnue
+                              à cause extinction anormale
+
+Note : les durées sont stockées uniquement lors d'une extinction automatique
+après une alarme batterie. Si l'appareil s'éteint de manière anormale après
+une alarme batterie, les durées sont actualisées lors de la prochaine mise
+sous tension ; la date de stockage est alors la date de l'alarme et la durée
+jusqu'à l'extinction est mise à 0.
+
+
+
+/*-------------------------------------------------------------------------*/
+/* Zone sauvegarde                                                         */
+/*                                                                         */
+/* Note : cette zone sert uniquement à stocker des informations lors de    */
+/* l'extinction de l'appareil qui sont nécessaires pour les différentes    */
+/* fonctions de mémorisation. Aucun des paramètres de cette zone ne        */
+/* provoque le passage en configuration PC de l'appareil s'il est absent   */
+/* ou erroné. Il n'est pas utile d'initialiser cette zone au moment de     */
+/* la production de l'appareil ; il est préférable de l'effacer après une  */
+/* intervention de maintenance.                                            */
+/*-------------------------------------------------------------------------*/
+
+$zone 26 SAVE S               zone sauvegarde
+
+
+$par 1 INFOS $noconfpc $func  informations sur la zone
+   $usestruct InfosZone
+
+Note : champ <ManChg> jamais mis à jour car aucun des paramètres n'est
+modifiés dans les menus de configurations et de tests.
+Note : informations affichées en Test 1 si paramètre présent et valide mais
+pas traitées par application.
+
+
+                              informations pour mémorisation volume perfusé
+$par 2 INFOS_MEM_VOL_INFUS $noconfpc $careareadefonload
+   WORD NumDrug        249 *  numéro médicament actif au moment mémorisation
+                              volume perfusé, même codage que pour
+                              z22/p41[MEM_INFUS_PARAM]/NumDrug  [$d!DRG_NUM()]
+
+Note : le numéro de médicament courant est déjà mémorisé à l'extinction dans
+z22/p41[MEM_INFUS_PARAM]/NumDrug mais uniquement si la mémorisation est
+activée. Par contre, pour déterminer s'il est possible ou non de restaurer le
+volume perfusé mémorisé au démarrage, il est nécessaire de pouvoir vérifier
+que le médicament sélectionné est identique même si la mémorisation du numéro
+de médicament n'est pas activée.
+Note : ce paramètre est écrit avec les valeurs par défaut lors de l'extinction
+en mode veille, configuration/test PC et configuration/test manuel si un des
+paramètres liés à la configuration de la perfusion a été écrit, note #9.
+
+
+                              informations pour fonction même perfusion
+$par 3 CONTEXT $noconfpc $careareadefonload
+   $structname ContextBase    contexte de base
+   DATETIME DateSave      **  date/heure utilisateur sauvegarde informations,
+                              à 0 si pas de sauvegarde informations
+   $struct ContextGeneral     contexte général
+      BYTE InfusMode      **  mode perfusion primaire [e_infusMode!..\Control.h]
+      BOOL StartInfus     **  perfusion démarrée depuis fin programmation
+      BOOL ProcessDrop    **  détecteur gouttes traité
+   $struct ContextDrug        contexte médicament
+      WORD NumDrug        **  numéro médicament [$d!DRG_NUM()]
+   $struct ContextVolume      contexte volumes
+      DWORD VolInfus      **  volume perfusé, 10 nl
+      DATETIME StartInfus **  date/heure interne départ perfusion
+      DWORD DurInfus      **  durée perfusion avant départ perfusion (dans le
+                              cas d'un démarrage avec restauration du volume
+                              perfusé)
+   $struct ContextPressure    contexte pression
+      WORD PressLim       **  limite pression, mmHg
+      BOOL DpsAuto        **  surveillance pression activée
+      BOOL AutoRestartOcclus \
+                          **  redémarrage automatique après occlusion activé
+   $struct ContextPrimary     contexte perfusion primaire modes base ou gouttes/min
+      DWORD FlowRate      **  débit, nl/h
+      DWORD VolToInfus    **  volume restant à perfuser, 10 nl
+      DWORD VolDefault    **  volume par défaut (dernier volume sélectionné), 10 nl
+      DWORD VolInit       **  volume initial (1er volume sélectionné), 10 nl
+
+Note : ce paramètre est écrit avec les valeurs par défaut et donc on
+considère qu'il n'y a pas d'informations sauvegardées (et donc pas d'écran
+même perfusion au démarrage) dans les cas suivants :
+   - extinction en mode veille et configuration/test PC :
+        . si changement date/heure utilisateur avec commande Id-53h
+        . si écriture n'importe quel paramètre (commande(s) Id-21h suivie
+          de commande Id-22h)
+   - extinction en mode configuration/test manuel :
+        . si changement date/heure utilisateur avec commande Id-53h
+        . si modification de n'importe quel paramètre depuis un des écrans
+          de configuration
+Note : on peut donc considérer que ce paramètre est en lecture seule puisque
+une écriture avec une commande Id-21h provoque systématiquement sa ré-écriture
+avec les valeurs par défaut.
+
+
+                              contexte rampe
+$par 4 CONTEXT_RAMP $noconfpc $onlyMC
+   BYTE Status             ** statut rampe [e_rampStatus!..\Control.h] :
+                                 0 : non démarrée
+                                 1 : montée
+                                 2 : plateau
+                                 3 : descente
+                                 4 : descente forcée
+   DWORD StartRiseFlowRate ** débit début montée, nl/h
+   DWORD StopFlowRate      ** débit au moment arrêt perfusion, nl/h, débit
+                              palier montée courant, débit plateau ou débit
+                              palier descente courant
+   $usestruct ParamRamp @Cur  paramètres courants rampe :
+                                 - <PlateFlowRate> débit plateau ajusté éventuellement
+                                 - <VolToInfus> volume restant à perfuser
+                                 - <RiseDuration> durée restante montée
+                                 - <FallDuration> durée restante descente
+   $usestruct ParamRamp @Init paramètres initiaux rampe
+
+Note : le contenu de ce paramètre est exploité uniquement si des informations
+pour fonction même perfusion sont disponibles, c'est à dire paramètre
+z26/p3[CONTEXT]/DateSave différent de 0.
+
+
+                              contexte séquence (paramètres courant séquence)
+$par 5 CONTEXT_SEQ_CUR $noconfpc $onlyMC
+   BYTE NumPhase         **   numéro phase en cours
+   BYTE NumRepeat        **   numéro répétition en cours
+   WORD KvoFlowRate      **   débit Kvo séquence, 1/1000 ml/h
+   DWORD FlowRate        **   débit phase courante, nl/h
+   DWORD VolToInfus      **   volume restant à perfuser phase courante, 10 nl
+   DWORD Duration        **   durée restante phase courante, s
+   $usestruct PackParamSeq @Cur    paramètres courants séquence
+
+Note : le contenu de ce paramètre est exploité uniquement si des informations
+pour fonction même perfusion sont disponibles, c'est à dire paramètre
+z26/p3[CONTEXT]/DateSave différent de 0.
+
+
+$par 6 TIMEWARNING $noconfpc  mémorisation alerte durée
+   DATETIME DateAlert DMM_DT  date/heure utilisateur déclenchement alerte
+                              durée, 0 si déclenchement alerte désactivé
+
+
+                              informations pour fonction même perfusion pour
+                              un appareil MC
+$par 7 CONTEXT_MC $noconfpc $onlyMC
+   $structname ContextBaseMC  contexte de base MC
+   $struct ContextDrugMC      contexte médicament
+      WORD NumDrugSec     **  numéro médicament secondaire [$d!DRG_NUM()]
+      DWORD Dilution      **  valeur dilution, 1/1000 unité, 0 si pas dilution
+      UNIT DilutionUnit   **  unité dilution, 0 si pas dilution
+      WORD DilutionVolume **  volume associé à dilution, ml, 0 si pas dilution
+      DWORD DilutionSec   **  valeur dilution secondaire, 1/1000 unité, 0 si
+                              pas dilution
+      UNIT DilutionUnitSec \
+                          **  unité dilution secondaire, 0 si pas dilution
+      WORD DilutionVolumeSec \
+                          **  volume associé à dilution secondaire, ml, 0 si
+                              pas dilution
+   $struct ContextVolumeMC    contexte volumes
+      DWORD VolInfusSec   **  volume perfusé secondaire, 10 nl
+   $struct ContextPrimaryMC   contexte perfusion primaire modes base ou gouttes/min
+      DWORD MassFlow      **  débit massique, 1/1000 unité, à 0 si débit ml/h
+      UNIT FlowRateUnit   **  unité débit
+      DWORD FlowDpm       **  débit gouttes/min, 1/1000 gtt/min
+   $struct ContextBolusProg   contexte bolus programmé
+      DWORD VolDefault    **  volume par défaut, 10 nl
+      DWORD Duration      **  durée par défaut, s
+      UNIT Unit           **  unité volume/masse à perfuser
+      BOOL Programmed     **  programmation effectuée au moins une fois
+   $struct ContextFunc        contexte fonction perfusion
+      BYTE InfusMode      **  mode perfusion, dose charge, bolus programmé ou
+                              secondaire, 0 si pas fonction perfusion en
+                              cours, bit 7 à 1 si démarrage bolus programmé
+                              en cours perfusion [$m7F!e_infusMode!..\Control.h]
+      BOOL StartInfusSec  **  perfusion secondaire démarrée depuis fin programmation
+      DWORD FlowRate      **  débit, nl/h
+      DWORD VolToInfus    **  volume restant à perfuser, 10 nl
+      DWORD VolDefault    **  volume par défaut dose charge ou secondaire
+                              (dernier volume sélectionné), 10 nl
+      UNIT UnitLoad       **  unité volume/masse à perfuser dose charge
+   $struct ContextPatient     contexte patient
+      DWORD Weight        **  poids patient, g, 0 si unité sans /kg
+      WORD Bsa            **  surface patient, 1/1000 m², 0 si unité sans /m²
+   $struct ContextClinicalInfo contexte information clinique
+                              [e_clinfoState!..\Control\ClinicalInfo.c] :
+      BYTE State          **  état information clinique
+                                 0 : pas gestion information clinique
+                                 1 : attente départ perfusion pour lancement
+                                     temporisation
+                                 2 : temporisation avant affichage information
+                                     clinique en cours
+                                 3 : message information clinique affiché,
+                                     temporisation terminée
+                                 4 : message information clinique acquitté avec
+                                     appui sur touche SILENCE ALARME
+      DATETIME DateMsg    **  date/heure utilisateur besoin affichage
+                              information clinique, uniquement si <State> à 2,
+                              à 0 dans les autres cas
+      DATETIME DateAck    **  date/heure utilisateur acquittement message
+                              information clinique, uniquement si <State> à 4
+                              et tempo 5 min après acquittement pas déjà
+                              terminée, à 0 dans les autres cas
+
+Note : le contenu de ce paramètre est exploité uniquement si des informations
+pour fonction même perfusion sont disponibles, c'est à dire paramètre
+z26/p3[CONTEXT]/DateSave différent de 0.
+
+
+                              contexte séquence (paramètres initiaux séquence)
+$par 8 CONTEXT_SEQ_INIT $noconfpc $onlyMC
+   $usestruct PackParamSeq    paramètres initiaux séquence
+
+
+Note : le contenu de ce paramètre est exploité uniquement si des informations
+pour fonction même perfusion sont disponibles, c'est à dire paramètre
+z26/p3[CONTEXT]/DateSave différent de 0.
+
+
+                              informations pour mémorisation masse perfusée
+$par 9 INFOS_MEM_MASS_INFUS $noconfpc $onlyMC $careareadefonload
+   DWORD Dilution        0 *  valeur dilution, 1/1000 unité
+   UNIT DilutionUnit     0 *  unité dilution, 0 si médicament sans dilution
+   WORD DilutionVolume   0 *  volume associé à dilution, ml
+   DWORD Weight          0 *  poids patient, g, 0 si absence poids patient
+   WORD Bsa              0 *  surface patient, 1/1000 m², 0 si absence surface
+                              patient
+   UNIT MassFlowUnit     0 *  unité débit massique, 0 si débit ml/h uniquement
+
+Note : la dilution et les paramètres patient sont déjà mémorisés à
+l'extinction dans z22/p41[MEM_MASSFLOW] mais uniquement si la mémorisation
+est activée (z22/p37[ENABLE_MEM_DRUG]/MEMD_DRUGPARAM à TRUE). Par contre, pour
+déterminer s'il est possible ou non de restaurer le volume perfusé mémorisée
+(et donc la masse perfusée correspondante) au démarrage, il est nécessaire de
+pouvoir vérifier que la dilution, le poids patient ou la surface patient sont
+identiques même si la mémorisation des paramètres de perfusion n'est pas
+activée.
+Note : ce paramètre est écrit avec les valeurs par défaut lors de l'extinction
+en mode veille, configuration/test PC et configuration/test manuel si un des
+paramètres liés à la configuration de la perfusion a été écrit, note #9.
+
+
+                              mémorisation état clavier verrouillé
+$par 14 MEM_KBD_LOCK $noconfpc
+   BOOL KbdLock  FALSE 0 1    état clavier verrouillé
+
+Note : champ <KbdLock> mis à jour avec état courant à l'extinction.
+
+
+
+/*-------------------------------------------------------------------------*/
+/* Zone care area                                                          */
+/*                                                                         */
+/* Note : à priori, zone pas modifiée avec des commandes liaison série     */
+/* mais uniquement suite au chargement d'une care area.                    */
+/*-------------------------------------------------------------------------*/
+
+$zone 27 CARE_AREA CA         zone care area
+
+
+                              informations sur la zone
+$par 1 INFOS $noconfpc $func $careareaopt
+   $usestruct InfosZone
+
+Note : champ <ManChg> jamais mis à jour car aucun des paramètres n'est
+modifiés dans les menus de configurations et de tests.
+Note : informations affichées en Test 1 si paramètre présent et valide mais
+pas traitées par application.
+
+
+                              nom care area
+$par 2 NAME $noconfpc $func $carearea
+   $structname CareAreaName
+   STRING(20) Name       **   nom care area, note #2
+
+Note : c'est ce nom qui apparaît dans les différents écrans pour identifier
+la care area. Une chaîne vide est interdite pour les care areas 1 à 20.
+Il peut y avoir une chaîne vide pour la care area sauvegarde paramètres
+courants.
+
+
+                              auteur care area
+$par 3 AUTHOR $noconfpc $func $carearea
+   $structname CareAreaAuthor
+   STRING(20) AuthorName **   nom auteur de la care area, notes #2 et #5
+
+
+                              version care area
+$par 4 VERSION $noconfpc $carearea
+   $structname CareAreaVersion
+                              version de la care area, "vvrc", notes #1 et #5
+   STRING(4) Version     * "    " "~~~~"
+
+
+                              date/heure création et modification care area
+$par 5 DATE $noconfpc $carearea
+   $structname CareAreaDate
+   DATETIME Create  DMM_DT    date/heure utilisateur création care area,
+                              0 si non spécifiée
+   DATETIME Modif   DMM_DT    date/heure utilisateur modification care area,
+                              0 si non spécifiée
+
+
+                              commentaire care area
+$par 6 COMMENT $noconfpc $func $careareaopt
+   $structname CareAreaComment
+   STRING(150) Comment   **   commentaire de la care area, notes #4 et #5
+
+Note : visualisable avec les autres informations de la care area juste avant
+son chargement.
+
+
+                              identifiant unique care area
+$par 7 GUID $noconfpc $carearea $func @par_ValidCareAreaGuid
+   DWORD Data1           **   bits 0-31 de l'identifiant 128 bits [$h]
+   WORD Data2            **   bits 32-47 de l'identifiant 128 bits [$h]
+   WORD Data3            **   bits 48-63 de l'identifiant 128 bits [$h]
+   BYTE[8] Data4         **   bits 64-127 de l'identifiant 128 bits [$h] *
+
+Note : doit être différent de 0 pour care area dédiée ; peut être tout à 0
+pour care area générique.
+
+
+                              date/heure écriture care area
+$par 8 DATE_WRITE $noconfpc $carearea
+   $structname CareAreaDateWrite
+   DATETIME Write   DMM_DT    date/heure utilisateur écriture care area,
+                              0 si non spécifiée
+
+
+                              type logo care area
+$par 9 LOGO $noconfpc $careareaopt
+   BYTE LogoType    0  0  1   type logo care area :
+                                 0 : pas de logo
+                                 1 : logo phare
+
+
+
+/*-------------------------------------------------------------------------*/
+/* Zones bibliothèques médicaments                                         */
+/*                                                                         */
+/* Note : voir ParamDrug.txt pour description des paramètres 2 et 3 de     */
+/* chaque zone qui sont des paramètres avec longueur variable.             */
+/*-------------------------------------------------------------------------*/
+
+$zone 30 LIB_DRUG_LIST LDL    bibliothèque liste noms médicaments (pour mode
+                              liste noms médicaments)
+
+
+                              informations sur la zone
+$par 1 INFOS $noconfpc $func $careareaopt
+   $usestruct InfosZone
+
+
+                              informations sur la bibliothèque
+$par 2 INFOS_LIB $careareaopt $nofield
+
+
+                              tableau paramètres médicaments
+$par 3 PARAM_DRUG [DRUGS] $accuracy $careareaopt $nofield
+
+Note : voir note #6.
+
+
+
+$zone 31 LIB_VIGILANT LV      bibliothèque Vigilant Drug'Lib (pour mode
+                              Vigilant Drug'Lib)
+
+
+                              informations sur la zone
+$par 1 INFOS $noconfpc $func $onlyMC $careareaopt
+   $usestruct InfosZone
+
+
+                              informations sur la bibliothèque
+$par 2 INFOS_LIB $onlyMC $careareaopt $nofield
+
+
+                              tableau paramètres médicaments
+$par 3 PARAM_DRUG [DRUGS] $accuracy $onlyMC $careareaopt $nofield
+
+Note : voir note #6.
+
+
+
+/*-------------------------------------------------------------------------*/
+/* Notes                                                                   */
+/*-------------------------------------------------------------------------*/
+
+Note #1 : chaîne avec caractères ASCII standard uniquement (20h à 7Eh)
+Note #2 : chaîne en page codes 1252 par défaut sauf si échappement sélection
+          page codes en 1er caractère, accepte tous les caractères ASCII
+          standard (20h à 7Fh) et les caractères ASCII étendus du page codes
+          (80h à FFh), n'accepte aucun code contrôle sauf échappement page
+          codes en 1er caractère, doit contenir au moins un caractère après
+          échappement page codes, si chaîne plus courte que la longueur
+          maximum, ne doit contenir que des 0 après le 1er 0 de fin de chaîne
+Note #3 : chaîne avec codage non spécifié car jamais affichée par le logiciel
+Note #4 : idem note #2 mais accepte de plus le code de contrôle 0Ah pour
+          passer à la ligne
+Note #5 : chaîne vide (tout à 0) autorisée
+
+Note #6 : la validité de tous les paramètres qui comportent l'attribut
+          $accuracy est liée à la précision fine ou grosse pour un débit ml/h.
+          Cette précision provient du paramètre z8/p2[ACCURACY].
+          Gestion avec care area :
+          - ce paramètre est optionnel dans les care areas (attribut
+            $careareaopt)
+          - s'il est absent, c'est la précision par défaut qui est utilisée
+            soit la précision grosse (jamais 2 décimales)
+          - pour l'écriture dans une care area avec une commande Id-25h d'un
+            paramètre qui comporte l'attribut $accuracy :
+               . si le paramètre z8/p2[ACCURACY] n'a pas été écrit
+                 auparavant, la vérification de validité se fait avec la
+                 précision grosse. Par contre, une erreur ErrId-27h
+                 [ERRCAREAREAACCURACY] est retournée si le paramètre
+                 z8/p2[ACCURACY] est écrit par la suite (y compris si
+                 précision définie dans le paramètre est la valeur par
+                 défaut)
+               . si le paramètre z8/p2[ACCURACY] a été écrit auparavant, la
+                 vérification de validité se fait avec la précision définie
+                 dans le paramètre
+          Gestion avec paramètres courants :
+          - pour l'écriture des paramètres courants avec une commande Id-21h,
+            d'un paramètre qui comporte l'attribut $accuracy, la vérification
+            de validité se fait :
+               . soit avec la précision dans le paramètre z8/p2[ACCURACY]
+                 stocké précédemment (ou la valeur par défaut si paramètre
+                 absent)
+               . soit avec la précision dans le paramètre z8/p2[ACCURACY]
+                 reçue dans une commande Id-21h précédente
+          - si le paramètre z8/p2[ACCURACY] est écrit *APRES* un paramètre
+            avec l'attribut $accuracy, il n'y a pas de nouvelle vérification
+            des paramètres écrits précédemment. On peut dans ce cas avoir un
+            passage en configuration/test PC lors du prochain démarrage car
+            un paramètre ne respecte pas les contraintes avec la nouvelle
+            précision
+
+Note #7 : valeur débit ml/h :
+          - correcte si précision fine :
+               . multiple de 10 (0.01 ml/h) si comprise entre 100 (0.10 ml/h)
+                 et 9990 (9.99 ml/h)
+               . multiple de 100 (0.1 ml/h) si comprise entre 10000 (10.0 ml/h)
+                 et 99900 (99.9 ml/h)
+               . multiple de 1000 (1 ml/h) si supérieure à 100000 (100 ml/h)
+          - correcte si précision grosse :
+               . multiple de 100 (0.1 ml/h) si comprise entre 100 (0.1 ml/h)
+                 et 99900 (99.9 ml/h)
+               . multiple de 1000 (1 ml/h) si supérieure à 100000 (100 ml/h)
+          - voir note #6
+
+Note #8 : valeur poids patient :
+          - correcte si :
+               . multiple de 10 (0.01 kg) si comprise entre 250 (0.25 kg) et
+                 9990 (9.99 kg)
+               . multiple de 100 (0.1 kg) si comprise entre 10000 (10.0 kg) et
+                 19900 (19.9 kg)
+               . multiple de 1000 (1 kg) si supérieure à 20000 (20 kg)
+
+Note #9 : les paramètres suivants sont utilisés pour sauvegarder un état de
+l'appareil à l'extinction :
+   - paramètres mode débit massique z22/p26[MEM_MASSFLOW]
+   - mémorisation rampe sélectionnée z22/p34[MEM_RAMP]
+   - mémorisation séquence sélectionnée z22/p35[MEM_SEQ]
+   - paramètres perfusion z22/p41[MEM_INFUS_PARAM]
+   - informations pour mémorisation volume perfusé z26/p2[INFOS_MEM_VOL_INFUS]
+   - informations pour mémorisation masse perfusée z26/p2[INFOS_MEM_MASS_INFUS].
+Tous ces paramètres sont écrits avec leurs valeurs par défaut lors de
+l'extinction en mode veille, configuration/test PC et configuration/test
+manuel si un des paramètres suivants liés à la configuration de la perfusion
+a été écrits (y compris si ré-écriture même valeur) :
+   - précision débit ml/h et volume ml z8/p2[ACCURACY]
+   - mémorisation mode programmation z22/p9[MEM_PROGRAM_MODE]
+   - débits maximum au clavier z22/p12[MAX_FLOWRATE]
+   - modes/fonctions perfusion autorisés z22/p24[INFUS_ENABLE]
+   - paramètres modes programmation z22/p25[PROGRAM_MODE]
+   - paramètres patient z22/p28[PARAM_PATIENT]
+   - mémorisation mode perfusion z22/p29[INFUS_MODE]
+   - validation des unités z22/p32[ENABLE_UNIT]
+   - validation mémorisation médicament z22/p37[ENABLE_MEM_DRUG]
+   - configuration détecteur de gouttes z22/p42[DROP_CONFIG]
+   - paramètres médicaments bibliothèque liste noms médicaments z30/p3[PARAM_DRUG]
+   - paramètres médicaments bibliothèque Vigilant Drug'Lib z31/p3[PARAM_DRUG]
+   - un des paramètres utilisés pour sauvegarder un état listé ci-dessus
+On peut donc considérer que les paramètres utilisés pour sauvegarder un état
+sont en lecture seule puisque une écriture du paramètre avec une commande
+Id-21h provoque systématiquement sa ré-écriture avec les valeurs par défaut.
+
+
+
+/*-------------------------------------------------------------------------*/
+/* Echappements sélection page codes                                       */
+/*-------------------------------------------------------------------------*/
+
+Les chaînes de caractères dans les paramètres qui contiennent des caractères
+ASCII étendus de 80h à FFh peuvent spécifier dans quelle page de codes ces
+caractères doivent être analysés s'il ne s'agit pas de la page de codes 1252.
+La chaîne doit dans ce cas débuter par un des échappements sélection page
+de codes suivant :
+   01h : page codes 1251 (cyrillique)
+   02h : page codes 1252 (Europe de l'ouest)
+   03h : page codes 1253 (grec)
+   04h : page codes 1254 (turc)
+   05h : page codes 1255 (hébreu)
+   06h : page codes 1256 (arabe)
+   07h : page codes 1257 (baltique)
+   08h : page codes 1258 (vietnam)
+   10h : page codes 1250 (Europe centrale)
+   11h : page codes 874 (thai)
+   12h : page codes 932F (japonais simplifié Fresenius)
+   13h : page codes 936F (chinois simplifié Fresenius)

@@ -1,0 +1,762 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- Created with Liquid XML 2016 Designer Edition (Trial) 14.1.5.6733 (https://www.liquid-technologies.com) -->
+<xs:schema
+	targetNamespace="http://www.fresenius-kabi.com/AgiliaVPMC"
+	elementFormDefault="qualified"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:Shared="http://www.fresenius-kabi.com/AgiliaShared"
+    xmlns:VPMC="http://www.fresenius-kabi.com/AgiliaVPMC">
+
+    <xs:import schemaLocation="AgiliaShared.xsd" namespace="http://www.fresenius-kabi.com/AgiliaShared" />
+
+
+    <!---xs:element name="Zones"-->
+    <xs:complexType name="AgiliaVPMCType">
+           <xs:sequence>
+                <xs:element name="Zone22" minOccurs="1" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:all>
+                            <xs:element name="par12">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="InfusionOption_MaximumFlowrateInPrimary" minOccurs="1" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:simpleContent>
+                                                    <xs:extension base="Shared:DWORD">
+                                                        <xs:attribute name="RD_ID" fixed="RD_0001" type="xs:string" use="required" />
+                                                        <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                        <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                    </xs:extension>
+                                                </xs:simpleContent>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:all>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Zone31" minOccurs="1" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="par3" minOccurs="1" maxOccurs="200">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:group ref="Shared:Group_Zone31Par3" />
+                                        <xs:element name="subpar3">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:group ref="Shared:Group_Zone31Par3SubPar3" />
+                                                    <xs:element name="SelDilution_VolumeNo2" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:WORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0025" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="WORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="SelDilution_VolumeNo3" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:WORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0026" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="WORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="SelDilution_VolumeNo4" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:WORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0027" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="WORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="SelDilution_VolumeNo5" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:WORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0028" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="WORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+
+
+                                        <xs:element name="subpar14">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="Volume_Default" minOccurs="1" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0080" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="ED_341" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Volume_Minimum" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0081" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="ED_340" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Volume_Maximum" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0082" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="ED_342" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Volume_KvoFlowRate" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0083" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="ED_343" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="subpar15">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="DropSensor_Volume" minOccurs="1" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:WORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0090" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="WORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="ED_371" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="DropSensor_Mandatory" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:WORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0091" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="WORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="ED_370" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="subpar17">
+                                            <xs:complexType>
+                                                <xs:all>
+                                                    <xs:element name="Air_AlarmVolume">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:WORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0100" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="WORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="ED_375" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Air_MinimumVolume">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:WORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0101" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="WORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="ED_376" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:all>
+                                            </xs:complexType>
+                                        </xs:element>
+
+                                        <xs:element name="subpar27">
+                                            <xs:complexType>
+                                                <xs:all>
+                                                    <xs:element name="Ramp_PlateFlowRate">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0300" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="ED_360" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Ramp_Volume">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0301" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="ED_361" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Ramp_RiseDuration">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:WORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0302" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="WORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="ED_362" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Ramp_FallDuration">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:WORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0303" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="WORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="ED_363" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:all>
+                                            </xs:complexType>
+                                        </xs:element>
+
+
+                                        <xs:element name="subpar28">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="Sequence_Phase1TypeBeepFlowRate1" minOccurs="1" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0310" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase1RepeatVolDuration1" minOccurs="1" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0311" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase2TypeBeepFlowRate1" minOccurs="1" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0312" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase2RepeatVolDuration1" minOccurs="1" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0313" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase3TypeBeepFlowRate1" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0314" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase3RepeatVolDuration1" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0315" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase4TypeBeepFlowRate1" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0316" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase4RepeatVolDuration1" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0317" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase5TypeBeepFlowRate1" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0318" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase5RepeatVolDuration1" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0319" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase6TypeBeepFlowRate1" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0320" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase6RepeatVolDuration1" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0321" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase7TypeBeepFlowRate1" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0322" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase7RepeatVolDuration1" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0323" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase8TypeBeepFlowRate1" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0324" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase8RepeatVolDuration1" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0325" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase9TypeBeepFlowRate1" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0326" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase9RepeatVolDuration1" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0327" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase10TypeBeepFlowRate1" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0328" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase10RepeatVolDuration1" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0329" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase11TypeBeepFlowRate1" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0330" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase11RepeatVolDuration1" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0331" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase12TypeBeepFlowRate1" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0332" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase12RepeatVolDuration1" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0333" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase13TypeBeepFlowRate1" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0334" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase13RepeatVolDuration1" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0335" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase14TypeBeepFlowRate1" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0336" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase14RepeatVolDuration1" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0337" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase15TypeBeepFlowRate1" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0338" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase15RepeatVolDuration1" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0339" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase16TypeBeepFlowRate1" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0340" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase16RepeatVolDuration1" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_041" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase17TypeBeepFlowRate1" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0342" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase17RepeatVolDuration1" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0343" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase18TypeBeepFlowRate1" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0344" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase18RepeatVolDuration1" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0345" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase19TypeBeepFlowRate1" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0346" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase19RepeatVolDuration1" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0347" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase20TypeBeepFlowRate1" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0348" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Sequence_Phase20RepeatVolDuration1" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:DWORD">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0349" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="Secondary_DefaultDrugNumber" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:BYTE">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0361" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="BYTE" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+
+
+
+                                        <xs:element name="subpar29">
+                                            <xs:complexType>
+                                                <xs:all>
+                                                    <xs:element name="Secondary_Flags">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="Shared:BYTE">
+                                                                    <xs:attribute name="RD_ID" fixed="RD_0360" type="xs:string" use="required" />
+                                                                    <xs:attribute name="Type" fixed="BYTE" type="xs:string" use="required" />
+                                                                    <xs:attribute name="ED_IDs" fixed="NOT FOUND" type="xs:string" use="required" />
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:all>
+                                            </xs:complexType>
+                                        </xs:element>
+
+
+
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Zone8" minOccurs="1" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:all>
+                            <xs:element name="par2" minOccurs="1" maxOccurs="1">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:group ref="Shared:Group_Zone8Par2" minOccurs="1" maxOccurs="1"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:all>
+                    </xs:complexType>
+                </xs:element>
+
+            </xs:sequence>
+        </xs:complexType>
+    <!--/xs:element-->
+
+</xs:schema>

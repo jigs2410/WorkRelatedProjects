@@ -1,0 +1,545 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:element name="Zones">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="Zone31">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="Par3" minOccurs="0" maxOccurs="200">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="SubPar9">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="Comment" minOccurs="0" maxOccurs="1">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "VSTRING_150">
+<xs:attribute name="RD_ID" fixed="RD_0000" type="xs:string" use="required" />
+<xs:attribute name="Type" fixed="VSTRING(150)" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+<xs:attribute name="Name" fixed="COMMENT" type="xs:string" use="required" />
+<xs:attribute name="ID" fixed="9" type="xs:int" use="required" />
+</xs:complexType>
+</xs:element>
+<xs:element name="SubPar10">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="DefaultDose" minOccurs="0" maxOccurs="1">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "DWORD">
+<xs:attribute name="RD_ID" fixed="RD_0000" type="xs:string" use="required" />
+<xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="DefaultDuration" minOccurs="0" maxOccurs="1">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "DWORD">
+<xs:attribute name="RD_ID" fixed="RD_0000" type="xs:string" use="required" />
+<xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="Unit" minOccurs="0" maxOccurs="1">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "UNIT">
+<xs:attribute name="RD_ID" fixed="RD_0000" type="xs:string" use="required" />
+<xs:attribute name="Type" fixed="UNIT" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="MinDose" minOccurs="0" maxOccurs="1">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "DWORD">
+<xs:attribute name="RD_ID" fixed="RD_0000" type="xs:string" use="required" />
+<xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="MaxDose" minOccurs="0" maxOccurs="1">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "DWORD">
+<xs:attribute name="RD_ID" fixed="RD_0000" type="xs:string" use="required" />
+<xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="MinDuration" minOccurs="0" maxOccurs="1">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "DWORD">
+<xs:attribute name="RD_ID" fixed="RD_0000" type="xs:string" use="required" />
+<xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="MaxDuration" minOccurs="0" maxOccurs="1">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "DWORD">
+<xs:attribute name="RD_ID" fixed="RD_0000" type="xs:string" use="required" />
+<xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="SelUnit" minOccurs="0" maxOccurs="1">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="BIT0">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "BIT">
+<xs:attribute name="NAME" fixed="@SELU_U_N" type="xs:string" use="required" />
+<xs:attribute name="ID" fixed="0" type="xs:int" use="required" />
+<xs:attribute name="Type" fixed="BIT" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="BIT1">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "BIT">
+<xs:attribute name="NAME" fixed="@SELU_U_U" type="xs:string" use="required" />
+<xs:attribute name="ID" fixed="1" type="xs:int" use="required" />
+<xs:attribute name="Type" fixed="BIT" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="BIT2">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "BIT">
+<xs:attribute name="NAME" fixed="@SELU_U_M" type="xs:string" use="required" />
+<xs:attribute name="ID" fixed="2" type="xs:int" use="required" />
+<xs:attribute name="Type" fixed="BIT" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="BIT3">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "BIT">
+<xs:attribute name="NAME" fixed="@SELU_U_" type="xs:string" use="required" />
+<xs:attribute name="ID" fixed="3" type="xs:int" use="required" />
+<xs:attribute name="Type" fixed="BIT" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="BIT4">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "BIT">
+<xs:attribute name="NAME" fixed="@SELU_U_K" type="xs:string" use="required" />
+<xs:attribute name="ID" fixed="4" type="xs:int" use="required" />
+<xs:attribute name="Type" fixed="BIT" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="BIT5">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "BIT">
+<xs:attribute name="NAME" fixed="@SELU_TOGGLE_KG" type="xs:string" use="required" />
+<xs:attribute name="ID" fixed="5" type="xs:int" use="required" />
+<xs:attribute name="Type" fixed="BIT" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="BIT6">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "BIT">
+<xs:attribute name="NAME" fixed="@SELU_TOGGLE_M2" type="xs:string" use="required" />
+<xs:attribute name="ID" fixed="6" type="xs:int" use="required" />
+<xs:attribute name="Type" fixed="BIT" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="BIT7">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "BIT">
+<xs:attribute name="NAME" fixed="@SELU_U_ML" type="xs:string" use="required" />
+<xs:attribute name="ID" fixed="7" type="xs:int" use="required" />
+<xs:attribute name="Type" fixed="BIT" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+<xs:attribute name="RD_ID" fixed="RD_0000" type="xs:string" use="required" />
+<xs:attribute name="Type" fixed="BYTE" type="xs:string" use="required" />
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+<xs:attribute name="Name" fixed="LOADING_DOSE" type="xs:string" use="required" />
+<xs:attribute name="ID" fixed="10" type="xs:int" use="required" />
+</xs:complexType>
+</xs:element>
+<xs:element name="SubPar11">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="Low" minOccurs="0" maxOccurs="1">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "DWORD">
+<xs:attribute name="RD_ID" fixed="RD_0000" type="xs:string" use="required" />
+<xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="High" minOccurs="0" maxOccurs="1">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "DWORD">
+<xs:attribute name="RD_ID" fixed="RD_0000" type="xs:string" use="required" />
+<xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+<xs:attribute name="Name" fixed="LOADING_DOSE_LOW_HIGH" type="xs:string" use="required" />
+<xs:attribute name="ID" fixed="11" type="xs:int" use="required" />
+</xs:complexType>
+</xs:element>
+<xs:element name="SubPar12">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="DefaultDose" minOccurs="0" maxOccurs="1">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "DWORD">
+<xs:attribute name="RD_ID" fixed="RD_0000" type="xs:string" use="required" />
+<xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="DefaultDuration" minOccurs="0" maxOccurs="1">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "DWORD">
+<xs:attribute name="RD_ID" fixed="RD_0000" type="xs:string" use="required" />
+<xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="Unit" minOccurs="0" maxOccurs="1">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "UNIT">
+<xs:attribute name="RD_ID" fixed="RD_0000" type="xs:string" use="required" />
+<xs:attribute name="Type" fixed="UNIT" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="MinDose" minOccurs="0" maxOccurs="1">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "DWORD">
+<xs:attribute name="RD_ID" fixed="RD_0000" type="xs:string" use="required" />
+<xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="MaxDose" minOccurs="0" maxOccurs="1">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "DWORD">
+<xs:attribute name="RD_ID" fixed="RD_0000" type="xs:string" use="required" />
+<xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="MinDuration" minOccurs="0" maxOccurs="1">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "DWORD">
+<xs:attribute name="RD_ID" fixed="RD_0000" type="xs:string" use="required" />
+<xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="MaxDuration" minOccurs="0" maxOccurs="1">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "DWORD">
+<xs:attribute name="RD_ID" fixed="RD_0000" type="xs:string" use="required" />
+<xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="SelUnit" minOccurs="0" maxOccurs="1">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="BIT0">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "BIT">
+<xs:attribute name="NAME" fixed="@SELU_U_N" type="xs:string" use="required" />
+<xs:attribute name="ID" fixed="0" type="xs:int" use="required" />
+<xs:attribute name="Type" fixed="BIT" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="BIT1">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "BIT">
+<xs:attribute name="NAME" fixed="@SELU_U_U" type="xs:string" use="required" />
+<xs:attribute name="ID" fixed="1" type="xs:int" use="required" />
+<xs:attribute name="Type" fixed="BIT" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="BIT2">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "BIT">
+<xs:attribute name="NAME" fixed="@SELU_U_M" type="xs:string" use="required" />
+<xs:attribute name="ID" fixed="2" type="xs:int" use="required" />
+<xs:attribute name="Type" fixed="BIT" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="BIT3">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "BIT">
+<xs:attribute name="NAME" fixed="@SELU_U_" type="xs:string" use="required" />
+<xs:attribute name="ID" fixed="3" type="xs:int" use="required" />
+<xs:attribute name="Type" fixed="BIT" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="BIT4">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "BIT">
+<xs:attribute name="NAME" fixed="@SELU_U_K" type="xs:string" use="required" />
+<xs:attribute name="ID" fixed="4" type="xs:int" use="required" />
+<xs:attribute name="Type" fixed="BIT" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="BIT5">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "BIT">
+<xs:attribute name="NAME" fixed="@SELU_TOGGLE_KG" type="xs:string" use="required" />
+<xs:attribute name="ID" fixed="5" type="xs:int" use="required" />
+<xs:attribute name="Type" fixed="BIT" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="BIT6">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "BIT">
+<xs:attribute name="NAME" fixed="@SELU_TOGGLE_M2" type="xs:string" use="required" />
+<xs:attribute name="ID" fixed="6" type="xs:int" use="required" />
+<xs:attribute name="Type" fixed="BIT" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="BIT7">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "BIT">
+<xs:attribute name="NAME" fixed="@SELU_U_ML" type="xs:string" use="required" />
+<xs:attribute name="ID" fixed="7" type="xs:int" use="required" />
+<xs:attribute name="Type" fixed="BIT" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+<xs:attribute name="RD_ID" fixed="RD_0000" type="xs:string" use="required" />
+<xs:attribute name="Type" fixed="BYTE" type="xs:string" use="required" />
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+<xs:attribute name="Name" fixed="PROG_BOLUS" type="xs:string" use="required" />
+<xs:attribute name="ID" fixed="12" type="xs:int" use="required" />
+</xs:complexType>
+</xs:element>
+<xs:element name="SubPar18">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="Mode" minOccurs="0" maxOccurs="1">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "BYTE">
+<xs:attribute name="RD_ID" fixed="RD_0000" type="xs:string" use="required" />
+<xs:attribute name="Type" fixed="BYTE" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="PressLim" minOccurs="0" maxOccurs="1">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "WORD">
+<xs:attribute name="RD_ID" fixed="RD_0000" type="xs:string" use="required" />
+<xs:attribute name="Type" fixed="WORD" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="MaxLimVar" minOccurs="0" maxOccurs="1">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "WORD">
+<xs:attribute name="RD_ID" fixed="RD_0000" type="xs:string" use="required" />
+<xs:attribute name="Type" fixed="WORD" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="LowLim" minOccurs="0" maxOccurs="1">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "WORD">
+<xs:attribute name="RD_ID" fixed="RD_0000" type="xs:string" use="required" />
+<xs:attribute name="Type" fixed="WORD" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="MediumLim" minOccurs="0" maxOccurs="1">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "WORD">
+<xs:attribute name="RD_ID" fixed="RD_0000" type="xs:string" use="required" />
+<xs:attribute name="Type" fixed="WORD" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="HighLim" minOccurs="0" maxOccurs="1">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "WORD">
+<xs:attribute name="RD_ID" fixed="RD_0000" type="xs:string" use="required" />
+<xs:attribute name="Type" fixed="WORD" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+<xs:attribute name="Name" fixed="PRESSURE" type="xs:string" use="required" />
+<xs:attribute name="ID" fixed="18" type="xs:int" use="required" />
+</xs:complexType>
+</xs:element>
+<xs:element name="SubPar30">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="Low" minOccurs="0" maxOccurs="1">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "DWORD">
+<xs:attribute name="RD_ID" fixed="RD_0000" type="xs:string" use="required" />
+<xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="High" minOccurs="0" maxOccurs="1">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "DWORD">
+<xs:attribute name="RD_ID" fixed="RD_0000" type="xs:string" use="required" />
+<xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+<xs:attribute name="Name" fixed="PROG_BOLUS_LOW_HIGH" type="xs:string" use="required" />
+<xs:attribute name="ID" fixed="30" type="xs:int" use="required" />
+</xs:complexType>
+</xs:element>
+<xs:element name="SubPar31">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="Duration" minOccurs="0" maxOccurs="1">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "DWORD">
+<xs:attribute name="RD_ID" fixed="RD_0000" type="xs:string" use="required" />
+<xs:attribute name="Type" fixed="DWORD" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="Msg" minOccurs="0" maxOccurs="1">
+<xs:complexType>
+<xs:simpleContent>
+<xs:extension base = "VSTRING_80">
+<xs:attribute name="RD_ID" fixed="RD_0000" type="xs:string" use="required" />
+<xs:attribute name="Type" fixed="VSTRING(80)" type="xs:string" use="required" />
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+<xs:attribute name="Name" fixed="CLINICAL_INFO" type="xs:string" use="required" />
+<xs:attribute name="ID" fixed="31" type="xs:int" use="required" />
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+<xs:attribute name="Name" fixed="PARAM_DRUG" type="xs:string" use="required" />
+<xs:attribute name="ID" fixed="3" type="xs:int" use="required" />
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+<xs:attribute name="Name" fixed="Care_AREA31" type="xs:string" use="required" />
+<xs:attribute name="ID" fixed="31" type="xs:int" use="required" />
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+<xs:attribute name="CommandId" fixed="25" type="xs:string" use="required" />
+</xs:complexType>
+</xs:element>
+<xs:simpleType name="UNIT"> 		<xs:restriction base="xs:string"> 			<xs:enumeration value="ml" /> 			<xs:enumeration value="ml/h" /> 			<xs:enumeration value="ml/min" /> 			<xs:enumeration value="ml/min" /> 			<xs:enumeration value="ml/m2" /> 			<xs:enumeration value="ml/kg" /> 			<xs:enumeration value="xg" /> 			<xs:enumeration value="kg" /> 			<xs:enumeration value="xg/m2" /> 			<xs:enumeration value="xg/kg" /> 			<xs:enumeration value="mg" /> 			<xs:enumeration value="mg/m2" /> 			<xs:enumeration value="mg/kg" /> 		</xs:restriction> 	</xs:simpleType> 	<xs:simpleType name="restrictedFloat"> 		<xs:restriction base="xs:float"> 			<xs:minInclusive value="0.0" /> 		</xs:restriction> 	</xs:simpleType> 	<xs:simpleType name="FLOAT_ARR"> 		<xs:list itemType="restrictedFloat" /> 	</xs:simpleType> 	<xs:simpleType name="FLOAT_ARR_2"> 		<xs:restriction base="FLOAT_ARR"> 			<xs:length value="2" /> 		</xs:restriction> 	</xs:simpleType> 	<xs:simpleType name="FLOAT_ARR_6"> 		<xs:restriction base="FLOAT_ARR"> 			<xs:length value="6" /> 		</xs:restriction> 	</xs:simpleType> 	<xs:simpleType name="BIT"> 		<xs:restriction base="xs:string"> 			<xs:pattern value="0|1" /> 		</xs:restriction> 	</xs:simpleType> 	<xs:simpleType name="BOOL"> 		<xs:restriction base="xs:string"> 			<xs:pattern value="0|1" /> 		</xs:restriction> 	</xs:simpleType>    <xs:simpleType name="BOOLOnlyOne"> 		<xs:restriction base="xs:string"> 			<xs:pattern value="1" /> 		</xs:restriction> 	</xs:simpleType>     <xs:simpleType name="BOOL_ARR"> 		<xs:list itemType="BOOLOnlyOne" /> 	</xs:simpleType>     <xs:simpleType name="BOOL_ARR_10"> 		<xs:restriction base="BOOL_ARR"> 			<xs:length value="10" /> 		</xs:restriction>  	</xs:simpleType> 	<xs:simpleType name="BOOL_ARR_36"> 		<xs:restriction base="BOOL_ARR"> 			<xs:length value="36" /> 		</xs:restriction>  	</xs:simpleType>     <xs:simpleType name="BYTE"> 		<xs:restriction base="xs:short"> 			<xs:minInclusive value="0" /> 			<xs:maxInclusive value="255" /> 		</xs:restriction> 	</xs:simpleType> 	<xs:simpleType name="BYTE_ARR"> 		<xs:list itemType="BYTE" /> 	</xs:simpleType>    <xs:simpleType name="BYTE_ARR_8"> 		<xs:restriction base="BYTE_ARR"> 			<xs:length value="8" /> 		</xs:restriction>  	</xs:simpleType>     <xs:simpleType name="WORD">  		<xs:restriction base="xs:unsignedShort">  			<xs:minInclusive value="0" />  			<xs:maxInclusive value="65535" />  		</xs:restriction>  	</xs:simpleType>  	<xs:simpleType name="DWORD">  		<xs:restriction base="xs:unsignedInt">  			<xs:minInclusive value="0" />  			<xs:maxInclusive value="4294967295" />  		</xs:restriction> 	</xs:simpleType>  	<xs:simpleType name="DATETIME">  		<xs:restriction base="xs:unsignedInt">  			<xs:minInclusive value="0" />  			<xs:maxInclusive value="4294967295" />  		</xs:restriction>  	</xs:simpleType>  	<!--xs:simpleType name="BYTE" >  <xs:restriction base="xs:string">  <xs:pattern value="[0-1][0-1][0-1][0-1][0-1][0-1][0-1][0-1]"/>  </xs:restriction>  </xs:simpleType-->  	<xs:simpleType name="STRING_150">  		<xs:restriction base="xs:string">  			<xs:maxLength value="150" />  		</xs:restriction>  	</xs:simpleType>     <xs:simpleType name="STRING_25">  		<xs:restriction base="xs:string">  			<xs:maxLength value="25" />  		</xs:restriction>  	</xs:simpleType>      <xs:simpleType name="VSTRING_25">  		<xs:restriction base="xs:string">  			<xs:maxLength value="25" />  		</xs:restriction>  	</xs:simpleType>      <xs:simpleType name="VSTRING_80">  		<xs:restriction base="xs:string">  			<xs:maxLength value="80" />  		</xs:restriction>  	</xs:simpleType>     <xs:simpleType name="VSTRING_150">  		<xs:restriction base="xs:string">  			<xs:maxLength value="150" />  		</xs:restriction>  	</xs:simpleType>  	<xs:simpleType name="STRING_20">  		<xs:restriction base="xs:string">  			<xs:maxLength value="20" />  		</xs:restriction>  	</xs:simpleType>     <xs:simpleType name="STRING_12">  		<xs:restriction base="xs:string">  			<xs:maxLength value="12" />  		</xs:restriction>  	</xs:simpleType>  	<xs:simpleType name="STRING_8">  		<xs:restriction base="xs:string">  			<xs:maxLength value="8" />  		</xs:restriction>  	</xs:simpleType>     <xs:simpleType name="STRING_4">  		<xs:restriction base="xs:string">  			<xs:maxLength value="4" />  		</xs:restriction>  	</xs:simpleType>      <xs:simpleType name="STRUCT">  		<xs:restriction base="xs:string" />  	</xs:simpleType>  	<xs:simpleType name="USESTRUCT">  		<xs:restriction base="xs:string" />  	</xs:simpleType>  	<xs:simpleType name="STRUCTNAME">  		<xs:restriction base="xs:string" />  	</xs:simpleType>
+</xs:schema>

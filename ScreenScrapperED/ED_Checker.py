@@ -29,7 +29,7 @@ XSDfilepath= XSDfilepath+"\\*.xsd"
 XSD_File_List = glob(XSDfilepath)
 
 try:
-    wb = load_workbook(filename = Excelfilepath)
+    wb = load_workbook(filename = Excelfilepath, read_only=True)
     #Sheet = input("Enter the name of the sheet to processed: ")
     #Sheet1 = wb[Sheet]
     Sheet1 = wb["Edit Data"]

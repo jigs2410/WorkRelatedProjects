@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Created with Liquid XML 2016 Designer Edition 14.1.5.6733 (https://www.liquid-technologies.com) -->
+<Zones xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:\Users\jrathod\Desktop\WorkDocs\ReleaseXSDForBidx\Schemas\SampleVP.xsd" CommandId="25">
+	<Zone22 NAME="USER" ID="22">
+		<PAR9 NAME="MEM_PROGRAM_MODE" ID="9">
+			<ProgramMode RD_ID="RD_0000" Type="BYTE">186</ProgramMode>
+		</PAR9>
+		<PAR10 NAME="MEM_SEL" ID="10">
+			<Mem RD_ID="RD_0546" Type="WORD">
+				<BIT2 NAME="@MEM_PRESSLIM" ID="2" RD_ID="RD_0546" Type="BIT">1</BIT2>
+				<BIT3 NAME="@MEM_DPSAUTO" ID="3" RD_ID="RD_0546" Type="BIT">0</BIT3>
+				<BIT5 NAME="@MEM_SAMEINFUSION" ID="5" RD_ID="RD_0546" Type="BIT">0</BIT5>
+			</Mem>
+			<DurSameInfusion RD_ID="RD_0547" Type="WORD">2590</DurSameInfusion>
+			<PressLim RD_ID="RD_0548" Type="WORD">3310</PressLim>
+			<DpsAuto RD_ID="RD_0549" Type="BOOL">1</DpsAuto>
+			<AutoRestartOcclus RD_ID="RD_0000" Type="BOOL">0</AutoRestartOcclus>
+		</PAR10>
+		<PAR12 NAME="MAX_FLOWRATE" ID="12">
+			<MaxFlowPrim RD_ID="RD_0000" Type="DWORD">986880405</MaxFlowPrim>
+		</PAR12>
+		<PAR14 NAME="DPS" ID="14">
+			<ThresholdIncr RD_ID="RD_0000" Type="WORD">26308</ThresholdIncr>
+			<ThresholdDrop RD_ID="RD_0000" Type="WORD">39846</ThresholdDrop>
+		</PAR14>
+		<PAR16 NAME="END_INFUS" ID="16">
+			<KvoFlowRate RD_ID="RD_0000" Type="WORD">29239</KvoFlowRate>
+			<DurPreAl RD_ID="RD_0000" Type="WORD">62107</DurPreAl>
+			<VolPreAl RD_ID="RD_0000" Type="DWORD">4042753931</VolPreAl>
+			<PercentPreAl RD_ID="RD_0000" Type="BYTE">151</PercentPreAl>
+			<InhPreAlDrop RD_ID="RD_0000" Type="BOOL">1</InhPreAlDrop>
+			<DurSilAlKvo RD_ID="RD_0000" Type="WORD">59098</DurSilAlKvo>
+		</PAR16>
+		<PAR18 NAME="OPT_SCREEN1" ID="18">
+			<Flags RD_ID="RD_0000" Type="WORD">
+				<BIT0 NAME="@OPTF_DPSAUTO" ID="0" RD_ID="RD_0000" Type="BIT">0</BIT0>
+				<BIT3 NAME="@OPTF_SAMETHERAPY" ID="3" RD_ID="RD_0000" Type="BIT">0</BIT3>
+				<BIT8 NAME="@OPTF_PRESSURE" ID="8" RD_ID="RD_0000" Type="BIT">0</BIT8>
+				<BIT9 NAME="@OPTF_BATTERY" ID="9" RD_ID="RD_0000" Type="BIT">0</BIT9>
+				<BIT10 NAME="@OPTF_VIGILANT" ID="10" RD_ID="RD_0000" Type="BIT">1</BIT10>
+			</Flags>
+			<MnuScreen RD_ID="RD_0000" Type="DWORD">
+				<BIT0 NAME="@OPTS_INFUSMODE" ID="0" RD_ID="RD_0000" Type="BIT">1</BIT0>
+				<BIT2 NAME="@OPTS_SOUNDLEVEL" ID="2" RD_ID="RD_0000" Type="BIT">1</BIT2>
+				<BIT3 NAME="@OPTS_HISTORIC" ID="3" RD_ID="RD_0000" Type="BIT">0</BIT3>
+				<BIT4 NAME="@OPTS_LIBDRUG" ID="4" RD_ID="RD_0000" Type="BIT">1</BIT4>
+				<BIT6 NAME="@OPTS_BOLUSPROG" ID="6" RD_ID="RD_0000" Type="BIT">0</BIT6>
+				<BIT7 NAME="@OPTS_PATIENT" ID="7" RD_ID="RD_0000" Type="BIT">1</BIT7>
+				<BIT9 NAME="@OPTS_SECONDARY" ID="9" RD_ID="RD_0000" Type="BIT">1</BIT9>
+				<BIT10 NAME="@OPTS_GRAPH_FLOW" ID="10" RD_ID="RD_0000" Type="BIT">0</BIT10>
+				<BIT11 NAME="@OPTS_GRAPH_PRESS" ID="11" RD_ID="RD_0000" Type="BIT">1</BIT11>
+				<BIT12 NAME="@OPTS_TIMEWARNING" ID="12" RD_ID="RD_0000" Type="BIT">0</BIT12>
+				<BIT13 NAME="@OPTS_CHANGEDRUG" ID="13" RD_ID="RD_0000" Type="BIT">0</BIT13>
+				<BIT14 NAME="@OPTS_INFOCASET" ID="14" RD_ID="RD_0000" Type="BIT">0</BIT14>
+				<BIT15 NAME="@OPTS_INFOCAREAREA" ID="15" RD_ID="RD_0000" Type="BIT">0</BIT15>
+				<BIT17 NAME="@OPTS_PAUSE" ID="17" RD_ID="RD_0000" Type="BIT">1</BIT17>
+				<BIT18 NAME="@OPTS_CLINICALINFO" ID="18" RD_ID="RD_0000" Type="BIT">0</BIT18>
+			</MnuScreen>
+		</PAR18>
+		<PAR19 NAME="PRESS_LIM" ID="19">
+			<MaxLimVar RD_ID="RD_0000" Type="WORD">21217</MaxLimVar>
+			<LowLim RD_ID="RD_0000" Type="WORD">1785</LowLim>
+			<MediumLim RD_ID="RD_0000" Type="WORD">14029</MediumLim>
+			<HighLim RD_ID="RD_0000" Type="WORD">52787</HighLim>
+			<Mode RD_ID="RD_0000" Type="BYTE">108</Mode>
+			<Unit RD_ID="RD_0000" Type="BYTE">131</Unit>
+		</PAR19>
+		<PAR20 NAME="PARAM_VOL_AIR" ID="20">
+			<VolAlarm RD_ID="RD_0000" Type="WORD">13558</VolAlarm>
+			<VolMin RD_ID="RD_0000" Type="WORD">47269</VolMin>
+		</PAR20>
+		<PAR24 NAME="INFUS_ENABLE" ID="24">
+			<InfusEnable RD_ID="RD_0000" Type="DWORD">
+				<BIT0 NAME="@INFUS_B_VT" ID="0" RD_ID="RD_0000" Type="BIT">0</BIT0>
+				<BIT1 NAME="@INFUS_B_VR" ID="1" RD_ID="RD_0000" Type="BIT">1</BIT1>
+				<BIT2 NAME="@INFUS_B_TR" ID="2" RD_ID="RD_0000" Type="BIT">0</BIT2>
+				<BIT3 NAME="@INFUS_B_VTR" ID="3" RD_ID="RD_0000" Type="BIT">1</BIT3>
+				<BIT4 NAME="@INFUS_B_R" ID="4" RD_ID="RD_0000" Type="BIT">0</BIT4>
+				<BIT5 NAME="@INFUS_B_DROP" ID="5" RD_ID="RD_0000" Type="BIT">1</BIT5>
+				<BIT6 NAME="@INFUS_B_BOLS" ID="6" RD_ID="RD_0000" Type="BIT">1</BIT6>
+				<BIT8 NAME="@INFUS_B_LOAD" ID="8" RD_ID="RD_0000" Type="BIT">0</BIT8>
+				<BIT9 NAME="@INFUS_B_BOLP" ID="9" RD_ID="RD_0000" Type="BIT">1</BIT9>
+				<BIT10 NAME="@INFUS_B_RAMP" ID="10" RD_ID="RD_0000" Type="BIT">0</BIT10>
+				<BIT11 NAME="@INFUS_B_SEQ" ID="11" RD_ID="RD_0000" Type="BIT">0</BIT11>
+				<BIT12 NAME="@INFUS_B_PURG_AIR" ID="12" RD_ID="RD_0000" Type="BIT">0</BIT12>
+				<BIT13 NAME="@INFUS_B_PURG_TUB" ID="13" RD_ID="RD_0000" Type="BIT">1</BIT13>
+			</InfusEnable>
+		</PAR24>
+		<PAR25 NAME="PROGRAM_MODE" ID="25">
+			<ModeEnable RD_ID="RD_0000" Type="BYTE">
+				<BIT1 NAME="@PRGM_M_VIGILANT" ID="1" RD_ID="RD_0000" Type="BIT">0</BIT1>
+				<BIT3 NAME="@PRGM_M_NONAME_MLH" ID="3" RD_ID="RD_0000" Type="BIT">0</BIT3>
+				<BIT4 NAME="@PRGM_M_NONAME_MF" ID="4" RD_ID="RD_0000" Type="BIT">0</BIT4>
+				<BIT5 NAME="@PRGM_M_DRUGLIST_MLH" ID="5" RD_ID="RD_0000" Type="BIT">0</BIT5>
+				<BIT6 NAME="@PRGM_M_DRUGLIST_MF" ID="6" RD_ID="RD_0000" Type="BIT">0</BIT6>
+			</ModeEnable>
+			<DrugEnable RD_ID="RD_0000" Type="BYTE">
+				<BIT0 NAME="@PRGM_D_XMLH" ID="0" RD_ID="RD_0000" Type="BIT">1</BIT0>
+				<BIT1 NAME="@PRGM_D_XMF" ID="1" RD_ID="RD_0000" Type="BIT">0</BIT1>
+				<BIT2 NAME="@PRGM_D_TOP" ID="2" RD_ID="RD_0000" Type="BIT">1</BIT2>
+			</DrugEnable>
+		</PAR25>
+		<PAR31 NAME="SECONDARY" ID="31">
+			<Flags RD_ID="RD_0000" Type="WORD">
+				<BIT0 NAME="@SEC_STOPENDSEC" ID="0" RD_ID="RD_0000" Type="BIT">0</BIT0>
+				<BIT1 NAME="@SEC_NOACKENDSEC" ID="1" RD_ID="RD_0000" Type="BIT">1</BIT1>
+			</Flags>
+		</PAR31>
+		<PAR40 NAME="BUZZER2" ID="40">
+			<Mode RD_ID="RD_0000" Type="BYTE">
+				<BIT0 NAME="@BUZ2_INHKEY" ID="0" RD_ID="RD_0000" Type="BIT">0</BIT0>
+			</Mode>
+			<Level RD_ID="RD_0000" Type="BYTE">99</Level>
+		</PAR40>
+		<PAR53 NAME="AUTO_RESTART_OCCLUS" ID="53">
+			<Valid RD_ID="RD_0000" Type="BOOL">1</Valid>
+			<MaxWaitDur RD_ID="RD_0000" Type="BYTE">201</MaxWaitDur>
+			<DecPressRestart RD_ID="RD_0000" Type="WORD">60186</DecPressRestart>
+			<InhibitPressLim RD_ID="RD_0000" Type="WORD">46118</InhibitPressLim>
+			<InhibitFlow RD_ID="RD_0000" Type="DWORD">2330711247</InhibitFlow>
+			<MaxNbRestart RD_ID="RD_0000" Type="BYTE">33</MaxNbRestart>
+			<CountRestartDur RD_ID="RD_0000" Type="WORD">35798</CountRestartDur>
+		</PAR53>
+	</Zone22>
+	<Zone27 NAME="CARE_AREA" ID="27">
+		<PAR2 NAME="NAME" ID="2">
+			<CareAreaName RD_ID="RD_0000" Type="STRUCTNAME">string</CareAreaName>
+			<Name RD_ID="RD_0000" Type="STRING[20]">string</Name>
+		</PAR2>
+		<PAR3 NAME="AUTHOR" ID="3">
+			<AuthorName RD_ID="RD_0000" Type="STRING[20]">string</AuthorName>
+		</PAR3>
+		<PAR4 NAME="VERSION" ID="4">
+			<Version RD_ID="RD_0000" Type="STRING[4]"></Version>
+		</PAR4>
+		<PAR5 NAME="DATE" ID="5">
+			<CareAreaDate RD_ID="RD_0000" Type="STRUCTNAME">string</CareAreaDate>
+			<Create RD_ID="RD_0000" Type="DATETIME">959916600</Create>
+			<Modif RD_ID="RD_0000" Type="DATETIME">1164838080</Modif>
+		</PAR5>
+		<PAR7 NAME="GUID" ID="7">
+			<Data1 RD_ID="RD_0000" Type="DWORD">93849330</Data1>
+			<Data2 RD_ID="RD_0000" Type="WORD">48737</Data2>
+			<Data3 RD_ID="RD_0000" Type="WORD">43979</Data3>
+			<Data4 RD_ID="RD_0000" Type="BYTE[8]">197 88 92 212 176 19 176 19</Data4>
+		</PAR7>
+		<PAR8 NAME="DATE_WRITE" ID="8">
+			<Write RD_ID="RD_0000" Type="DATETIME">3119460516</Write>
+		</PAR8>
+	</Zone27>
+</Zones>

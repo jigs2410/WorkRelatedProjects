@@ -1,0 +1,1 @@
+ED_checker scripts prompts for Data dictionary path and then XSD path for generic xsd's and then compares Edit Data sheet ED_ID's vs ED_ID used in generic xsd's and displays the result accordingly

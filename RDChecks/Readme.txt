@@ -1,0 +1,1 @@
+RD_checker.py prompts for Data  Dictionary and determines if RD_ID's between Mapping Sheet and Agilia Release Data match and displays result accordingly.
