@@ -1,0 +1,23 @@
+
+  CREATE OR REPLACE EDITIONABLE FUNCTION "MSSQL"."NEW_APPLYEXCEPTION" 
+(
+  IN_PRICE IN NUMBER
+, IN_DISCOUNTTYPE IN VARCHAR2 
+, IN_DISCOUNTVALUE IN NUMBER
+, IN_EFFECTIVEUNIT IN NUMBER
+) RETURN NUMBER AS 
+lv_retprice number := IN_PRICE;
+BEGIN
+
+    if (IN_DISCOUNTTYPE = 'DeductPercentage') then
+      lv_retprice := IN_PRICE - (IN_PRICE * IN_DISCOUNTVALUE)/100;
+    
+    end if;
+    
+    
+    if (IN_DISCOUNTTYPE = 'DeductFixed') then
+      lv_retprice := IN_PRICE - (IN_EFFECTIVEUNIT * IN_DISCOUNTVALUE);
+    end if;
+    
+  RETURN round(lv_retprice,3);
+END NEW_APPLYEXCEPTION;

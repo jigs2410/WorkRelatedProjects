@@ -1,0 +1,7 @@
+insert into PRICING_OPERATORS (TYPE,OPERATOR,OPERATOR_DESC) values  ('Number', '=', 'Equal to')
+insert into PRICING_OPERATORS (TYPE,OPERATOR,OPERATOR_DESC) values  ('Number', '>', 'Greater than')
+insert into PRICING_OPERATORS (TYPE,OPERATOR,OPERATOR_DESC) values  ('Number', '<>', 'Not Equal to')
+insert into PRICING_OPERATORS (TYPE,OPERATOR,OPERATOR_DESC) values  ('Number', '<', 'Less than')
+insert into PRICING_OPERATORS (TYPE,OPERATOR,OPERATOR_DESC) values  ('String', 'like', 'Contains')
+insert into PRICING_OPERATORS (TYPE,OPERATOR,OPERATOR_DESC) values  ('String', '!=', 'Not Equal to')
+insert into PRICING_OPERATORS (TYPE,OPERATOR,OPERATOR_DESC) values  ('String', '=', 'Equal to')

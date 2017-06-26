@@ -6,6 +6,7 @@ Created on Wed Jun 14 11:07:16 2017
 """
 
 import cx_Oracle
+import ExportScript
 
 con_wwdev = cx_Oracle.connect('mssql/mssql@wel-db-2-srv:1521/wwdev')
 cur_wwdev = con_wwdev.cursor()
@@ -13,11 +14,12 @@ cur_wwdev = con_wwdev.cursor()
 con_oldwwdev = cx_Oracle.connect('mssql/mssql@db1:1521/wwdev')
 cur_oldwwdev = con_oldwwdev.cursor()
 cur_oldwwdev1 = con_oldwwdev.cursor()
+pricingTables=[]
 
-db_objects= ['FUNCTION',
+db_objects= ['TABLE','FUNCTION',
 'PACKAGE',
 'PROCEDURE',
-'TABLE',
+
 ]
 
 except_objects=['ACCOUNTSMASTER_WWPRD','EBA_DEMO_FILES',
@@ -66,6 +68,7 @@ except_objects=['ACCOUNTSMASTER_WWPRD','EBA_DEMO_FILES',
 currentwwdev=[]
 oldwwdev=[]
 
+objects=[]
 
 def diffObjects(do):
     print()
@@ -86,18 +89,30 @@ def diffObjects(do):
         if not dbobject in currentwwdev:
             dbobject = str(dbobject).replace('(','').replace(')','').replace(',','').replace('\'','').strip()
             if not dbobject in except_objects:
+                """
                 query1 = "select DBMS_METADATA.GET_DDL('"+do+"','"+dbobject+"') from dual "
                 print(query1)
                 cur_oldwwdev1.execute(query1)
                 for script in cur_oldwwdev1:
                     print(script[0].read())
+                """
+                ExportScript.export(do,dbobject,cur_oldwwdev1)
+                objects.append(dbobject)
                 
- 
-
+                if do == "TABLE":
+                    pricingTables.append(dbobject)
+                    
+    ExportScript.exportlist(do,objects)            
+    
 for object in db_objects:
+    objects=[]
     diffObjects(object)
     
+
+print(pricingTables)
+ 
 cur_wwdev.close()
 cur_oldwwdev.close()
+cur_oldwwdev1.close()
 con_wwdev.close()
 con_oldwwdev.close()                 

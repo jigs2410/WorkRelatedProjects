@@ -1,0 +1,5 @@
+insert into OPTION_DRYWALL (ID,STYLE,PRICE,PRICETYPE,PRICEMUL,FRAMECOLOR) values  (1, '''DW'',''DWHP'',''DWTW'',''DWTR'',''HPDW'',''DWHPTR''', 30, 'FIXED', '1', '''White'',''Almond'',''Clay''')
+insert into OPTION_DRYWALL (ID,STYLE,PRICE,PRICETYPE,PRICEMUL,FRAMECOLOR) values  (2, '''2DW''', 13.5, 'FIXED', '1', '''White''')
+insert into OPTION_DRYWALL (ID,STYLE,PRICE,PRICETYPE,PRICEMUL,FRAMECOLOR) values  (3, '''3DW''', 15, 'FIXED', '1', '''White''')
+insert into OPTION_DRYWALL (ID,STYLE,PRICE,PRICETYPE,PRICEMUL,FRAMECOLOR) values  (4, '''2DW''', 14.25, 'FIXED', '1', '''Almond'',''Clay''')
+insert into OPTION_DRYWALL (ID,STYLE,PRICE,PRICETYPE,PRICEMUL,FRAMECOLOR) values  (5, '''3DW''', 15.75, 'FIXED', '1', '''Almond'',''Clay''')

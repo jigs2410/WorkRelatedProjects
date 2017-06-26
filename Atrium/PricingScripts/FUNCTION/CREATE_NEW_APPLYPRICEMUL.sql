@@ -1,0 +1,27 @@
+
+  CREATE OR REPLACE EDITIONABLE FUNCTION "MSSQL"."NEW_APPLYPRICEMUL" 
+(
+  IN_PRICE IN NUMBER 
+, IN_PRICEMUL IN VARCHAR2 DEFAULT 1 
+, IN_EFFECTIVEUNIT IN NUMBER DEFAULT 1 
+, IN_SECTIONS IN NUMBER DEFAULT 1 
+, IN_LITES IN NUMBER DEFAULT 1 
+) RETURN NUMBER AS 
+lv_price number := 0;
+BEGIN
+  
+  case IN_PriceMUL
+  when 'EFFECTIVEUNIT'  then lv_price := IN_price * IN_EFFECTIVEUNIT;
+  when 'SECTIONS' then lv_price := IN_price * IN_SECTIONS;
+  when 'LITES' then lv_price := IN_price * IN_LITES;
+  when 'EFFECTIVEUNIT * SECTIONS' then lv_price := IN_price * IN_EFFECTIVEUNIT * IN_SECTIONS;
+  when 'EFFECTIVEUNIT * (SECTIONS - 2)' then lv_price := IN_price * IN_EFFECTIVEUNIT * (IN_SECTIONS-2);
+  when '(SECTIONS - 2)' then lv_price := IN_price * (IN_SECTIONS-2);
+  when 'EFFECTIVEUNIT * SECTIONS * LITES' then lv_price := IN_price * IN_EFFECTIVEUNIT * IN_SECTIONS * IN_LITES;
+  
+  else lv_price := IN_PRICE;
+  
+  end case; 
+      
+  RETURN lv_PRICE;
+END NEW_APPLYPRICEMUL;
